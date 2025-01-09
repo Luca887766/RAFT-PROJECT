@@ -12,6 +12,11 @@ function toSlide(dest) {
     elementsToShow.forEach(element => {
         element.style.display = "block";
     });
+
+    // Avvia l'IA se la destinazione è "traduzione"
+    if (dest === "traduzione") {
+        startAI();
+    }
 }
 
 function getElementsForSlide(dest) {

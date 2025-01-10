@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
     <title>RAFT-app</title>
     <meta charset="utf-8">
@@ -8,6 +9,7 @@
     <script type="text/javascript" defer src="script.js"></script>
     <script type="text/javascript" defer src="AI.js"></script>
 </head>
+
 <body onload="toSlide('homePage')">
 
     <header id="barraLogo" class="slide">
@@ -25,7 +27,7 @@
     </div>
 
     <div id="selModalita" class="slide">
-        <button onclick="toSlide('traduzione')">Traduzione</button>
+        <button id="webcamButton" onclick="funzioniTraduzione()">Traduzione</button>
         <button onclick="toSlide('selDifficolta')">Allenamento</button>
     </div>
 
@@ -33,14 +35,9 @@
         <button onclick="toSlide('homePage')">Torna Indietro</button>
         <button>Clear</button>
         <div>Pagina di Traduzione</div>
-        <button id="webcamButton" class="mdc-button mdc-button--raised">
-            <span class="mdc-button__ripple"></span>
-            <span class="mdc-button__label">ENABLE WEBCAM</span>
-        </button>
         <video id="webcam" autoplay playsinline></video>
-      <canvas class="output_canvas" id="output_canvas" width="1280" height="720"
-        style="position: absolute; left: 0px; top: 0px;"></canvas>
-      <p id='gesture_output' class="output">
+        <canvas class="output_canvas" id="output_canvas" width="1280" height="720" style="position: absolute; left: 0px; top: 0px;"></canvas>
+        <p id='gesture_output' class="output">
     </div>
 
     <div id="allenamento" class="slide">
@@ -86,4 +83,5 @@
     </footer>
 
 </body>
+
 </html>

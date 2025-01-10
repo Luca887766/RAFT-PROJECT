@@ -59,7 +59,3 @@ function getElementsForSlide(dest) {
     }
     return elements;
 }
-
-function funzuioneTraduzione() {
-    toSlide("traduzione");
-}

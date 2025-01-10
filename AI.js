@@ -94,6 +94,10 @@ function disableCam() {
 let lastVideoTime = -1;
 let results = undefined;
 async function predictWebcam() {
+    const videoContainer = document.querySelector(".videoContainer");
+    canvasElement.width = videoContainer.clientWidth;
+    canvasElement.height = videoContainer.clientHeight;
+
     // Now let's start detecting the stream.
     if (runningMode === "IMAGE") {
         runningMode = "VIDEO";
@@ -131,7 +135,7 @@ async function predictWebcam() {
         //da sistemare
 
         gestureOutput.style.display = "block";
-        gestureOutput.style.width = videoWidth;
+        gestureOutput.style.width = `${canvasElement.width}px`;
         const categoryName = results.gestures[0][0].categoryName;
         const categoryScore = parseFloat(
             results.gestures[0][0].score * 100

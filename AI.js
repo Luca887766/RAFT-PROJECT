@@ -27,6 +27,7 @@ const createGestureRecognizer = async () => {
 
 createGestureRecognizer();
 
+const video = document.getElementById("webcam");
 const canvasElement = document.getElementById("output_canvas");
 const canvasCtx = canvasElement.getContext("2d");
 const gestureOutput = document.getElementById("gesture_output");

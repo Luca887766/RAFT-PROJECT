@@ -33,13 +33,13 @@
 
     <div id="traduzione" class="slide">
         <button onclick="toSlide('homePage')">Torna Indietro</button>
-        <button>Clear</button>
+        <button class="clearButton" onclick="clearOutput()">Clear</button>
         <div>Pagina di Traduzione</div>
         <div class="videoContainer">
             <video id="webcam" autoplay playsinline></video>
             <canvas class="output_canvas" id="output_canvas" width="1280" height="720"></canvas>
         </div>
-        <p id='gesture_output' class="output">
+        <p id='gesture_output' class="output"></p>
     </div>
 
     <div id="allenamento" class="slide">
@@ -71,7 +71,7 @@
         <button id="bottoneInvio">Invia</button>
     </div>
 
-    html: <footer id="nav">
+    <footer id="nav">
         <button onclick="toSlide('homePage')">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 34"><path d="M9.65813 14.2673L8.73375 17H6.375L10.3317 6.375H13.0602L17 17H14.5201L13.5957 14.2673H9.65813ZM13.1304 12.7033L11.6875 8.4065H11.5834L10.1405 12.7033H13.1304Z" fill="#009CFC"/><path d="M0 4.25C0 3.12283 0.447767 2.04183 1.2448 1.2448C2.04183 0.447767 3.12283 0 4.25 0L19.125 0C20.2522 0 21.3332 0.447767 22.1302 1.2448C22.9272 2.04183 23.375 3.12283 23.375 4.25V10.625H29.75C30.8772 10.625 31.9582 11.0728 32.7552 11.8698C33.5522 12.6668 34 13.7478 34 14.875V29.75C34 30.8772 33.5522 31.9582 32.7552 32.7552C31.9582 33.5522 30.8772 34 29.75 34H14.875C13.7478 34 12.6668 33.5522 11.8698 32.7552C11.0728 31.9582 10.625 30.8772 10.625 29.75V23.375H4.25C3.12283 23.375 2.04183 22.9272 1.2448 22.1302C0.447767 21.3332 0 20.2522 0 19.125V4.25ZM4.25 2.125C3.68641 2.125 3.14591 2.34888 2.7474 2.7474C2.34888 3.14591 2.125 3.68641 2.125 4.25V19.125C2.125 19.6886 2.34888 20.2291 2.7474 20.6276C3.14591 21.0261 3.68641 21.25 4.25 21.25H19.125C19.6886 21.25 20.2291 21.0261 20.6276 20.6276C21.0261 20.2291 21.25 19.6886 21.25 19.125V4.25C21.25 3.68641 21.0261 3.14591 20.6276 2.7474C20.2291 2.34888 19.6886 2.125 19.125 2.125H4.25Z" fill="#009CFC"/></svg>
         </button>

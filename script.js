@@ -7,6 +7,11 @@ function toSlide(dest) {
         slide.style.display = "none";
     });
 
+    // Call disableCam if the current slide is "traduzione"
+    if (document.getElementById("traduzione").style.display === "block") {
+        disableCam();
+    }
+
     // Mostra solo gli elementi della slide desiderata
     const elementsToShow = getElementsForSlide(dest);
     elementsToShow.forEach(element => {

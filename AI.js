@@ -27,7 +27,6 @@ const createGestureRecognizer = async () => {
 
 createGestureRecognizer();
 
-const video = document.getElementById("webcam");
 const canvasElement = document.getElementById("output_canvas");
 const canvasCtx = canvasElement.getContext("2d");
 const gestureOutput = document.getElementById("gesture_output");
@@ -55,10 +54,8 @@ function enableCam(event) {
 
     if (webcamRunning === true) {
         webcamRunning = false;
-        enableWebcamButton.innerText = "ENABLE PREDICTIONS";
     } else {
         webcamRunning = true;
-        enableWebcamButton.innerText = "DISABLE PREDICTIONS";
     }
 
     // getUsermedia parameters.
@@ -77,10 +74,25 @@ function enableCam(event) {
     });
 }
 
+function disableCam() {
+    webcamRunning = false;
+    const video = document.getElementById("webcam");
+    if (video && video.srcObject) {
+        const stream = video.srcObject;
+        const tracks = stream.getTracks();
+
+        tracks.forEach(function(track) {
+            track.stop();
+        });
+
+        video.srcObject = null;
+        video.removeEventListener("loadeddata", predictWebcam);
+    }
+}
+
 let lastVideoTime = -1;
 let results = undefined;
 async function predictWebcam() {
-    const webcamElement = document.getElementById("webcam");
     // Now let's start detecting the stream.
     if (runningMode === "IMAGE") {
         runningMode = "VIDEO";
@@ -95,11 +107,6 @@ async function predictWebcam() {
     canvasCtx.save();
     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
     const drawingUtils = new DrawingUtils(canvasCtx);
-
-    canvasElement.style.height = videoHeight;
-    webcamElement.style.height = videoHeight;
-    canvasElement.style.width = videoWidth;
-    webcamElement.style.width = videoWidth;
 
     if (results.landmarks) {
         for (const landmarks of results.landmarks) {
@@ -119,6 +126,9 @@ async function predictWebcam() {
     }
     canvasCtx.restore();
     if (results.gestures.length > 0) {
+
+        //da sistemare
+
         gestureOutput.style.display = "block";
         gestureOutput.style.width = videoWidth;
         const categoryName = results.gestures[0][0].categoryName;
@@ -134,4 +144,9 @@ async function predictWebcam() {
     if (webcamRunning === true) {
         window.requestAnimationFrame(predictWebcam);
     }
+}
+
+function clearOutput() {
+    gestureOutput.innerText = "";
+    gestureOutput.style.display = "none";
 }

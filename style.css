@@ -42,6 +42,7 @@ body {
 /*--------------------------- SLIDE TRADUZIONE ----------------------------*/
 
 .videoContainer {
+    padding-top: 3rem;
     position: static;
     width: 100%;
     height: 100%;

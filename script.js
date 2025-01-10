@@ -21,27 +21,27 @@ function getElementsForSlide(dest) {
             document.getElementById("barraLogo"),
             document.getElementById("selezioneLinguaBarra"),
             document.getElementById("selModalita"),
-            document.getElementById("footer")
+            document.getElementById("nav")
         );
     } else if (dest === "vocabolario") {
         elements.push(
             document.getElementById("barraLogo"),
             document.getElementById("selezioneLinguaBarra"),
             document.getElementById("vocabolario"),
-            document.getElementById("footer")
+            document.getElementById("nav")
         );
     } else if (dest === "contatti") {
         elements.push(
             document.getElementById("barraLogo"),
             document.getElementById("selezioneLinguaBarra"),
             document.getElementById("contatti"),
-            document.getElementById("footer")
+            document.getElementById("nav")
         );
     } else if (dest === "selDifficolta") {
         elements.push(
             document.getElementById("barraLogo"),
             document.getElementById("selDifficolta"),
-            document.getElementById("footer")
+            document.getElementById("nav")
         );
     } else if (dest === "traduzione") {
         elements.push(

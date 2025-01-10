@@ -65,3 +65,42 @@ body {
     height: 100%;
     object-fit: cover;
 }
+
+/*----------------------- FOOTER ---------------------*/
+#nav {
+    position: fixed;
+    bottom: 0;
+    width: calc(100% - 4rem);;
+    background: radial-gradient(80.97% 1714.77% at 58.68% -1061.36%, #21279B 0%, #10145C 100%);
+    border-radius: 20px ;
+    height: 5rem;
+    margin: 2rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0px -5px 10px rgba(0, 0, 0, 0.2);
+    padding: 0 1rem;
+}
+
+#nav button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.875rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#nav button svg {
+    width: 2rem;
+    height: 2rem;
+    fill: #009CFC;
+    margin-bottom: 0.25rem;
+}
+
+#nav button span {
+    font-size: 0.75rem;
+    color: #ffffff;
+}

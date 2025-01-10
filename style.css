@@ -48,6 +48,10 @@ body {
     background-color: #fff4e6;
 }
 
+video{
+    object-fit: contain;
+}
+
 #webcam {
     position: absolute;
     top: 0;

@@ -55,7 +55,7 @@ body {
 }
 
 video{
-    object-fit: contain;
+    object-fit: cover;
 }
 
 #webcam {

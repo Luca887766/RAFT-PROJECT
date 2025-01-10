@@ -136,6 +136,7 @@ async function predictWebcam() {
 
         gestureOutput.style.display = "block";
         gestureOutput.style.width = `${canvasElement.width}px`;
+        gestureOutput.style.height = `${canvasElement.height}px`;
         const categoryName = results.gestures[0][0].categoryName;
         const categoryScore = parseFloat(
             results.gestures[0][0].score * 100

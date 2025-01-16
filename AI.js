@@ -1,10 +1,3 @@
-import {
-    GestureRecognizer,
-    FilesetResolver,
-    DrawingUtils
-} from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3";
-
-const demosSection = document.getElementById("demos");
 let gestureRecognizer;
 let runningMode = "IMAGE";
 let enableWebcamButton;
@@ -163,4 +156,6 @@ function clearOutput() {
 // Load gesture recognizer on page load
 window.addEventListener('load', loadGestureRecognizer);
 
-export { disableCam, enableCam };
+// Export functions to global scope
+window.disableCam = disableCam;
+window.enableCam = enableCam;

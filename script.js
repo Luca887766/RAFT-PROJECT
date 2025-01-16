@@ -1,6 +1,3 @@
-// Ensure disableCam and enableCam are imported from AI.js
-import { disableCam, enableCam } from './AI.js';
-
 function toSlide(dest) {
     // Tutti gli elementi delle slide
     const slides = document.querySelectorAll(".slide");
@@ -67,7 +64,6 @@ function getElementsForSlide(dest) {
     }
     return elements;
 }
-
 
 /*----------------- FUNZIONE RENDER DEL VOCABOLARIO ----------------------*/
 function caricaVocabolario() {

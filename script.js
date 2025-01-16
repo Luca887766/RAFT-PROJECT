@@ -8,7 +8,7 @@ function toSlide(dest) {
     });
 
     // Call disableCam if the current slide is "traduzione"
-    if (document.getElementById("traduzione").style.display === "block") {
+    if (document.getElementById("traduzione").style.display === "none") {
         disableCam();
     }
 

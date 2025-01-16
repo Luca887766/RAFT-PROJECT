@@ -23,6 +23,16 @@ const createGestureRecognizer = async () => {
         },
         runningMode: runningMode
     });
+    localStorage.setItem('gestureRecognizer', JSON.stringify(gestureRecognizer));
+};
+
+const loadGestureRecognizer = () => {
+    const storedRecognizer = localStorage.getItem('gestureRecognizer');
+    if (storedRecognizer) {
+        gestureRecognizer = JSON.parse(storedRecognizer);
+    } else {
+        createGestureRecognizer();
+    }
 };
 
 const video = document.getElementById("webcam");
@@ -148,3 +158,6 @@ function clearOutput() {
     gestureOutput.innerText = "";
     gestureOutput.style.display = "none";
 }
+
+// Load gesture recognizer on page load
+window.addEventListener('load', loadGestureRecognizer);

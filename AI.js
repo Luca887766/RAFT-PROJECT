@@ -29,7 +29,9 @@ const loadGestureRecognizer = async () => {
     }
 };
 
-window.addEventListener('load', () => {
+window.addEventListener('load', async () => {
+    await loadGestureRecognizer();
+
     const video = document.getElementById("webcam");
     const canvasElement = document.getElementById("output_canvas");
     const canvasCtx = canvasElement ? canvasElement.getContext("2d") : null;
@@ -157,9 +159,6 @@ window.addEventListener('load', () => {
         gestureOutput.innerText = "";
         gestureOutput.style.display = "none";
     }
-
-    // Load gesture recognizer on page load
-    loadGestureRecognizer();
 
     // Export functions to global scope
     window.disableCam = disableCam;

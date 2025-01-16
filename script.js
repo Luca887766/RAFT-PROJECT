@@ -12,6 +12,10 @@ function toSlide(dest) {
         disableCam();
     }
 
+    if(document.getElementById("traduzione").style.display !== "none") {
+        enableCam();
+    }
+
     // Mostra solo gli elementi della slide desiderata
     const elementsToShow = getElementsForSlide(dest);
     elementsToShow.forEach(element => {
@@ -61,7 +65,7 @@ function getElementsForSlide(dest) {
 }
 
 
-/----------------- FUNZIONE RENDER DEL VOCABOLARIO ----------------------/
+/*----------------- FUNZIONE RENDER DEL VOCABOLARIO ----------------------*/
 function caricaVocabolario() {
     const xhr = new XMLHttpRequest();
 
@@ -78,7 +82,7 @@ function caricaVocabolario() {
             function aggiornaVocabolario() {
                 const testo = inputRicerca.value.toUpperCase(); // Converte il testo in maiuscolo
 
-                /qua ci va la logica per ottenere la lingua selezionata dai radio/
+                //qua ci va la logica per ottenere la lingua selezionata dai radio/
                 const linguaSelezionata = "italiano";
 
                 imgContainer.innerHTML = ""; // Pulizia del contenitore

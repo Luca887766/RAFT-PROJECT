@@ -25,8 +25,6 @@ const createGestureRecognizer = async () => {
     });
 };
 
-createGestureRecognizer();
-
 const video = document.getElementById("webcam");
 const canvasElement = document.getElementById("output_canvas");
 const canvasCtx = canvasElement.getContext("2d");
@@ -41,7 +39,6 @@ function hasGetUserMedia() {
 // wants to activate it.
 if (hasGetUserMedia()) {
     enableWebcamButton = document.getElementById("webcamButton");
-    enableWebcamButton.addEventListener("click", enableCam);
 } else {
     console.warn("getUserMedia() is not supported by your browser");
 }

@@ -1,0 +1,177 @@
+[
+    {
+        "img": "img/logoGalilei.png",
+        "lettera": "A",
+        "lingua": ["italiano", "inglese"]
+    },
+    {
+        "img": "img/logoGalilei.png",
+        "lettera": "B",
+        "lingua": ["italiano", "inglese"]
+    },
+    {
+        "img": "img/logoGalilei.png",
+        "lettera": "C",
+        "lingua": ["italiano", "inglese"]
+    },
+    {
+        "img": "img/logoGalilei.png",
+        "lettera": "D",
+        "lingua": ["italiano", "inglese"]
+    },
+    {
+        "img": "img/logoGalilei.png",
+        "lettera": "E",
+        "lingua": ["italiano", "inglese"]
+    },
+    {
+        "img": "img/logoGalilei.png",
+        "lettera": "F",
+        "lingua": ["italiano", "inglese"]
+    },
+    {
+        "img": "img/logoGalilei.png",
+        "lettera": "G",
+        "lingua": ["italiano", "inglese"]
+    },
+    {
+        "img": "img/logoGalilei.png",
+        "lettera": "H",
+        "lingua": ["italiano", "inglese"]
+    },
+    {
+        "img": "img/logoGalilei.png",
+        "lettera": "I",
+        "lingua": ["italiano", "inglese"]
+    },
+    {
+        "img": "img/logoGalilei.png",
+        "lettera": "J",
+        "lingua": ["italiano", "inglese"]
+    },
+    {
+        "img": "img/logoGalilei.png",
+        "lettera": "K",
+        "lingua": ["italiano"]
+    },
+    {
+        "img": "img/logoGalilei.png",
+        "lettera": "K",
+        "lingua": ["inglese"]
+    },
+    {
+        "img": "img/logoGalilei.png",
+        "lettera": "L",
+        "lingua": ["italiano", "inglese"]
+    },
+    {
+        "img": "img/logoGalilei.png",
+        "lettera": "M",
+        "lingua": ["italiano"]
+    },
+    {
+        "img": "img/logoGalilei.png",
+        "lettera": "M",
+        "lingua": ["inglese"]
+    },
+    {
+        "img": "img/logoGalilei.png",
+        "lettera": "N",
+        "lingua": ["italiano"]
+    },
+    {
+        "img": "img/logoGalilei.png",
+        "lettera": "N",
+        "lingua": ["inglese"]
+    },
+    {
+        "img": "img/logoGalilei.png",
+        "lettera": "O",
+        "lingua": ["italiano", "inglese"]
+    },
+    {
+        "img": "img/logoGalilei.png",
+        "lettera": "A",
+        "lingua": ["italiano", "inglese"]
+    },
+    {
+        "img": "img/logoGalilei.png",
+        "lettera": "P",
+        "lingua": ["italiano"]
+    },
+    {
+        "img": "img/logoGalilei.png",
+        "lettera": "P",
+        "lingua": ["inglese"]
+    },
+    {
+        "img": "img/logoGalilei.png",
+        "lettera": "Q",
+        "lingua": ["italiano", "inglese"]
+    },
+    {
+        "img": "img/logoGalilei.png",
+        "lettera": "R",
+        "lingua": ["italiano", "inglese"]
+    },
+    {
+        "img": "img/logoGalilei.png",
+        "lettera": "S",
+        "lingua": ["italiano"]
+    },
+    {
+        "img": "img/logoGalilei.png",
+        "lettera": "S",
+        "lingua": ["inglese"]
+    },
+    {
+        "img": "img/logoGalilei.png",
+        "lettera": "T",
+        "lingua": ["italiano"]
+    },
+    {
+        "img": "img/logoGalilei.png",
+        "lettera": "T",
+        "lingua": ["inglese"]
+    },
+    {
+        "img": "img/logoGalilei.png",
+        "lettera": "U",
+        "lingua": ["italiano", "inglese"]
+    },
+    {
+        "img": "img/logoGalilei.png",
+        "lettera": "V",
+        "lingua": ["italiano", "inglese"]
+    },
+    {
+        "img": "img/logoGalilei.png",
+        "lettera": "W",
+        "lingua": ["italiano", "inglese"]
+    },
+    {
+        "img": "img/logoGalilei.png",
+        "lettera": "X",
+        "lingua": ["italiano", "inglese"]
+    },
+    {
+        "img": "img/logoGalilei.png",
+        "lettera": "Y",
+        "lingua": ["italiano", "inglese"]
+    },
+    {
+        "img": "img/logoGalilei.png",
+        "lettera": "Z",
+        "lingua": ["italiano", "inglese"]
+    },
+    {
+        "img": "img/logoGalilei.png",
+        "lettera": "SPACE",
+        "lingua": ["italiano", "inglese"]
+    },
+    {
+        "img": "img/logoGalilei.png",
+        "lettera": "DELETE",
+        "lingua": ["italiano", "inglese"]
+    }
+]

@@ -1,3 +1,6 @@
+// Ensure disableCam and enableCam are imported from AI.js
+import { disableCam, enableCam } from './AI.js';
+
 function toSlide(dest) {
     // Tutti gli elementi delle slide
     const slides = document.querySelectorAll(".slide");
@@ -7,12 +10,13 @@ function toSlide(dest) {
         slide.style.display = "none";
     });
 
-    // Call disableCam if the current slide is "traduzione"
-    if (document.getElementById("traduzione").style.display === "none") {
+    // Call disableCam if the current slide is not "traduzione"
+    if (dest !== "traduzione") {
         disableCam();
     }
 
-    if(document.getElementById("traduzione").style.display !== "none") {
+    // Call enableCam if the destination slide is "traduzione"
+    if (dest === "traduzione") {
         enableCam();
     }
 

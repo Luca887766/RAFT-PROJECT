@@ -23,13 +23,14 @@ const createGestureRecognizer = async () => {
         },
         runningMode: runningMode
     });
-    localStorage.setItem('gestureRecognizer', JSON.stringify(gestureRecognizer));
+    // Store a flag in localStorage instead of the entire object
+    localStorage.setItem('gestureRecognizerLoaded', 'true');
 };
 
-const loadGestureRecognizer = () => {
-    const storedRecognizer = localStorage.getItem('gestureRecognizer');
-    if (storedRecognizer) {
-        gestureRecognizer = JSON.parse(storedRecognizer);
+const loadGestureRecognizer = async () => {
+    const storedRecognizerFlag = localStorage.getItem('gestureRecognizerLoaded');
+    if (storedRecognizerFlag) {
+        await createGestureRecognizer();
     } else {
         createGestureRecognizer();
     }
@@ -161,3 +162,5 @@ function clearOutput() {
 
 // Load gesture recognizer on page load
 window.addEventListener('load', loadGestureRecognizer);
+
+export { disableCam, enableCam };

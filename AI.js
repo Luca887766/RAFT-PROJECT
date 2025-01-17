@@ -1,3 +1,6 @@
+// Import the necessary modules from the MediaPipe library
+const { FilesetResolver, GestureRecognizer, DrawingUtils } = window;
+
 let gestureRecognizer;
 let runningMode = "IMAGE";
 let enableWebcamButton;

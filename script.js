@@ -226,30 +226,51 @@ function caricaVocabolario() {
 
     xhr.onload = function () {
         try {
+            // Parse del JSON una sola volta
             const data = JSON.parse(xhr.responseText);
             const inputRicerca = document.querySelector('#barraRicerca input');
             const imgContainer = document.querySelector('#imgVocabolario');
 
-            const aggiornaVocabolario = () => {
-                const testo = inputRicerca.value.toUpperCase();
+            // Funzione per aggiornare il vocabolario
+            function aggiornaVocabolario() {
+                const testo = inputRicerca.value.toUpperCase(); // Converte il testo in maiuscolo
+
+                // Logica per ottenere la lingua selezionata dai radio
                 const linguaSelezionata = "italiano";
 
-                imgContainer.innerHTML = "";
-                [...testo].forEach((char) => {
-                    const lettera = char === " " ? "SPACE" : char;
-                    const elemento = data.find(
-                        (item) => item.lettera === lettera && item.lingua.includes(linguaSelezionata)
-                    );
+                imgContainer.innerHTML = ""; // Pulizia del contenitore
 
+                // Logica per iterare sul testo e cercare le lettere
+                [...testo].forEach(char => {
+                    // Creazione del contenitore per ogni lettera
+                    const div = document.createElement('div');
+                    div.className = 'lettera';
+                
+                    // Gestione dello spazio
+                    const lettera = char === " " ? "SPACE" : char;
+                
+                    // Cerca nel JSON l'immagine corrispondente
+                    const elemento = data.find(item =>
+                        item.lettera === lettera && item.lingua.includes(linguaSelezionata)
+                    );
+                
+                    // Se trovato, aggiunge gli elementi al contenitore
                     if (elemento) {
                         const img = document.createElement('img');
-                        img.src = `${elemento.img}${elemento.lettera}.jpg`;
+                        img.src = elemento.img;
                         img.alt = elemento.lettera;
-                        imgContainer.appendChild(img);
+                
+                        const titolo = document.createElement('h3');
+                        titolo.innerText = elemento.lettera;
+                
+                        div.appendChild(img);
+                        div.appendChild(titolo);
+                        imgContainer.appendChild(div);
                     }
                 });
-            };
+            }
 
+            // Evento per aggiornare il vocabolario in tempo reale
             inputRicerca.addEventListener('input', aggiornaVocabolario);
         } catch (e) {
             console.error("Error parsing vocabulary data: ", e);

@@ -165,6 +165,7 @@ video{
     padding-left: 0.5rem; 
     text-shadow: 1px 1px 2px #000000;
     z-index: 1; 
+    margin: 0;
 }
 
 .lettera img {

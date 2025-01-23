@@ -1,4 +1,4 @@
-/*// Load the necessary modules from the MediaPipe library
+// Load the necessary modules from the MediaPipe library
 const visionLibUrl = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3";
 const { FilesetResolver, GestureRecognizer, DrawingUtils } = await import(visionLibUrl);
 
@@ -167,4 +167,4 @@ window.addEventListener('load', async () => {
     // Export functions to global scope
     window.disableCam = disableCam;
     window.enableCam = enableCam;
-});*/
+});

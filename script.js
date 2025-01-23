@@ -1,3 +1,6 @@
+// Import enableCam and disableCam from AI.js
+import { enableCam, disableCam } from './AI.js';
+
 function toSlide(dest) {
     // Tutti gli elementi delle slide
     const slides = document.querySelectorAll(".slide");

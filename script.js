@@ -72,8 +72,14 @@
                 const stream = await navigator.mediaDevices.getUserMedia(constraints);
                 if (video) {
                     video.srcObject = stream;
-                    video.addEventListener("loadeddata", predictWebcam);
-                    webcamRunning = true;
+                    video.addEventListener("loadeddata", () => {
+                        if (video.videoWidth > 0 && video.videoHeight > 0) {
+                            predictWebcam();
+                            webcamRunning = true;
+                        } else {
+                            console.error("Video dimensions are not set correctly.");
+                        }
+                    });
                 }
             } catch (err) {
                 console.error("Error accessing the webcam: ", err);

@@ -121,6 +121,9 @@ video{
     position: absolute;
     bottom: 2rem;
     right: 2rem;
+    width: 50%;
+    height: 15rem;
+    overflow-y: auto;
     background-color: rgba(0, 0, 0, 0.5);
     padding: 2rem;
     border-radius: 1rem;

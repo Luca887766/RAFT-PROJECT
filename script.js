@@ -171,7 +171,13 @@ function toSlide(dest) {
     }
 
     const elementsToShow = getElementsForSlide(dest);
-    elementsToShow.forEach((element) => (element.style.display = "block"));
+    elementsToShow.forEach((element) => {
+        if (element.id === "nav") {
+            element.style.display = "flex";
+        } else {
+            element.style.display = "block";
+        }
+    });
 }
 
 function getElementsForSlide(dest) {

@@ -140,38 +140,40 @@ video{
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
     gap: 0.5rem;
-    justify-items: center; 
-    align-items: center;
     margin-top: 1.25rem;
 }
 
 .lettera {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 6.25rem;
-    height: 7.5rem; 
-    border: 3px solid #002060;
-    border-radius: 12px;
-    background-color: #f3f6fd;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.lettera img {
-    width: 60%;
-    height: auto; 
-    margin-bottom: 5px;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border: 10px solid transparent;
+    border-radius: 12px; 
+    background: linear-gradient(135deg, #21279B, #10145C 50%, #21279B); /* Sfumatura che non va mannaggia */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); 
+    overflow: hidden;
 }
 
 .lettera h3 {
-    font-size: 1rem;
+    position: absolute;
+    top: 10%; 
+    left: 0;
+    font-size: 1.25rem; 
     font-weight: bold; 
-    color: #002060; 
-    margin: 0;
-    text-align: center;
+    color: #FFD700; 
+    text-align: left;
+    padding-left: 0.5rem; 
+    text-shadow: 1px 1px 2px #000000;
+    z-index: 1; 
 }
 
+.lettera img {
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    border-radius: 12px;
+    z-index: 0;
+}
 /*----------------------- FOOTER ---------------------*/
 #nav {
     position: fixed;

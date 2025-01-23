@@ -1,5 +1,6 @@
-// Import the necessary modules from the MediaPipe library
-const { FilesetResolver, GestureRecognizer, DrawingUtils } = window;
+// Load the necessary modules from the MediaPipe library
+const visionLibUrl = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3";
+const { FilesetResolver, GestureRecognizer, DrawingUtils } = await import(visionLibUrl);
 
 let gestureRecognizer;
 let runningMode = "IMAGE";
@@ -10,7 +11,7 @@ const videoWidth = "1280px";
 
 const createGestureRecognizer = async () => {
     const vision = await FilesetResolver.forVisionTasks(
-        "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/wasm"
+        `${visionLibUrl}/wasm`
     );
     gestureRecognizer = await GestureRecognizer.createFromOptions(vision, {
         baseOptions: {

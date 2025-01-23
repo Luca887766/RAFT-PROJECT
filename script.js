@@ -87,24 +87,34 @@ function caricaVocabolario() {
 
                 imgContainer.innerHTML = ""; // Pulizia del contenitore
 
-                // Itera su ogni carattere del testo inserito
                 [...testo].forEach(char => {
+                    // Creazione del contenitore per ogni lettera
+                    const div = document.createElement('div');
+                    div.className = 'lettera';
+                
                     // Gestione dello spazio
                     const lettera = char === " " ? "SPACE" : char;
-
+                
                     // Cerca nel JSON l'immagine corrispondente
-                    const elemento = data.find(item => 
+                    const elemento = data.find(item =>
                         item.lettera === lettera && item.lingua.includes(linguaSelezionata)
                     );
-
-                    // Se trovato, aggiunge l'immagine al contenitore
+                
+                    // Se trovato, aggiunge gli elementi al contenitore
                     if (elemento) {
                         const img = document.createElement('img');
-                        img.src = elemento.img + elemento.lettera + ".jpg"; // Assumi che il nome file sia basato sulla lettera
+                        img.src = elemento.img + elemento.lettera + ".jpg"; // Nome file basato sulla lettera
                         img.alt = elemento.lettera;
-                        imgContainer.appendChild(img);
+                
+                        const titolo = document.createElement('h3');
+                        titolo.innerText = elemento.lettera;
+                
+                        div.appendChild(img);
+                        div.appendChild(titolo);
+                        imgContainer.appendChild(div);
                     }
                 });
+                
             }
 
             // Evento per aggiornare il vocabolario in tempo reale

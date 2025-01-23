@@ -102,8 +102,8 @@
         const predictWebcam = async () => {
             if (!gestureRecognizer || !canvasElement || !canvasCtx) return;
 
-            canvasElement.width = videoWidth;
-            canvasElement.height = videoHeight;
+            canvasElement.width = video.videoWidth;
+            canvasElement.height = video.videoHeight;
 
             if (runningMode === "IMAGE") {
                 runningMode = "VIDEO";

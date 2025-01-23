@@ -45,6 +45,39 @@ body {
     width: 3rem;
     height: auto;
 }
+/*--------------------------- SELEZIONE LINGUE-----------------------------*/
+#selezioneLinguaBarra {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.lang-btn {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 15px;
+    color: #fff;
+    background-color: #ddd;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 0.5;
+}
+
+.lang-btn:hover {
+    opacity: 0.7;
+}
+
+.lang-btn.active {
+    background-color: #001D88;
+    color: #fff;
+    opacity: 1;
+}
 
 /*--------------------------- SLIDE TRADUZIONE ----------------------------*/
 
@@ -101,6 +134,7 @@ video{
 }
 
 /*----------------------- FOOTER ---------------------*/
+
 #nav {
     position: fixed;
     bottom: 0;

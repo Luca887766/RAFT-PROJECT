@@ -66,7 +66,6 @@ function getElementsForSlide(dest) {
 }
 
 /*----------------- FUNZIONE RENDER DEL VOCABOLARIO ----------------------*/
-/*
 function caricaVocabolario() {
     const xhr = new XMLHttpRequest();
 
@@ -122,4 +121,14 @@ function caricaVocabolario() {
 
     xhr.open("GET", "vocabolario.json");
     xhr.send();
-}*/
+}
+
+/*----------------- FUNZIONE DELLA SELEZIONE LINGUA ----------------------*/
+const buttons = document.querySelectorAll('.lang-btn');
+
+buttons.forEach(button => {
+    button.addEventListener('click', () => {
+        buttons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+    });
+});

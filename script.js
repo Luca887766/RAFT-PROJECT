@@ -66,6 +66,7 @@ function getElementsForSlide(dest) {
 }
 
 /*----------------- FUNZIONE RENDER DEL VOCABOLARIO ----------------------*/
+/*
 function caricaVocabolario() {
     const xhr = new XMLHttpRequest();
 
@@ -121,4 +122,4 @@ function caricaVocabolario() {
 
     xhr.open("GET", "vocabolario.json");
     xhr.send();
-}
+}*/

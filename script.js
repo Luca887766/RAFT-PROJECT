@@ -128,3 +128,7 @@ function caricaVocabolario() {
 
 // Export functions to be used in other files
 export { toSlide, caricaVocabolario };
+
+// Make functions available globally
+window.toSlide = toSlide;
+window.caricaVocabolario = caricaVocabolario;

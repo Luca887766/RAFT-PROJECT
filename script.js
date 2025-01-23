@@ -124,11 +124,16 @@ function caricaVocabolario() {
 }
 
 /*----------------- FUNZIONE DELLA SELEZIONE LINGUA ----------------------*/
-const buttons = document.querySelectorAll('.lang-btn');
+document.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.querySelectorAll('.lang-btn');
 
-buttons.forEach(button => {
-    button.addEventListener('click', () => {
-        buttons.forEach(btn => btn.classList.remove('active'));
-        button.classList.add('active');
+    buttons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Rimuove la classe "active" da tutti i pulsanti
+            buttons.forEach(btn => btn.classList.remove('active'));
+            // Aggiunge la classe "active" al pulsante cliccato
+            button.classList.add('active');
+        });
     });
 });
+

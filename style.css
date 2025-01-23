@@ -9,8 +9,8 @@ body {
     margin: 0;
     padding: 0;
     background-color: #fff4e6;
-    overflow: hidden; /* Prevent scrolling */
-    height: 100%; /* Ensure the body takes full height */
+    overflow: hidden;
+    height: 100%;
 }
 
 body {

@@ -6,17 +6,7 @@ function toSlide(dest) {
     slides.forEach(slide => {
         slide.style.display = "none";
     });
-
-    // Call disableCam if the current slide is not "traduzione"
-    if (dest !== "traduzione") {
-        disableCam();
-    }
-
-    // Call enableCam if the destination slide is "traduzione"
-    if (dest === "traduzione") {
-        enableCam();
-    }
-
+    
     // Mostra solo gli elementi della slide desiderata
     const elementsToShow = getElementsForSlide(dest);
     elementsToShow.forEach(element => {

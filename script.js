@@ -168,6 +168,8 @@ function toSlide(dest) {
         window.disableCam?.();
     } else {
         window.enableCam?.();
+        const nav = document.getElementById("nav");
+        nav.style.display = "none";
     }
 
     const elementsToShow = getElementsForSlide(dest);

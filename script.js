@@ -71,7 +71,7 @@ function caricaVocabolario() {
 
     xhr.onload = function () {
         try {
-            // Parse del JSON
+            // Parse del JSON una sola volta
             const data = JSON.parse(xhr.responseText);
 
             // Elementi HTML
@@ -82,11 +82,12 @@ function caricaVocabolario() {
             function aggiornaVocabolario() {
                 const testo = inputRicerca.value.toUpperCase(); // Converte il testo in maiuscolo
 
-                //qua ci va la logica per ottenere la lingua selezionata dai radio/
+                // Logica per ottenere la lingua selezionata dai radio
                 const linguaSelezionata = "italiano";
 
                 imgContainer.innerHTML = ""; // Pulizia del contenitore
 
+                // Logica per iterare sul testo e cercare le lettere
                 [...testo].forEach(char => {
                     // Creazione del contenitore per ogni lettera
                     const div = document.createElement('div');
@@ -114,7 +115,6 @@ function caricaVocabolario() {
                         imgContainer.appendChild(div);
                     }
                 });
-                
             }
 
             // Evento per aggiornare il vocabolario in tempo reale

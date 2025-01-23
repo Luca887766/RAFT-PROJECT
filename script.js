@@ -100,7 +100,7 @@
         // Predict gestures from webcam
         let lastVideoTime = -1;
         const predictWebcam = async () => {
-            if (!gestureRecognizer || !canvasElement || !canvasCtx) return;
+            if (!gestureRecognizer || !canvasElement || !canvasCtx || !webcamRunning) return;
 
             canvasElement.width = video.videoWidth;
             canvasElement.height = video.videoHeight;

@@ -7,7 +7,7 @@ function toSlide(dest) {
         slide.style.display = "none";
     });
 
-    // Call disableCam if the current slide is not "traduzione"
+    /*// Call disableCam if the current slide is not "traduzione"
     if (dest !== "traduzione") {
         disableCam();
     }
@@ -15,7 +15,7 @@ function toSlide(dest) {
     // Call enableCam if the destination slide is "traduzione"
     if (dest === "traduzione") {
         enableCam();
-    }
+    }*/
 
     // Mostra solo gli elementi della slide desiderata
     const elementsToShow = getElementsForSlide(dest);

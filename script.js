@@ -286,5 +286,19 @@ function caricaVocabolario() {
     xhr.send();
 }
 
+/*----------------- FUNZIONE DELLA SELEZIONE LINGUA ----------------------*/
+document.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.querySelectorAll('.lang-btn');
+
+    buttons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Rimuove la classe "active" da tutti i pulsanti
+            buttons.forEach(btn => btn.classList.remove('active'));
+            // Aggiunge la classe "active" al pulsante cliccato
+            button.classList.add('active');
+        });
+    });
+});
+
 window.toSlide = toSlide;
 window.caricaVocabolario = caricaVocabolario;

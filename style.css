@@ -47,16 +47,6 @@ body {
 }
 
 /*--------------------------- SELEZIONE LINGUE-----------------------------*/
-/*--------------------------- SELEZIONE LINGUE-----------------------------*/
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0;
-    background-color: #f4f4f4; /* Sfondo della pagina */
-}
-
 #selezioneLinguaBarra {
     display: flex;
     gap: 10px;

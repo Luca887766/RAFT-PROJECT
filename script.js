@@ -103,7 +103,7 @@ function caricaVocabolario() {
                     // Se trovato, aggiunge gli elementi al contenitore
                     if (elemento) {
                         const img = document.createElement('img');
-                        img.src = elemento.img + elemento.lettera + ".jpg"; // Nome file basato sulla lettera
+                        img.src = elemento.img + elemento.lettera;
                         img.alt = elemento.lettera;
                 
                         const titolo = document.createElement('h3');

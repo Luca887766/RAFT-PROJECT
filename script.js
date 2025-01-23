@@ -164,15 +164,11 @@ function toSlide(dest) {
     const slides = document.querySelectorAll(".slide");
     slides.forEach((slide) => (slide.style.display = "none"));
 
-   /* // Call disableCam if the current slide is not "traduzione"
     if (dest !== "traduzione") {
-        disableCam();
+        window.disableCam?.();
+    } else {
+        window.enableCam?.();
     }
-
-    // Call enableCam if the destination slide is "traduzione"
-    if (dest === "traduzione") {
-        enableCam();
-    }*/
 
     const elementsToShow = getElementsForSlide(dest);
     elementsToShow.forEach((element) => (element.style.display = "block"));
@@ -230,51 +226,30 @@ function caricaVocabolario() {
 
     xhr.onload = function () {
         try {
-            // Parse del JSON una sola volta
             const data = JSON.parse(xhr.responseText);
             const inputRicerca = document.querySelector('#barraRicerca input');
             const imgContainer = document.querySelector('#imgVocabolario');
 
-            // Funzione per aggiornare il vocabolario
-            function aggiornaVocabolario() {
-                const testo = inputRicerca.value.toUpperCase(); // Converte il testo in maiuscolo
-
-                // Logica per ottenere la lingua selezionata dai radio
+            const aggiornaVocabolario = () => {
+                const testo = inputRicerca.value.toUpperCase();
                 const linguaSelezionata = "italiano";
 
-                imgContainer.innerHTML = ""; // Pulizia del contenitore
-
-                // Logica per iterare sul testo e cercare le lettere
-                [...testo].forEach(char => {
-                    // Creazione del contenitore per ogni lettera
-                    const div = document.createElement('div');
-                    div.className = 'lettera';
-                
-                    // Gestione dello spazio
+                imgContainer.innerHTML = "";
+                [...testo].forEach((char) => {
                     const lettera = char === " " ? "SPACE" : char;
-                
-                    // Cerca nel JSON l'immagine corrispondente
-                    const elemento = data.find(item =>
-                        item.lettera === lettera && item.lingua.includes(linguaSelezionata)
+                    const elemento = data.find(
+                        (item) => item.lettera === lettera && item.lingua.includes(linguaSelezionata)
                     );
-                
-                    // Se trovato, aggiunge gli elementi al contenitore
+
                     if (elemento) {
                         const img = document.createElement('img');
-                        img.src = elemento.img;
+                        img.src = `${elemento.img}${elemento.lettera}.jpg`;
                         img.alt = elemento.lettera;
-                
-                        const titolo = document.createElement('h3');
-                        titolo.innerText = elemento.lettera;
-                
-                        div.appendChild(img);
-                        div.appendChild(titolo);
-                        imgContainer.appendChild(div);
+                        imgContainer.appendChild(img);
                     }
                 });
-            }
+            };
 
-            // Evento per aggiornare il vocabolario in tempo reale
             inputRicerca.addEventListener('input', aggiornaVocabolario);
         } catch (e) {
             console.error("Error parsing vocabulary data: ", e);
@@ -289,3 +264,6 @@ function caricaVocabolario() {
     xhr.open("GET", "vocabolario.json");
     xhr.send();
 }
+
+window.toSlide = toSlide;
+window.caricaVocabolario = caricaVocabolario;

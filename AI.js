@@ -1,39 +1,38 @@
-// Load the necessary modules from the MediaPipe library
-const visionLibUrl = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3";
-const { FilesetResolver, GestureRecognizer, DrawingUtils } = await import(visionLibUrl);
-
-let gestureRecognizer;
-let runningMode = "IMAGE";
-let enableWebcamButton;
-let webcamRunning = false;
-const videoHeight = "720px";
-const videoWidth = "1280px";
-
-const createGestureRecognizer = async () => {
-    const vision = await FilesetResolver.forVisionTasks(
-        `${visionLibUrl}/wasm`
-    );
-    gestureRecognizer = await GestureRecognizer.createFromOptions(vision, {
-        baseOptions: {
-            modelAssetPath: "gesture_recognizer.task",  // Utilizza il file locale
-            delegate: "GPU"
-        },
-        runningMode: runningMode
-    });
-    // Store a flag in localStorage instead of the entire object
-    localStorage.setItem('gestureRecognizerLoaded', 'true');
-};
-
-const loadGestureRecognizer = async () => {
-    const storedRecognizerFlag = localStorage.getItem('gestureRecognizerLoaded');
-    if (storedRecognizerFlag) {
-        await createGestureRecognizer();
-    } else {
-        createGestureRecognizer();
-    }
-};
-
 (async () => {
+    const visionLibUrl = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3";
+    const { FilesetResolver, GestureRecognizer, DrawingUtils } = await import(visionLibUrl);
+
+    let gestureRecognizer;
+    let runningMode = "IMAGE";
+    let enableWebcamButton;
+    let webcamRunning = false;
+    const videoHeight = "720px";
+    const videoWidth = "1280px";
+
+    const createGestureRecognizer = async () => {
+        const vision = await FilesetResolver.forVisionTasks(
+            `${visionLibUrl}/wasm`
+        );
+        gestureRecognizer = await GestureRecognizer.createFromOptions(vision, {
+            baseOptions: {
+                modelAssetPath: "gesture_recognizer.task",  // Utilizza il file locale
+                delegate: "GPU"
+            },
+            runningMode: runningMode
+        });
+        // Store a flag in localStorage instead of the entire object
+        localStorage.setItem('gestureRecognizerLoaded', 'true');
+    };
+
+    const loadGestureRecognizer = async () => {
+        const storedRecognizerFlag = localStorage.getItem('gestureRecognizerLoaded');
+        if (storedRecognizerFlag) {
+            await createGestureRecognizer();
+        } else {
+            createGestureRecognizer();
+        }
+    };
+
     window.addEventListener('load', async () => {
         await loadGestureRecognizer();
 

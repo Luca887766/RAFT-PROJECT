@@ -42,7 +42,8 @@
         const canvasCtx = canvasElement ? canvasElement.getContext("2d") : null;
         const gestureOutput = document.getElementById("gesture_output");
 
-        const enableWebcamButton = document.getElementById("webcamButton");
+        const enableWebcamButton = document.getElementById("enableWebcamButton");
+        const diseableWebcamButton = document.getElementById("diseableWebcamButton");
 
         // Check for webcam support
         const hasGetUserMedia = () => !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
@@ -53,11 +54,11 @@
         }
 
         enableWebcamButton?.addEventListener('click', () => {
-            if (webcamRunning) {
-                disableCam();
-            } else {
-                enableCam();
-            }
+            enableCam();
+        });
+
+        diseableWebcamButton?.addEventListener('click', () => {
+            disableCam();
         });
 
         // Enable webcam and start predictions
@@ -299,7 +300,7 @@ function inizializzaEventi() {
             }
         });
     }
-    
+
     inputRicerca.addEventListener('input', aggiornaVocabolario);
 }
 

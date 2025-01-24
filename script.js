@@ -53,13 +53,13 @@
             return;
         }
 
-        enableWebcamButton?.addEventListener('click', () => {
+        /*enableWebcamButton?.addEventListener('click', () => {
             enableCam();
         });
 
         diseableWebcamButton?.addEventListener('click', () => {
             disableCam();
-        });
+        });*/
 
         // Enable webcam and start predictions
         const enableCam = async () => {
@@ -165,14 +165,11 @@ function toSlide(dest) {
     const slides = document.querySelectorAll(".slide");
     slides.forEach((slide) => (slide.style.display = "none"));
 
-    if (dest !== "traduzione") {
-        window.disableCam?.();
-    } else {
-        window.enableCam?.();
+    if (dest === "traduzione") {
         const nav = document.getElementById("nav");
         nav.style.display = "none";
     }
-
+    
     const elementsToShow = getElementsForSlide(dest);
     elementsToShow.forEach((element) => {
         if (element.id === "nav") {

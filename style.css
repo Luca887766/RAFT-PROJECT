@@ -1,20 +1,16 @@
 /*------------------------- STILE GENERALE -------------------------*/
 * {
     box-sizing: border-box;
-    font-family: "testo";
 }
 
 html,
 body {
+    height: 100%;
     margin: 0;
     padding: 0;
-    background-color: #fff4e6;
-    height: 100%;
-}
-
-body {
     display: flex;
     flex-direction: column;
+    background-color: #fff4e6;
 }
 
 /*--------------------------- SELEZIONE LINGUE-----------------------------*/
@@ -52,30 +48,32 @@ body {
 
 /*--------------------------- BARRA LOGO ----------------------------*/
 #barraLogo {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    padding-bottom: 0;
-    margin-bottom: 0;
+    display: flex; 
+    align-items: center; 
+    gap: 20px; 
+    padding-bottom: 5px; 
+    border-bottom: 3px solid #21279B; 
 }
 
 #nomeApp {
     font-size: 2rem;
     font-weight: bold;
-    color: #21279B;
+    color: #21279B; 
     margin: 0;
     padding: 0;
+    line-height: 1;
 }
 
 #imgLoghi {
-    display: flex;
+    display: flex; 
     gap: 10px;
-    align-items: flex-end;
+    align-items: center;
 }
 
 #imgLoghi img {
-    width: 3rem;
+    width: 3rem; 
     height: auto;
+    object-fit: contain; 
 }
 
 /*--------------------------- SLIDE TRADUZIONE ----------------------------*/
@@ -177,24 +175,42 @@ video{
 }
 
 /*------------------ BARRA RICERCA VOCABOLARIO ----------------------*/
-#barraRicerca input[type="search"] {
+#barraRicerca {
+    position: relative;
+}
+
+.input-container {
+    position: relative;
     width: 300px;
-    padding: 10px 15px;
-    border: 1px solid #ccc; 
+}
+
+.input-container svg {
+    position: absolute;
+    top: 50%;
+    left: 10px; 
+    transform: translateY(-50%);
+    pointer-events: none; 
+    color: #aaa;
+}
+
+.input-container input[type="search"] {
+    width: 100%;
+    padding: 10px 15px 10px 35px;
+    border: 1px solid #ccc;
     border-radius: 10px;
-    background-color: #f9f9f9; 
+    background-color: #f9f9f9;
     font-size: 16px;
     outline: none;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     transition: box-shadow 0.3s ease;
 }
 
-#barraRicerca input[type="search"]::placeholder {
+.input-container input[type="search"]::placeholder {
     color: #ccc;
     font-style: calibri;
 }
 
-#barraRicerca input[type="search"]:focus {
+.input-container input[type="search"]:focus {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     border-color: #aaa;
 }
@@ -237,4 +253,24 @@ video{
 #nav button span {
     font-size: 0.75rem;
     color: #ffffff;
+}
+
+/*------------------------- CONTATTI PAGE---------------------------*/
+#contattiHeader {
+    text-align: center; 
+    margin-bottom: 20px; 
+}
+
+.contattiTitolo {
+    font-size: 1.8rem; 
+    font-weight: bold; 
+    color: #21279B; 
+    margin: 0; 
+}
+
+.contattiTesto {
+    font-size: 1rem; 
+    color: #808080; 
+    margin: 5px 0 0 0;
+    line-height: 1.4;
 }

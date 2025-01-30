@@ -1,6 +1,7 @@
 /*------------------------- STILE GENERALE -------------------------*/
 * {
     box-sizing: border-box;
+    font-family: "testo";
 }
 
 html,
@@ -66,6 +67,7 @@ body {
     margin: 0;
     padding: 0;
     line-height: 1;
+    font-family: "titolo";
 }
 
 #imgLoghi {
@@ -274,7 +276,7 @@ video {
 }
 
 .contattiTitolo {
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: bold;
     color: #21279B;
     margin: 0;
@@ -318,6 +320,7 @@ textarea {
     border: 1px solid #ccc;
     border-radius: 0.5rem;
     margin-bottom: 1rem;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.7);
 }
 
 select {
@@ -356,4 +359,19 @@ form {
 
 .formContainer button:hover {
     background-color: #0056b3;
+}
+
+#selMessaggio{
+   resize: none;
+}
+
+/* -------------------------------------FONT DEL SITO---------------------------------- */
+@font-face {
+    font-family: "testo";
+    src: url(fonts/Lato/Lato-Regular.ttf);
+}
+
+@font-face {
+    font-family: "titolo";
+    src: url(fonts/Quantico/Quantico-Regular.ttf);
 }

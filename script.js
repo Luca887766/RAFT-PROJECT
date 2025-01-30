@@ -330,3 +330,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+
+window.toSlide = toSlide;
+window.caricaVocabolario = caricaVocabolario;
+
+
+
+//----------------------------FOOTER---------------------------
+document.addEventListener("DOMContentLoaded", () => {
+    const navButtons = document.querySelectorAll("#nav button");
+
+    navButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            // Rimuovi la classe active da tutti i bottoni
+            navButtons.forEach(btn => btn.classList.remove("active"));
+            // Aggiungi la classe active al pulsante cliccato
+            button.classList.add("active");
+        });
+    });
+});

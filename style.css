@@ -8,7 +8,7 @@ html,
 body {
     margin: 0;
     padding: 0;
-    background-color: #fff4e6;
+    background-color: #ffffff;
     height: 100%;
 }
 
@@ -20,24 +20,27 @@ body {
 /*--------------------------- SELEZIONE LINGUE-----------------------------*/
 #selezioneLinguaBarra {
     display: flex;
-    gap: 10px;
+    gap: 1rem;
     justify-content: center;
     align-items: center;
+    margin-top: 2rem;
+    transition: transform 0.3s ease;
 }
 
 .lang-btn {
     font-family: Arial, sans-serif;
-    font-size: 14px;
+    font-size: 0.875rem;
     font-weight: bold;
-    padding: 10px 20px;
+    padding: 0.625rem 1.25rem;
     border: none;
-    border-radius: 15px;
-    color: #fff;
-    background-color: #ddd;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 0.9375rem;
+    color: #4a4a4a;
+    background-color: #c6c6c6;
+    box-shadow: 0px 0.25rem 0.375rem rgba(0, 0, 0, 0.1);
     cursor: pointer;
     transition: all 0.3s ease;
     opacity: 0.5;
+    transform: scale(1);
 }
 
 .lang-btn:hover {
@@ -45,10 +48,17 @@ body {
 }
 
 .lang-btn.active {
-    background: radial-gradient(80.97% 1714.77% at 58.68% -1061.36%, #21279B 0%, #10145C 100%);
+    background: radial-gradient(80.97% 1714.77% at 58.68% -1061.36%, #2129c3 30%, #10145C 100%);
     color: #fff;
     opacity: 1;
+    transform: scale(1.2);
 }
+
+.lang-btn.disabled {
+    cursor: not-allowed;
+    opacity: 0.3;
+}
+
 
 /*--------------------------- BARRA LOGO ----------------------------*/
 #barraLogo {
@@ -91,7 +101,7 @@ body {
     flex: 1; /* Ensure the video container takes full height */
     width: 100%;
     overflow: hidden;
-    background-color: #fff4e6;
+    background-color: #ffffff;
     display: block; /* Ensure the container is displayed as a block element */
 }
 

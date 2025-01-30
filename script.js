@@ -302,18 +302,31 @@ function inizializzaEventi() {
 }
 
 /*----------------- FUNZIONE DELLA SELEZIONE LINGUA ----------------------*/
+
+const container = document.getElementById('selezioneLinguaBarra');
+const europeButton = document.querySelector('.lang-btn[data-lang="Europe"]');
+const containerRect = container.getBoundingClientRect();
+const EUROPE_OFFSET = europeButton ? europeButton.getBoundingClientRect().left - containerRect.left : 0;
+
 document.addEventListener('DOMContentLoaded', () => {
-    const buttons = document.querySelectorAll('.lang-btn');
+    const buttons = document.querySelectorAll('.lang-btn:not(#noClick)');
+    let activeButton = document.querySelector('.lang-btn.active');
 
     buttons.forEach(button => {
         button.addEventListener('click', () => {
-            // Rimuove la classe "active" da tutti i pulsanti
-            buttons.forEach(btn => btn.classList.remove('active'));
-            // Aggiunge la classe "active" al pulsante cliccato
-            button.classList.add('active');
+            if (button !== activeButton) {
+                buttons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                activeButton = button;
+
+                // Ottieni la posizione del pulsante cliccato rispetto al container
+                const buttonRect = button.getBoundingClientRect();
+                const newOffset = buttonRect.left - container.getBoundingClientRect().left;
+
+                // Sposta il container per portare il pulsante selezionato alla posizione originale di "Europe"
+                const translateX = EUROPE_OFFSET - newOffset;
+                container.style.transform = `translateX(${translateX}px)`;
+            }
         });
     });
 });
-
-window.toSlide = toSlide;
-window.caricaVocabolario = caricaVocabolario;

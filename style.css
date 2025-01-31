@@ -11,7 +11,7 @@ body {
     padding: 0;
     display: flex;
     flex-direction: column;
-    background-color: #fff4e6;
+    background-color: #ffffff;
 }
 
 .marginBottom{
@@ -255,7 +255,7 @@ video {
 
 #nav button svg {
     width: 2rem;
-    height: 2rem;
+    height: 2rem; 
     fill: #009CFC;
     margin-bottom: 0.25rem;
 }
@@ -272,7 +272,6 @@ video {
 
 #contattiHeader {
     text-align: center;
-    margin-bottom: 1.25rem;
 }
 
 .contattiTitolo {
@@ -293,11 +292,9 @@ video {
     background-color: white;
     padding: 2rem;
     border-radius: 0.75rem;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 25rem;
+    width: 100%;
     display: flex;
     justify-content: center;
-    align-items: left;
     flex-direction: column;
 }
 
@@ -320,7 +317,7 @@ textarea {
     border: 1px solid #ccc;
     border-radius: 0.5rem;
     margin-bottom: 1rem;
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.07);
 }
 
 select {
@@ -368,10 +365,10 @@ form {
 /* -------------------------------------FONT DEL SITO---------------------------------- */
 @font-face {
     font-family: "testo";
-    src: url(fonts/Lato/Lato-Regular.ttf);
+    src: url(fonts/Lato-Regular.ttf);
 }
 
 @font-face {
     font-family: "titolo";
-    src: url(fonts/Quantico/Quantico-Regular.ttf);
+    src: url(fonts/Quantico-Regular.ttf);
 }

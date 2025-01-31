@@ -72,36 +72,42 @@
             <div class="contattiTitolo">Contatta il nostro team</div>
             <div class="contattiTesto">Inviaci un feedback o segnala un problema nella nostra applicazione</div>
         </div>
-
+    
         <div class="formContainer">
             <label for="selNickname">Nickname</label>
             <input type="text" id="selNickname" placeholder="Nickname">
-
-            <label for="selEmail">Email</label>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16"> <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/> <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/> </svg>
+    
+            <div class="label-svg-container">
+                <label for="selEmail">Email</label>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16"> 
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" /> 
+                    <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0" />
+                </svg>
+            </div>
             <input type="text" id="selEmail" placeholder="Email">
-
+    
             <label for="motivazione">Motivazione</label>
             <select id="motivazione" name="motivazione">
                 <option value="malfunzionamento">Malfunzionamento</option>
                 <option value="feedback">Feedback</option>
                 <option value="erroreAlfabeto">Alfabeto Errato</option>
             </select>
-
+    
             <label for="selLingua">Lingua/e di riferimento</label>
             <form>
                 <input type="checkbox" id="linguaEuropeo" name="linguaEuropeo" value="linguaEuropeo">
-                <label for="linguaEuropeo" class="checkbox">Europe</label>
+                <label for="linguaEuropeo" class="check">Europe</label>
                 <input type="checkbox" id="linguaAmericana" name="linguaAmericana" value="linguaAmericana">
-                <label for="linguaAmericana" class="checkbox">American</label>
+                <label for="linguaAmericana" class="check">American</label>
             </form>
-
+    
             <label for="selMessaggio">Messaggio</label>
             <textarea id="selMessaggio" placeholder="Messaggio"></textarea>
-
+    
             <button id="bottoneInvio">Invia</button>
         </div>
     </div>
+    
 
     <footer id="nav">
         <button onclick="toSlide('homePage')">

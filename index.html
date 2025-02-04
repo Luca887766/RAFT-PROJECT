@@ -23,14 +23,13 @@
         <button class="lang-btn">American</button>
         <button class="lang-btn">Altre lingue</button>
     </div>
-
     <div id="selModalita" class="slide marginBottom">
-        <button id="webcamButton" onclick="toSlide('traduzione')">Traduzione</button>
+        <button id="enableWebcamButton" onclick="enableCam(); toSlide('traduzione')">Traduzione</button>
         <button onclick="toSlide('selDifficolta')">Allenamento</button>
     </div>
 
     <div id="traduzione" class="slide">
-        <button onclick="toSlide('homePage')">Torna Indietro</button>
+        <button id="diseableWebcamButton" onclick="disableCam(); toSlide('homePage')">Torna Indietro</button>
         <button class="clearButton" onclick="clearOutput()">Clear</button>
         <div>Pagina di Traduzione</div>
         <div class="videoContainer">

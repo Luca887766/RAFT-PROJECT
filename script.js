@@ -42,7 +42,8 @@
         const canvasCtx = canvasElement ? canvasElement.getContext("2d") : null;
         const gestureOutput = document.getElementById("gesture_output");
 
-        const enableWebcamButton = document.getElementById("webcamButton");
+        const enableWebcamButton = document.getElementById("enableWebcamButton");
+        const diseableWebcamButton = document.getElementById("diseableWebcamButton");
 
         // Check for webcam support
         const hasGetUserMedia = () => !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
@@ -52,13 +53,13 @@
             return;
         }
 
-        enableWebcamButton?.addEventListener('click', () => {
-            if (webcamRunning) {
-                disableCam();
-            } else {
-                enableCam();
-            }
+        /*enableWebcamButton?.addEventListener('click', () => {
+            enableCam();
         });
+
+        diseableWebcamButton?.addEventListener('click', () => {
+            disableCam();
+        });*/
 
         // Enable webcam and start predictions
         const enableCam = async () => {
@@ -164,14 +165,11 @@ function toSlide(dest) {
     const slides = document.querySelectorAll(".slide");
     slides.forEach((slide) => (slide.style.display = "none"));
 
-    if (dest !== "traduzione") {
-        window.disableCam?.();
-    } else {
-        window.enableCam?.();
+    if (dest === "traduzione") {
         const nav = document.getElementById("nav");
         nav.style.display = "none";
     }
-
+    
     const elementsToShow = getElementsForSlide(dest);
     elementsToShow.forEach((element) => {
         if (element.id === "nav") {
@@ -299,7 +297,7 @@ function inizializzaEventi() {
             }
         });
     }
-    
+
     inputRicerca.addEventListener('input', aggiornaVocabolario);
 }
 

@@ -6,15 +6,16 @@
 
 html,
 body {
+    height: 100%;
     margin: 0;
     padding: 0;
-    background-color: #fff4e6;
-    height: 100%;
-}
-
-body {
     display: flex;
     flex-direction: column;
+    background-color: #ffffff;
+}
+
+.marginBottom{
+    padding-bottom: 8rem;
 }
 
 /*--------------------------- SELEZIONE LINGUE-----------------------------*/
@@ -53,10 +54,10 @@ body {
 /*--------------------------- BARRA LOGO ----------------------------*/
 #barraLogo {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    padding-bottom: 0;
-    margin-bottom: 0;
+    align-items: center;
+    gap: 20px;
+    padding-bottom: 5px;
+    border-bottom: 3px solid #21279B;
 }
 
 #nomeApp {
@@ -65,37 +66,43 @@ body {
     color: #21279B;
     margin: 0;
     padding: 0;
+    line-height: 1;
+    font-family: "titolo";
 }
 
 #imgLoghi {
     display: flex;
     gap: 10px;
-    align-items: flex-end;
+    align-items: center;
 }
 
 #imgLoghi img {
     width: 3rem;
     height: auto;
+    object-fit: contain;
 }
 
 /*--------------------------- SLIDE TRADUZIONE ----------------------------*/
 
 #traduzione {
-    flex: 1; /* Ensure the translation slide takes full height */
+    flex: 1;
+    /* Ensure the translation slide takes full height */
     display: flex;
     flex-direction: column;
 }
 
 .videoContainer {
     position: relative;
-    flex: 1; /* Ensure the video container takes full height */
+    flex: 1;
+    /* Ensure the video container takes full height */
     width: 100%;
     overflow: hidden;
     background-color: #fff4e6;
-    display: block; /* Ensure the container is displayed as a block element */
+    display: block;
+    /* Ensure the container is displayed as a block element */
 }
 
-video{
+video {
     object-fit: cover;
 }
 
@@ -114,7 +121,8 @@ video{
     height: 100vh;
     object-fit: cover;
     display: block;
-    z-index: 1; /* Set canvas above the video */
+    z-index: 1;
+    /* Set canvas above the video */
 }
 
 #gesture_output_container {
@@ -148,53 +156,71 @@ video{
     width: 100%;
     height: 100%;
     border: 10px solid transparent;
-    border-radius: 12px; 
+    border-radius: 12px;
     background-color: #10145C;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); 
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
     overflow: hidden;
 }
 
 .lettera h3 {
     position: absolute;
-    top: 0.5rem; 
+    top: 0.5rem;
     left: 0.5rem;
-    font-size: 1.25rem; 
+    font-size: 1.25rem;
     font-family: calibri;
-    font-weight: bold; 
-    color: #FFD700; 
+    font-weight: bold;
+    color: #FFD700;
     text-align: left;
     text-shadow: 1px 1px 2px #000000ab;
-    z-index: 1; 
+    z-index: 1;
     margin: 0;
 }
 
 .lettera img {
-    width: 100%; 
-    height: 100%; 
-    object-fit: cover; 
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     border-radius: 12px;
     z-index: 0;
 }
 
 /*------------------ BARRA RICERCA VOCABOLARIO ----------------------*/
-#barraRicerca input[type="search"] {
+#barraRicerca {
+    position: relative;
+}
+
+.input-container {
+    position: relative;
     width: 300px;
-    padding: 10px 15px;
-    border: 1px solid #ccc; 
+}
+
+.input-container svg {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #aaa;
+}
+
+.input-container input[type="search"] {
+    width: 100%;
+    padding: 10px 15px 10px 35px;
+    border: 1px solid #ccc;
     border-radius: 10px;
-    background-color: #f9f9f9; 
+    background-color: #f9f9f9;
     font-size: 16px;
     outline: none;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     transition: box-shadow 0.3s ease;
 }
 
-#barraRicerca input[type="search"]::placeholder {
+.input-container input[type="search"]::placeholder {
     color: #ccc;
     font-style: calibri;
 }
 
-#barraRicerca input[type="search"]:focus {
+.input-container input[type="search"]:focus {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     border-color: #aaa;
 }
@@ -206,7 +232,7 @@ video{
     width: calc(100% - 4rem);
     z-index: 999999;
     background: radial-gradient(80.97% 1714.77% at 58.68% -1061.36%, #21279B 0%, #10145C 100%);
-    border-radius: 20px ;
+    border-radius: 20px;
     height: 5rem;
     margin: 2rem;
     display: flex;
@@ -229,12 +255,127 @@ video{
 
 #nav button svg {
     width: 2rem;
-    height: 2rem;
+    height: 2rem; 
     fill: #009CFC;
     margin-bottom: 0.25rem;
 }
 
 #nav button span {
     font-size: 0.75rem;
-    color: #ffffff;
+    color: #ffffff;
+}
+
+/*------------------------- CONTATTI PAGE---------------------------*/
+#contatti{
+    align-self: center;
+}
+
+#contattiHeader {
+    text-align: center;
+}
+
+.contattiTitolo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #21279B;
+    margin: 0;
+}
+
+.contattiTesto {
+    font-size: 1rem;
+    color: #808080;
+    margin: 5px 0 0 0;
+    line-height: 1.4;
+}
+
+.formContainer {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 0.75rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.formContainer label {
+    font-weight: bold;
+    margin: 0.5rem 0 0.3rem;
+    font-size: 1.25rem;
+    text-align: left;
+}
+
+.check label{
+    font-size: 0.25rem;
+}
+
+input[type="text"],
+select,
+textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.07);
+}
+
+select {
+    appearance: none;
+}
+
+textarea {
+    min-height: 6.25rem;
+}
+
+form {
+    margin-bottom: 1rem;
+}
+
+.checkbox-group {
+    display: flex;
+    gap: 1rem;
+}
+
+.checkbox-group label {
+    font-weight: normal;
+    display: flex;
+    align-items: center;
+}
+
+.formContainer button {
+    width: 100%;
+    padding: 0.8rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.formContainer button:hover {
+    background-color: #0056b3;
+}
+
+#selMessaggio{
+   resize: none;
+}
+
+.label-svg-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0.5rem 0;
+}
+
+/* -------------------------------------FONT DEL SITO---------------------------------- */
+@font-face {
+    font-family: "testo";
+    src: url(fonts/Lato-Regular.ttf);
+}
+
+@font-face {
+    font-family: "titolo";
+    src: url(fonts/Quantico-Regular.ttf);
 }

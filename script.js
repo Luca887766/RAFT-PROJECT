@@ -78,17 +78,6 @@ let webcamRunning = false;
             }
         };
 
-        // Disable webcam
-        const disableCam = () => {
-            webcamRunning = false;
-            if (video && video.srcObject) {
-                const stream = video.srcObject;
-                stream.getTracks().forEach((track) => track.stop());
-                video.srcObject = null;
-                video.removeEventListener("loadeddata", predictWebcam);
-            }
-        };
-
         // Predict gestures from webcam
         let lastVideoTime = -1;
         const predictWebcam = async () => {
@@ -150,6 +139,18 @@ let webcamRunning = false;
         window.clearOutput = clearOutput;
     });
 })();
+
+// Disable webcam
+const disableCam = () => {
+    webcamRunning = false;
+    const video = document.getElementById("webcam");
+    if (video && video.srcObject) {
+        const stream = video.srcObject;
+        stream.getTracks().forEach((track) => track.stop());
+        video.srcObject = null;
+        video.removeEventListener("loadeddata", predictWebcam);
+    }
+};
 
 // Slide management
 function toSlide(dest) {

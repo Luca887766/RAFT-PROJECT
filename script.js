@@ -21,20 +21,16 @@
             },
             runningMode: runningMode,
         });
-        localStorage.setItem('gestureRecognizerLoaded', 'true');
     };
 
     const loadGestureRecognizer = async () => {
-        const storedRecognizerFlag = localStorage.getItem('gestureRecognizerLoaded');
-        if (storedRecognizerFlag) {
-            await createGestureRecognizer();
-        } else {
-            await createGestureRecognizer();
-        }
+        await createGestureRecognizer();
+        document.getElementById("enableWebcamButton").disabled = false;
     };
 
     // Main logic when window loads
     window.addEventListener('load', async () => {
+        document.getElementById("enableWebcamButton").disabled = true;
         await loadGestureRecognizer();
 
         const video = document.getElementById("webcam");
@@ -52,14 +48,6 @@
             console.warn("getUserMedia() is not supported by your browser");
             return;
         }
-
-        /*enableWebcamButton?.addEventListener('click', () => {
-            enableCam();
-        });
-
-        diseableWebcamButton?.addEventListener('click', () => {
-            disableCam();
-        });*/
 
         // Enable webcam and start predictions
         const enableCam = async () => {
@@ -168,6 +156,9 @@ function toSlide(dest) {
     if (dest === "traduzione") {
         const nav = document.getElementById("nav");
         nav.style.display = "none";
+        if (webcamRunning) {
+            predictWebcam();
+        }
     }
     
     const elementsToShow = getElementsForSlide(dest);

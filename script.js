@@ -12,6 +12,59 @@ const disableCam = () => {
     }
 };
 
+// Predict gestures from webcam
+let lastVideoTime = -1;
+const predictWebcam = async () => {
+    const video = document.getElementById("webcam");
+    const canvasElement = document.getElementById("output_canvas");
+    const canvasCtx = canvasElement ? canvasElement.getContext("2d") : null;
+    const gestureOutput = document.getElementById("gesture_output");
+    if (!gestureRecognizer || !canvasElement || !canvasCtx || !webcamRunning) return;
+
+    canvasElement.width = video.videoWidth;
+    canvasElement.height = video.videoHeight;
+
+    if (runningMode === "IMAGE") {
+        runningMode = "VIDEO";
+        await gestureRecognizer.setOptions({ runningMode: "VIDEO" });
+    }
+
+    const nowInMs = Date.now();
+    if (video.currentTime !== lastVideoTime) {
+        lastVideoTime = video.currentTime;
+        const results = await gestureRecognizer.recognizeForVideo(video, nowInMs);
+
+        canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+
+        if (results.landmarks) {
+            const drawingUtils = new DrawingUtils(canvasCtx);
+            for (const landmarks of results.landmarks) {
+                drawingUtils.drawConnectors(landmarks, GestureRecognizer.HAND_CONNECTIONS, {
+                    color: "#00FF00",
+                    lineWidth: 5,
+                });
+                drawingUtils.drawLandmarks(landmarks, {
+                    color: "#FF0000",
+                    lineWidth: 2,
+                });
+            }
+        }
+
+        if (results.gestures.length > 0) {
+            gestureOutput.style.display = "block";
+            const { categoryName, score } = results.gestures[0][0];
+            const handedness = results.handednesses[0][0].displayName;
+            gestureOutput.innerText = `Gesture: ${categoryName}\nConfidence: ${(score * 100).toFixed(2)}%\nHandedness: ${handedness}`;
+        } else {
+            gestureOutput.style.display = "none";
+        }
+    }
+
+    if (webcamRunning) {
+        window.requestAnimationFrame(predictWebcam);
+    }
+};
+
 (async () => {
     const visionLibUrl = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3";
     const { FilesetResolver, GestureRecognizer, DrawingUtils } = await import(visionLibUrl);
@@ -87,55 +140,6 @@ const disableCam = () => {
                 }
             } catch (err) {
                 console.error("Error accessing the webcam: ", err);
-            }
-        };
-
-        // Predict gestures from webcam
-        let lastVideoTime = -1;
-        const predictWebcam = async () => {
-            if (!gestureRecognizer || !canvasElement || !canvasCtx || !webcamRunning) return;
-
-            canvasElement.width = video.videoWidth;
-            canvasElement.height = video.videoHeight;
-
-            if (runningMode === "IMAGE") {
-                runningMode = "VIDEO";
-                await gestureRecognizer.setOptions({ runningMode: "VIDEO" });
-            }
-
-            const nowInMs = Date.now();
-            if (video.currentTime !== lastVideoTime) {
-                lastVideoTime = video.currentTime;
-                const results = await gestureRecognizer.recognizeForVideo(video, nowInMs);
-
-                canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-
-                if (results.landmarks) {
-                    const drawingUtils = new DrawingUtils(canvasCtx);
-                    for (const landmarks of results.landmarks) {
-                        drawingUtils.drawConnectors(landmarks, GestureRecognizer.HAND_CONNECTIONS, {
-                            color: "#00FF00",
-                            lineWidth: 5,
-                        });
-                        drawingUtils.drawLandmarks(landmarks, {
-                            color: "#FF0000",
-                            lineWidth: 2,
-                        });
-                    }
-                }
-
-                if (results.gestures.length > 0) {
-                    gestureOutput.style.display = "block";
-                    const { categoryName, score } = results.gestures[0][0];
-                    const handedness = results.handednesses[0][0].displayName;
-                    gestureOutput.innerText = `Gesture: ${categoryName}\nConfidence: ${(score * 100).toFixed(2)}%\nHandedness: ${handedness}`;
-                } else {
-                    gestureOutput.style.display = "none";
-                }
-            }
-
-            if (webcamRunning) {
-                window.requestAnimationFrame(predictWebcam);
             }
         };
 

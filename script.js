@@ -4,6 +4,7 @@ let runningMode = "IMAGE";
 const videoHeight = 720;
 const videoWidth = 1280;
 let DrawingUtils;
+let GestureRecognizer;
 
 // Disable webcam
 const disableCam = () => {
@@ -72,8 +73,9 @@ const predictWebcam = async () => {
 
 (async () => {
     const visionLibUrl = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3";
-    const { FilesetResolver, GestureRecognizer, DrawingUtils: ImportedDrawingUtils } = await import(visionLibUrl);
+    const { FilesetResolver, GestureRecognizer: ImportedGestureRecognizer, DrawingUtils: ImportedDrawingUtils } = await import(visionLibUrl);
     DrawingUtils = ImportedDrawingUtils;
+    GestureRecognizer = ImportedGestureRecognizer;
 
     // Initialize Gesture Recognizer
     const createGestureRecognizer = async () => {

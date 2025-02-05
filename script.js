@@ -1,6 +1,8 @@
 let webcamRunning = false;
 let gestureRecognizer;
 let runningMode = "IMAGE";
+const videoHeight = 720;
+const videoWidth = 1280;
 
 // Disable webcam
 const disableCam = () => {

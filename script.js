@@ -1,10 +1,11 @@
+let webcamRunning = false;
+
 (async () => {
     const visionLibUrl = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3";
     const { FilesetResolver, GestureRecognizer, DrawingUtils } = await import(visionLibUrl);
 
     let gestureRecognizer;
     let runningMode = "IMAGE";
-    let webcamRunning = false;
 
     const videoHeight = 720;
     const videoWidth = 1280;

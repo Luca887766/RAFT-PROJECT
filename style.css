@@ -157,6 +157,7 @@ video {
     position: absolute;
     top: 1rem;
     left: 1rem;
+    cursor: pointer;
     z-index: 2;
 }
 
@@ -164,10 +165,6 @@ video {
     position: absolute;
     bottom: 16rem;
     right: 1rem;
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1.5rem;
     cursor: pointer;
     z-index: 2;
 }

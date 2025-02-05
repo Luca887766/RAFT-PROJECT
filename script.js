@@ -1,13 +1,81 @@
+let webcamRunning = false;
+let gestureRecognizer;
+let runningMode = "IMAGE";
+const videoHeight = 720;
+const videoWidth = 1280;
+let DrawingUtils;
+let GestureRecognizer;
+
+// Disable webcam
+const disableCam = () => {
+    webcamRunning = false;
+    const video = document.getElementById("webcam");
+    if (video && video.srcObject) {
+        const stream = video.srcObject;
+        stream.getTracks().forEach((track) => track.stop());
+        video.srcObject = null;
+        video.removeEventListener("loadeddata", predictWebcam);
+    }
+};
+
+// Predict gestures from webcam
+let lastVideoTime = -1;
+const predictWebcam = async () => {
+    const video = document.getElementById("webcam");
+    const canvasElement = document.getElementById("output_canvas");
+    const canvasCtx = canvasElement ? canvasElement.getContext("2d") : null;
+    const gestureOutput = document.getElementById("gesture_output");
+    if (!gestureRecognizer || !canvasElement || !canvasCtx || !webcamRunning) return;
+
+    canvasElement.width = video.videoWidth;
+    canvasElement.height = video.videoHeight;
+
+    if (runningMode === "IMAGE") {
+        runningMode = "VIDEO";
+        await gestureRecognizer.setOptions({ runningMode: "VIDEO" });
+    }
+
+    const nowInMs = Date.now();
+    if (video.currentTime !== lastVideoTime) {
+        lastVideoTime = video.currentTime;
+        const results = await gestureRecognizer.recognizeForVideo(video, nowInMs);
+
+        canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+
+        if (results.landmarks) {
+            const drawingUtils = new DrawingUtils(canvasCtx);
+            for (const landmarks of results.landmarks) {
+                drawingUtils.drawConnectors(landmarks, GestureRecognizer.HAND_CONNECTIONS, {
+                    color: "#00FF00",
+                    lineWidth: 5,
+                });
+                drawingUtils.drawLandmarks(landmarks, {
+                    color: "#FF0000",
+                    lineWidth: 2,
+                });
+            }
+        }
+
+        if (results.gestures.length > 0) {
+            gestureOutput.style.display = "block";
+            const { categoryName, score } = results.gestures[0][0];
+            const handedness = results.handednesses[0][0].displayName;
+            gestureOutput.innerText = `Gesture: ${categoryName}\nConfidence: ${(score * 100).toFixed(2)}%\nHandedness: ${handedness}`;
+        } else {
+            gestureOutput.style.display = "none";
+        }
+    }
+
+    if (webcamRunning) {
+        window.requestAnimationFrame(predictWebcam);
+    }
+};
+
 (async () => {
     const visionLibUrl = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3";
-    const { FilesetResolver, GestureRecognizer, DrawingUtils } = await import(visionLibUrl);
-
-    let gestureRecognizer;
-    let runningMode = "IMAGE";
-    let webcamRunning = false;
-
-    const videoHeight = 720;
-    const videoWidth = 1280;
+    const { FilesetResolver, GestureRecognizer: ImportedGestureRecognizer, DrawingUtils: ImportedDrawingUtils } = await import(visionLibUrl);
+    DrawingUtils = ImportedDrawingUtils;
+    GestureRecognizer = ImportedGestureRecognizer;
 
     // Initialize Gesture Recognizer
     const createGestureRecognizer = async () => {
@@ -21,20 +89,16 @@
             },
             runningMode: runningMode,
         });
-        localStorage.setItem('gestureRecognizerLoaded', 'true');
     };
 
     const loadGestureRecognizer = async () => {
-        const storedRecognizerFlag = localStorage.getItem('gestureRecognizerLoaded');
-        if (storedRecognizerFlag) {
-            await createGestureRecognizer();
-        } else {
-            await createGestureRecognizer();
-        }
+        await createGestureRecognizer();
+        document.getElementById("enableWebcamButton").disabled = false;
     };
 
     // Main logic when window loads
     window.addEventListener('load', async () => {
+        document.getElementById("enableWebcamButton").disabled = true;
         await loadGestureRecognizer();
 
         const video = document.getElementById("webcam");
@@ -53,14 +117,6 @@
             return;
         }
 
-        /*enableWebcamButton?.addEventListener('click', () => {
-            enableCam();
-        });
-
-        diseableWebcamButton?.addEventListener('click', () => {
-            disableCam();
-        });*/
-
         // Enable webcam and start predictions
         const enableCam = async () => {
             if (!gestureRecognizer) {
@@ -75,6 +131,8 @@
                     video.srcObject = stream;
                     video.addEventListener("loadeddata", () => {
                         if (video.videoWidth > 0 && video.videoHeight > 0) {
+                            document.getElementById("loadingLogo").style.display = "none";
+                            document.getElementById("traduzione").style.display = "block";
                             predictWebcam();
                             webcamRunning = true;
                         } else {
@@ -84,66 +142,6 @@
                 }
             } catch (err) {
                 console.error("Error accessing the webcam: ", err);
-            }
-        };
-
-        // Disable webcam
-        const disableCam = () => {
-            webcamRunning = false;
-            if (video && video.srcObject) {
-                const stream = video.srcObject;
-                stream.getTracks().forEach((track) => track.stop());
-                video.srcObject = null;
-                video.removeEventListener("loadeddata", predictWebcam);
-            }
-        };
-
-        // Predict gestures from webcam
-        let lastVideoTime = -1;
-        const predictWebcam = async () => {
-            if (!gestureRecognizer || !canvasElement || !canvasCtx || !webcamRunning) return;
-
-            canvasElement.width = video.videoWidth;
-            canvasElement.height = video.videoHeight;
-
-            if (runningMode === "IMAGE") {
-                runningMode = "VIDEO";
-                await gestureRecognizer.setOptions({ runningMode: "VIDEO" });
-            }
-
-            const nowInMs = Date.now();
-            if (video.currentTime !== lastVideoTime) {
-                lastVideoTime = video.currentTime;
-                const results = await gestureRecognizer.recognizeForVideo(video, nowInMs);
-
-                canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-
-                if (results.landmarks) {
-                    const drawingUtils = new DrawingUtils(canvasCtx);
-                    for (const landmarks of results.landmarks) {
-                        drawingUtils.drawConnectors(landmarks, GestureRecognizer.HAND_CONNECTIONS, {
-                            color: "#00FF00",
-                            lineWidth: 5,
-                        });
-                        drawingUtils.drawLandmarks(landmarks, {
-                            color: "#FF0000",
-                            lineWidth: 2,
-                        });
-                    }
-                }
-
-                if (results.gestures.length > 0) {
-                    gestureOutput.style.display = "block";
-                    const { categoryName, score } = results.gestures[0][0];
-                    const handedness = results.handednesses[0][0].displayName;
-                    gestureOutput.innerText = `Gesture: ${categoryName}\nConfidence: ${(score * 100).toFixed(2)}%\nHandedness: ${handedness}`;
-                } else {
-                    gestureOutput.style.display = "none";
-                }
-            }
-
-            if (webcamRunning) {
-                window.requestAnimationFrame(predictWebcam);
             }
         };
 
@@ -168,6 +166,10 @@ function toSlide(dest) {
     if (dest === "traduzione") {
         const nav = document.getElementById("nav");
         nav.style.display = "none";
+        document.getElementById("loadingLogo").style.display = "block";
+        enableCam();
+    } else {
+        disableCam();
     }
     
     const elementsToShow = getElementsForSlide(dest);

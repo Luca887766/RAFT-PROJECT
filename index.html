@@ -24,14 +24,17 @@
         <button class="lang-btn disabled" id="noClick" disabled>Altre lingue</button>
     </div>
     <div id="selModalita" class="slide marginBottom">
-        <button id="enableWebcamButton" onclick="enableCam(); toSlide('traduzione')">Traduzione</button>
+        <button id="enableWebcamButton" onclick="enableCam(); toSlide('traduzione')" disabled>Traduzione</button>
         <button onclick="toSlide('selDifficolta')">Allenamento</button>
     </div>
 
-    <div id="traduzione" class="slide">
-        <button id="diseableWebcamButton" onclick="disableCam(); toSlide('homePage')">Torna Indietro</button>
+    <div id="loadingLogo" class="slide">
+        <img src="img/logoGalilei.png" alt="Loading Logo">
+    </div>
+
+    <div id="traduzione" class="slide" style="display: none;">
+        <button class="backButton" id="diseableWebcamButton" onclick="disableCam(); toSlide('homePage')">Torna Indietro</button>
         <button class="clearButton" onclick="clearOutput()">Clear</button>
-        <div>Pagina di Traduzione</div>
         <div class="videoContainer">
             <video id="webcam" autoplay playsinline></video>
             <canvas class="output_canvas" id="output_canvas" width="1280" height="720"></canvas>

@@ -161,6 +161,8 @@ function toSlide(dest) {
         nav.style.display = "none";
         document.getElementById("loadingLogo").style.display = "block";
         enableCam();
+    } else {
+        disableCam();
     }
     
     const elementsToShow = getElementsForSlide(dest);

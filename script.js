@@ -1,5 +1,17 @@
 let webcamRunning = false;
 
+// Disable webcam
+const disableCam = () => {
+    webcamRunning = false;
+    const video = document.getElementById("webcam");
+    if (video && video.srcObject) {
+        const stream = video.srcObject;
+        stream.getTracks().forEach((track) => track.stop());
+        video.srcObject = null;
+        video.removeEventListener("loadeddata", predictWebcam);
+    }
+};
+
 (async () => {
     const visionLibUrl = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3";
     const { FilesetResolver, GestureRecognizer, DrawingUtils } = await import(visionLibUrl);
@@ -139,18 +151,6 @@ let webcamRunning = false;
         window.clearOutput = clearOutput;
     });
 })();
-
-// Disable webcam
-const disableCam = () => {
-    webcamRunning = false;
-    const video = document.getElementById("webcam");
-    if (video && video.srcObject) {
-        const stream = video.srcObject;
-        stream.getTracks().forEach((track) => track.stop());
-        video.srcObject = null;
-        video.removeEventListener("loadeddata", predictWebcam);
-    }
-};
 
 // Slide management
 function toSlide(dest) {

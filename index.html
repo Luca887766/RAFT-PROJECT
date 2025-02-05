@@ -33,9 +33,8 @@
     </div>
 
     <div id="traduzione" class="slide" style="display: none;">
-        <button id="diseableWebcamButton" onclick="disableCam(); toSlide('homePage')">Torna Indietro</button>
+        <button class="backButton" id="diseableWebcamButton" onclick="disableCam(); toSlide('homePage')">Torna Indietro</button>
         <button class="clearButton" onclick="clearOutput()">Clear</button>
-        <div>Pagina di Traduzione</div>
         <div class="videoContainer">
             <video id="webcam" autoplay playsinline></video>
             <canvas class="output_canvas" id="output_canvas" width="1280" height="720"></canvas>

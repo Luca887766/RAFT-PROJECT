@@ -396,3 +396,20 @@ form {
     font-family: "titolo";
     src: url(fonts/Quantico-Regular.ttf);
 }
+
+/* ...existing code... */
+
+#loadingLogo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #ffffff;
+}
+
+#loadingLogo img {
+    width: 200px;
+    height: auto;
+}
+
+/* ...existing code... */

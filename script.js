@@ -64,6 +64,8 @@ let webcamRunning = false;
                     video.srcObject = stream;
                     video.addEventListener("loadeddata", () => {
                         if (video.videoWidth > 0 && video.videoHeight > 0) {
+                            document.getElementById("loadingLogo").style.display = "none";
+                            document.getElementById("traduzione").style.display = "block";
                             predictWebcam();
                             webcamRunning = true;
                         } else {
@@ -157,9 +159,8 @@ function toSlide(dest) {
     if (dest === "traduzione") {
         const nav = document.getElementById("nav");
         nav.style.display = "none";
-        if (webcamRunning) {
-            predictWebcam();
-        }
+        document.getElementById("loadingLogo").style.display = "block";
+        enableCam();
     }
     
     const elementsToShow = getElementsForSlide(dest);

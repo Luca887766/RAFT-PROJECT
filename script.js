@@ -359,3 +359,21 @@ function toggleFrecciaRotation() {
     freccia.classList.toggle('rotated');
     console.log("mi uccido")
   }
+
+/*--------------------funzione per le additinal information--------------------*/
+document.addEventListener("DOMContentLoaded", () => {
+    const iconOpzionale = document.getElementById("iconOpzionale");
+    const informationDiv = document.getElementById("information");
+  
+    // Nasconde il div all'inizio
+    informationDiv.style.display = "none";
+  
+    iconOpzionale.addEventListener("mouseover", () => {
+      informationDiv.style.display = "flex";
+    });
+  
+    iconOpzionale.addEventListener("mouseout", () => {
+      informationDiv.style.display = "none";
+    });
+  });
+  

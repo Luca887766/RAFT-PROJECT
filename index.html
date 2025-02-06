@@ -23,24 +23,19 @@
         <button class="lang-btn" data-lang="American">American</button>
         <button class="lang-btn disabled" id="noClick" disabled>Altre lingue</button>
     </div>
-    
-    <div id="selModalita">
-        <div class="card traduzione">
-            <img src="img/allenamentoOff.png" alt="Traduzione">
-            <h3>Traduttore</h3>
-            <p>Traduci istantaneamente l’alfabeto dattilologico</p>
-        </div>
-        <div class="card allenamento">
-            <img src="img/allenamentoOff.png" alt="Allenamento">
-            <h3>Allenamento</h3>
-            <p>Divertiti allenandoti</p>
-        </div>
+    <div id="selModalita" class="slide marginBottom">
+        <button id="enableWebcamButton" onclick="enableCam(); toSlide('traduzione')" disabled>Traduzione</button>
+        <button onclick="toSlide('selDifficolta')">Allenamento</button>
     </div>
 
-    <div id="traduzione" class="slide">
-        <button id="diseableWebcamButton" onclick="disableCam(); toSlide('homePage')">Torna Indietro</button>
+    <div id="loadingLogo" class="slide">
+        <img src="img/logoGalilei.png" alt="Loading Logo">
+    </div>
+
+    <div id="traduzione" class="slide" style="display: none;">
+        <button class="backButton" id="diseableWebcamButton" onclick="disableCam(); toSlide('homePage')">Torna
+            Indietro</button>
         <button class="clearButton" onclick="clearOutput()">Clear</button>
-        <div>Pagina di Traduzione</div>
         <div class="videoContainer">
             <video id="webcam" autoplay playsinline></video>
             <canvas class="output_canvas" id="output_canvas" width="1280" height="720"></canvas>
@@ -80,42 +75,57 @@
             <div class="contattiTitolo">Contatta il nostro team</div>
             <div class="contattiTesto">Inviaci un feedback o segnala un problema nella nostra applicazione</div>
         </div>
-    
+
         <div class="formContainer">
             <label for="selNickname">Nickname</label>
             <input type="text" id="selNickname" placeholder="Nickname">
-    
+
             <div class="label-svg-container">
                 <label for="selEmail">Email</label>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16"> 
-                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" /> 
-                    <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0" />
+                <p id="testoOpzionale">Opzionale</p>
+                <svg id="iconOpzionale" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-info-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                    <path
+                        d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0" />
                 </svg>
+                <div id="information">
+                    <p>In caso si desideri una risposta da parte del team</p>
+                </div>
             </div>
             <input type="text" id="selEmail" placeholder="Email">
-    
-            <label for="motivazione">Motivazione</label>
-            <select id="motivazione" name="motivazione">
-                <option value="malfunzionamento">Malfunzionamento</option>
-                <option value="feedback">Feedback</option>
-                <option value="erroreAlfabeto">Alfabeto Errato</option>
-            </select>
-    
+
+            <div class="select-container">
+                <label for="motivazione">Motivazione</label>
+                <div class="select-wrapper" onclick="toggleFrecciaRotation()">
+                    <select id="motivazione" name="motivazione">
+                        <option value="malfunzionamento">Malfunzionamento</option>
+                        <option value="feedback">Feedback</option>
+                        <option value="erroreAlfabeto">Alfabeto Errato</option>
+                    </select>
+                    <svg id="freccia" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-chevron-compact-down" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M1.553 6.776a.5.5 0 0 1 .67-.223L8 9.44l5.776-2.888a.5.5 0 1 1 .448.894l-6 3a.5.5 0 0 1-.448 0l-6-3a.5.5 0 0 1-.223-.67" />
+                    </svg>
+                </div>
+            </div>
+
             <label for="selLingua">Lingua/e di riferimento</label>
             <form>
                 <input type="checkbox" id="linguaEuropeo" name="linguaEuropeo" value="linguaEuropeo">
-                <label for="linguaEuropeo" class="check">Europe</label>
+                <label for="linguaEuropeo" class="check" style="font-size: 1rem;">Europe</label>
                 <input type="checkbox" id="linguaAmericana" name="linguaAmericana" value="linguaAmericana">
-                <label for="linguaAmericana" class="check">American</label>
+                <label for="linguaAmericana" class="check" style="font-size: 1rem;">American</label>
             </form>
-    
+
             <label for="selMessaggio">Messaggio</label>
             <textarea id="selMessaggio" placeholder="Messaggio"></textarea>
-    
+
             <button id="bottoneInvio">Invia</button>
         </div>
     </div>
-    
+
 
     <footer id="nav">
         <button onclick="toSlide('homePage')">
@@ -142,3 +152,12 @@
 </body>
 
 </html>
+
+<!--Funzione che deve stare qua temporaneamente-->
+<script>
+    function toggleFrecciaRotation() {
+    const freccia = document.getElementById('freccia');
+    freccia.classList.toggle('rotated');
+    console.log("mi uccido")
+  }
+</script>

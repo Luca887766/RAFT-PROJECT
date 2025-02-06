@@ -115,6 +115,13 @@ const changeGesture = () => {
     gestureLetter.style.color = "white";
 };
 
+// Function to start easy training mode
+const startEasyTraining = () => {
+    trainingMode = true;
+    changeGesture();
+    toSlide('allenamento');
+};
+
 (async () => {
     const visionLibUrl = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3";
     const { FilesetResolver, GestureRecognizer: ImportedGestureRecognizer, DrawingUtils: ImportedDrawingUtils } = await import(visionLibUrl);
@@ -216,8 +223,6 @@ function toSlide(dest) {
         document.getElementById("loadingLogo").style.display = "block";
         enableCam();
     } else if (dest === "allenamento") {
-        trainingMode = true;
-        changeGesture();
         const nav = document.getElementById("nav");
         nav.style.display = "none";
         document.getElementById("loadingLogo").style.display = "block";

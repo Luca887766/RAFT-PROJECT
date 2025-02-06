@@ -201,7 +201,7 @@ function toSlide(dest) {
     } else {
         disableCam();
     }
-    
+
     const elementsToShow = getElementsForSlide(dest);
     elementsToShow.forEach((element) => {
         if (element.id === "nav") {
@@ -303,8 +303,15 @@ function inizializzaEventi() {
 
         imgContainer.innerHTML = "";
 
+        //se il campo è vuoto mostra tutte le lettere
+        const lettereDaMostrare = testo.length > 0 ? testo : vocabolario
+            .filter(item => item.lingua.includes(linguaSelezionata))
+            .map(item => item.lettera);
+
+        console.log(lettereDaMostrare);
+
         //creo le lettere
-        [...testo].forEach(char => {
+        lettereDaMostrare.forEach(char => {
             const div = document.createElement('div');
             div.className = 'lettera';
 
@@ -329,7 +336,6 @@ function inizializzaEventi() {
             }
         });
     }
-
     inputRicerca.addEventListener('input', aggiornaVocabolario);
 }
 

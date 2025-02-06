@@ -104,8 +104,7 @@ body {
 
 .videoContainer {
     position: relative;
-    flex: 1;
-    /* Ensure the video container takes full height */
+    height: 100vh;
     width: 100%;
     overflow: hidden;
     background-color: #ffffff;

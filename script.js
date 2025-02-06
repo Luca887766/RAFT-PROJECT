@@ -333,7 +333,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-
 window.toSlide = toSlide;
 window.caricaVocabolario = caricaVocabolario;
 
@@ -352,3 +351,11 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 });
+
+/*----------------------- funzione per ruotare la freccia --------------------*/
+//funzione che però non prende
+function toggleFrecciaRotation() {
+    const freccia = document.getElementById('freccia');
+    freccia.classList.toggle('rotated');
+    console.log("mi uccido")
+  }

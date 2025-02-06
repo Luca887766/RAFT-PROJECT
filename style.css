@@ -402,6 +402,34 @@ form {
     margin: 0.5rem 0;
 }
 
+/*freccia inutile*/
+  .select-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+  }
+  
+  .select-wrapper select:focus {
+    outline: none;
+    border-color: #007bff;
+  }
+  
+  #freccia {
+    position: absolute;
+    right: 1rem;
+    top: 40%;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+  
+  #freccia.rotated{
+    position: absolute;
+    right: 1rem;
+    top: 40%;
+    transform: translateY(-50%) rotate(180deg);
+    pointer-events: none;
+  }
+
 /* -------------------------------------FONT DEL SITO---------------------------------- */
 @font-face {
     font-family: "testo";

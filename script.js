@@ -98,7 +98,7 @@ const predictWebcam = async () => {
 //     }
 // };
 
-document.addEventListener('DOMContentLoaded', async () => {
+(async () => {
     const visionLibUrl = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3";
     const { FilesetResolver, GestureRecognizer: ImportedGestureRecognizer, DrawingUtils: ImportedDrawingUtils } = await import(visionLibUrl);
     DrawingUtils = ImportedDrawingUtils;
@@ -124,66 +124,69 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     // Main logic when window loads
-    await loadGestureRecognizer();
+    window.addEventListener('load', async () => {
+        document.getElementById("enableWebcamButton").disabled = true;
+        await loadGestureRecognizer();
 
-    const video = document.getElementById("webcam");
-    const canvasElement = document.getElementById("output_canvas");
-    const canvasCtx = canvasElement ? canvasElement.getContext("2d") : null;
-    const gestureOutput = document.getElementById("gesture_output");
+        const video = document.getElementById("webcam");
+        const canvasElement = document.getElementById("output_canvas");
+        const canvasCtx = canvasElement ? canvasElement.getContext("2d") : null;
+        const gestureOutput = document.getElementById("gesture_output");
 
-    const enableWebcamButton = document.getElementById("enableWebcamButton");
-    const diseableWebcamButton = document.getElementById("diseableWebcamButton");
+        const enableWebcamButton = document.getElementById("enableWebcamButton");
+        const diseableWebcamButton = document.getElementById("diseableWebcamButton");
 
-    // Check for webcam support
-    const hasGetUserMedia = () => !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+        // Check for webcam support
+        const hasGetUserMedia = () => !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
 
-    if (!hasGetUserMedia()) {
-        console.warn("getUserMedia() is not supported by your browser");
-        return;
-    }
-
-    // Enable webcam and start predictions
-    const enableCam = async () => {
-        if (!gestureRecognizer) {
-            alert("Please wait for gestureRecognizer to load");
+        if (!hasGetUserMedia()) {
+            console.warn("getUserMedia() is not supported by your browser");
             return;
         }
 
-        const constraints = { video: { width: videoWidth, height: videoHeight } };
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia(constraints);
-            if (video) {
-                video.srcObject = stream;
-                video.addEventListener("loadeddata", () => {
-                    if (video.videoWidth > 0 && video.videoHeight > 0) {
-                        document.getElementById("loadingLogo").style.display = "none";
-                        document.getElementById("traduzione").style.display = "block";
-                        predictWebcam();
-                        webcamRunning = true;
-                    } else {
-                        console.error("Video dimensions are not set correctly.");
-                    }
-                });
+        // Enable webcam and start predictions
+        const enableCam = async () => {
+            if (!gestureRecognizer) {
+                alert("Please wait for gestureRecognizer to load");
+                return;
             }
-        } catch (err) {
-            console.error("Error accessing the webcam: ", err);
-        }
-    };
 
-    // Clear gesture output
-    const clearOutput = () => {
-        gestureOutput.innerText = "";
-        gestureOutput.style.display = "none";
-        // daStampare = "";
-        // ultimo_valore = "";
-        // document.getElementById("gesture_output").innerText = "";
-    };
+            const constraints = { video: { width: videoWidth, height: videoHeight } };
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia(constraints);
+                if (video) {
+                    video.srcObject = stream;
+                    video.addEventListener("loadeddata", () => {
+                        if (video.videoWidth > 0 && video.videoHeight > 0) {
+                            document.getElementById("loadingLogo").style.display = "none";
+                            document.getElementById("traduzione").style.display = "block";
+                            predictWebcam();
+                            webcamRunning = true;
+                        } else {
+                            console.error("Video dimensions are not set correctly.");
+                        }
+                    });
+                }
+            } catch (err) {
+                console.error("Error accessing the webcam: ", err);
+            }
+        };
 
-    // Export global functions
-    window.disableCam = disableCam;
-    window.enableCam = enableCam;
-    window.clearOutput = clearOutput;
-});
+        // Clear gesture output
+        const clearOutput = () => {
+            gestureOutput.innerText = "";
+            gestureOutput.style.display = "none";
+            // daStampare = "";
+            // ultimo_valore = "";
+            // document.getElementById("gesture_output").innerText = "";
+        };
+
+        // Export global functions
+        window.disableCam = disableCam;
+        window.enableCam = enableCam;
+        window.clearOutput = clearOutput;
+    });
+})();
 
 // Slide management
 function toSlide(dest) {
@@ -337,8 +340,6 @@ const europeButton = document.querySelector('.lang-btn[data-lang="Europe"]');
 const containerRect = container.getBoundingClientRect();
 const EUROPE_OFFSET = europeButton ? europeButton.getBoundingClientRect().left - containerRect.left : 0;
 
-container.style.transform = `translateX(${EUROPE_OFFSET}px)`;
-
 document.addEventListener('DOMContentLoaded', () => {
     const buttons = document.querySelectorAll('.lang-btn:not(#noClick)');
     let activeButton = document.querySelector('.lang-btn.active');
@@ -350,9 +351,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 button.classList.add('active');
                 activeButton = button;
 
+                // Ottieni la posizione del pulsante cliccato rispetto al container
                 const buttonRect = button.getBoundingClientRect();
                 const newOffset = buttonRect.left - container.getBoundingClientRect().left;
 
+                // Sposta il container per portare il pulsante selezionato alla posizione originale di "Europe"
                 const translateX = EUROPE_OFFSET - newOffset;
                 container.style.transform = `translateX(${translateX}px)`;
             }
@@ -360,8 +363,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+
 window.toSlide = toSlide;
 window.caricaVocabolario = caricaVocabolario;
+
+
 
 //----------------------------FOOTER---------------------------
 document.addEventListener("DOMContentLoaded", () => {
@@ -369,35 +375,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     navButtons.forEach(button => {
         button.addEventListener("click", () => {
-            // Rimuove la classe active da tutti i bottoni
+            // Rimuovi la classe active da tutti i bottoni
             navButtons.forEach(btn => btn.classList.remove("active"));
-            // Aggiunge la classe active al pulsante cliccato
+            // Aggiungi la classe active al pulsante cliccato
             button.classList.add("active");
         });
     });
 });
-
-/*----------------------- funzione per ruotare la freccia --------------------*/
-//funzione che però non prende
-function toggleFrecciaRotation() {
-    const freccia = document.getElementById('freccia');
-    freccia.classList.toggle('rotated');
-    console.log("mi uccido")
-  }
-
-/*--------------------funzione per le additinal information--------------------*/
-document.addEventListener("DOMContentLoaded", () => {
-    const iconOpzionale = document.getElementById("iconOpzionale");
-    const informationDiv = document.getElementById("information");
-  
-    // Nasconde il div all'inizio
-    informationDiv.style.display = "none";
-  
-    iconOpzionale.addEventListener("mouseover", () => {
-      informationDiv.style.display = "flex";
-    });
-  
-    iconOpzionale.addEventListener("mouseout", () => {
-      informationDiv.style.display = "none";
-    });
-  });

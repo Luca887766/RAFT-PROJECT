@@ -299,7 +299,7 @@ function inizializzaEventi() {
         imgContainer.innerHTML = "";
 
         //se il campo è vuoto mostra tutte le lettere
-        const lettereDaMostrare = testo.length > 0 ? testo : vocabolario
+        const lettereDaMostrare = testo.length > 0 ? testo.split('') : vocabolario
             .filter(item => item.lingua.includes(linguaSelezionata))
             .map(item => item.lettera);
 

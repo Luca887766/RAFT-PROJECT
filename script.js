@@ -122,6 +122,9 @@ const startEasyTraining = () => {
     toSlide('allenamento');
 };
 
+// Attach the startEasyTraining function to the window object
+window.startEasyTraining = startEasyTraining;
+
 (async () => {
     const visionLibUrl = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3";
     const { FilesetResolver, GestureRecognizer: ImportedGestureRecognizer, DrawingUtils: ImportedDrawingUtils } = await import(visionLibUrl);

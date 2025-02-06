@@ -84,8 +84,13 @@ const predictWebcam = async () => {
         }
 
         if (results.gestures.length > 0) {
-            const { categoryName } = results.gestures[0][0];
+            gestureOutput.style.display = "block";
+            const { categoryName, score } = results.gestures[0][0];
+            const handedness = results.handednesses[0][0].displayName;
+            gestureOutput.innerText = `Gesture: ${categoryName}\nConfidence: ${(score * 100).toFixed(2)}%\nHandedness: ${handedness}`;
             appendi(categoryName); // Call the appendi function with the recognized gesture
+        } else {
+            gestureOutput.style.display = "none";
         }
     }
 

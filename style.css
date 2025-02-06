@@ -120,6 +120,7 @@ video {
     height: 100%;
     object-fit: cover;
     z-index: -1;
+    transform: scaleX(-1);
 }
 
 #output_canvas {
@@ -131,7 +132,7 @@ video {
     object-fit: cover;
     display: block;
     z-index: 1;
-    /* Set canvas above the video */
+    transform: scaleX(-1);
 }
 
 #gesture_output_container {

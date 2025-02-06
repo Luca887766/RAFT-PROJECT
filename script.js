@@ -5,6 +5,13 @@ const videoHeight = 720;
 const videoWidth = 1280;
 let DrawingUtils;
 let GestureRecognizer;
+let trainingMode = false;
+let currentGesture = "";
+let gestureImages = {
+    "A": "path/to/A.jpg",
+    "B": "path/to/B.jpg",
+    // Add paths for other letters
+};
 
 // Disable webcam
 const disableCam = () => {
@@ -21,14 +28,16 @@ const disableCam = () => {
 // Predict gestures from webcam
 let lastVideoTime = -1;
 const predictWebcam = async () => {
-    const video = document.getElementById("webcam");
-    const canvasElement = document.getElementById("output_canvas");
+    const video = document.getElementById(trainingMode ? "webcamTraining" : "webcam");
+    const canvasElement = document.getElementById(trainingMode ? null : "output_canvas");
     const canvasCtx = canvasElement ? canvasElement.getContext("2d") : null;
-    const gestureOutput = document.getElementById("gesture_output");
-    if (!gestureRecognizer || !canvasElement || !canvasCtx || !webcamRunning) return;
+    const gestureOutput = document.getElementById(trainingMode ? "gesture_output_training_container" : "gesture_output");
+    if (!gestureRecognizer || (canvasElement && !canvasCtx) || !webcamRunning) return;
 
-    canvasElement.width = video.videoWidth;
-    canvasElement.height = video.videoHeight;
+    if (canvasElement) {
+        canvasElement.width = video.videoWidth;
+        canvasElement.height = video.videoHeight;
+    }
 
     if (runningMode === "IMAGE") {
         runningMode = "VIDEO";
@@ -40,28 +49,35 @@ const predictWebcam = async () => {
         lastVideoTime = video.currentTime;
         const results = await gestureRecognizer.recognizeForVideo(video, nowInMs);
 
-        canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+        if (canvasCtx) {
+            canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
 
-        if (results.landmarks) {
-            const drawingUtils = new DrawingUtils(canvasCtx);
-            for (const landmarks of results.landmarks) {
-                drawingUtils.drawConnectors(landmarks, GestureRecognizer.HAND_CONNECTIONS, {
-                    color: "#00FF00",
-                    lineWidth: 5,
-                });
-                drawingUtils.drawLandmarks(landmarks, {
-                    color: "#FF0000",
-                    lineWidth: 2,
-                });
+            if (results.landmarks) {
+                const drawingUtils = new DrawingUtils(canvasCtx);
+                for (const landmarks of results.landmarks) {
+                    drawingUtils.drawConnectors(landmarks, GestureRecognizer.HAND_CONNECTIONS, {
+                        color: "#00FF00",
+                        lineWidth: 5,
+                    });
+                    drawingUtils.drawLandmarks(landmarks, {
+                        color: "#FF0000",
+                        lineWidth: 2,
+                    });
+                }
             }
         }
 
         if (results.gestures.length > 0) {
-            gestureOutput.style.display = "block";
-            const { categoryName, score } = results.gestures[0][0];
-            const handedness = results.handednesses[0][0].displayName;
-            gestureOutput.innerText = `Gesture: ${categoryName}\nConfidence: ${(score * 100).toFixed(2)}%\nHandedness: ${handedness}`;
-            // appendi(categoryName); // Call the appendi function with the recognized gesture
+            const { categoryName } = results.gestures[0][0];
+            if (trainingMode) {
+                handleTrainingMode(categoryName);
+            } else {
+                gestureOutput.style.display = "block";
+                const { score } = results.gestures[0][0];
+                const handedness = results.handednesses[0][0].displayName;
+                gestureOutput.innerText = `Gesture: ${categoryName}\nConfidence: ${(score * 100).toFixed(2)}%\nHandedness: ${handedness}`;
+                // appendi(categoryName); // Call the appendi function with the recognized gesture
+            }
         } else {
             gestureOutput.style.display = "none";
         }
@@ -72,31 +88,32 @@ const predictWebcam = async () => {
     }
 };
 
-// Function to handle appending text
-// const appendi = (result_text) => {
-//     const gestureOutput = document.getElementById("gesture_output");
-//     if (!result_text) {
-//         return;
-//     }
+// Function to handle training mode
+const handleTrainingMode = (recognizedGesture) => {
+    const gestureImage = document.getElementById("gesture_image");
+    const gestureLetter = document.getElementById("gesture_letter");
 
-//     if (result_text === ultimo_valore) {
-//         // Do nothing if the same character is entered twice in a row
-//     } else if (result_text === "del") {
-//         daStampare = daStampare.slice(0, -1); // Delete the last character
-//         gestureOutput.innerText = daStampare;
-//         ultimo_valore = "del";
-//     } else if (result_text === "not" || result_text === "None") {
-//         ultimo_valore = ""; // Reset the count
-//     } else if (result_text === "space") {
-//         daStampare += " ";
-//         gestureOutput.innerText = daStampare;
-//         ultimo_valore = "space"; // Reset the count
-//     } else {
-//         daStampare += result_text;
-//         ultimo_valore = result_text;
-//         gestureOutput.innerText = daStampare;
-//     }
-// };
+    if (recognizedGesture === currentGesture) {
+        gestureLetter.style.color = "green";
+        setTimeout(() => {
+            changeGesture();
+        }, 1000);
+    } else {
+        gestureLetter.style.color = "white";
+    }
+};
+
+// Function to change the gesture in training mode
+const changeGesture = () => {
+    const gestureKeys = Object.keys(gestureImages);
+    currentGesture = gestureKeys[Math.floor(Math.random() * gestureKeys.length)];
+    const gestureImage = document.getElementById("gesture_image");
+    const gestureLetter = document.getElementById("gesture_letter");
+
+    gestureImage.src = gestureImages[currentGesture];
+    gestureLetter.innerText = currentGesture;
+    gestureLetter.style.color = "white";
+};
 
 (async () => {
     const visionLibUrl = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3";
@@ -194,6 +211,13 @@ function toSlide(dest) {
     slides.forEach((slide) => (slide.style.display = "none"));
 
     if (dest === "traduzione") {
+        const nav = document.getElementById("nav");
+        nav.style.display = "none";
+        document.getElementById("loadingLogo").style.display = "block";
+        enableCam();
+    } else if (dest === "allenamento") {
+        trainingMode = true;
+        changeGesture();
         const nav = document.getElementById("nav");
         nav.style.display = "none";
         document.getElementById("loadingLogo").style.display = "block";

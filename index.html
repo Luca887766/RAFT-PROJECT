@@ -44,8 +44,15 @@
         </div>
     </div>
 
-    <div id="allenamento" class="slide">
-        <p>Pagina di Allenamento</p>
+    <div id="allenamento" class="slide marginBottom">
+        <button class="backButton" onclick="toSlide('selDifficolta')">Torna Indietro</button>
+        <div class="videoContainer">
+            <video id="webcamTraining" autoplay playsinline style="display: none;"></video>
+            <div id="gesture_output_training_container">
+                <img id="gesture_image" src="" alt="Gesture Image">
+                <p id="gesture_letter" class="output"></p>
+            </div>
+        </div>
     </div>
 
     <div id="selDifficolta" class="slide marginBottom">

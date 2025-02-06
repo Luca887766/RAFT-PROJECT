@@ -428,4 +428,51 @@ form {
     height: auto;
 }
 
-/* ...existing code... */
+#webcamTraining {
+    width: 100vw;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    transform: scaleX(-1);
+}
+
+#output_canvas_training {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    z-index: 1;
+    transform: scaleX(-1);
+}
+
+#gesture_output_training_container {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    left: 1rem;
+    height: 15rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(80.97% 1714.77% at 58.68% -1061.36%, #21279B 0%, #10145C 100%);
+    padding: 2rem;
+    border-radius: 1rem;
+    color: white;
+    z-index: 2;
+}
+
+#gesture_image {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+}
+
+#gesture_letter {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: bold;
+}

@@ -5,6 +5,8 @@ const videoHeight = 720;
 const videoWidth = 1280;
 let DrawingUtils;
 let GestureRecognizer;
+let daStampare = "";
+let ultimo_valore = "";
 
 // Disable webcam
 const disableCam = () => {
@@ -18,13 +20,38 @@ const disableCam = () => {
     }
 };
 
+// Function to handle appending text
+const appendi = (result_text) => {
+    const gestureOutput = document.getElementById("gesture_output");
+    if (!result_text) {
+        return;
+    }
+
+    if (result_text === ultimo_valore) {
+        // Do nothing if the same character is entered twice in a row
+    } else if (result_text === "del") {
+        daStampare = daStampare.slice(0, -1); // Delete the last character
+        gestureOutput.innerText = daStampare;
+        ultimo_valore = "del";
+    } else if (result_text === "not" || result_text === "None") {
+        ultimo_valore = ""; // Reset the count
+    } else if (result_text === "space") {
+        daStampare += " ";
+        gestureOutput.innerText = daStampare;
+        ultimo_valore = "space"; // Reset the count
+    } else {
+        daStampare += result_text;
+        ultimo_valore = result_text;
+        gestureOutput.innerText = daStampare;
+    }
+};
+
 // Predict gestures from webcam
 let lastVideoTime = -1;
 const predictWebcam = async () => {
     const video = document.getElementById("webcam");
     const canvasElement = document.getElementById("output_canvas");
     const canvasCtx = canvasElement ? canvasElement.getContext("2d") : null;
-    const gestureOutput = document.getElementById("gesture_output");
     if (!gestureRecognizer || !canvasElement || !canvasCtx || !webcamRunning) return;
 
     canvasElement.width = video.videoWidth;
@@ -57,12 +84,8 @@ const predictWebcam = async () => {
         }
 
         if (results.gestures.length > 0) {
-            gestureOutput.style.display = "block";
-            const { categoryName, score } = results.gestures[0][0];
-            const handedness = results.handednesses[0][0].displayName;
-            gestureOutput.innerText = `Gesture: ${categoryName}\nConfidence: ${(score * 100).toFixed(2)}%\nHandedness: ${handedness}`;
-        } else {
-            gestureOutput.style.display = "none";
+            const { categoryName } = results.gestures[0][0];
+            appendi(categoryName); // Call the appendi function with the recognized gesture
         }
     }
 
@@ -147,8 +170,9 @@ const predictWebcam = async () => {
 
         // Clear gesture output
         const clearOutput = () => {
-            gestureOutput.innerText = "";
-            gestureOutput.style.display = "none";
+            daStampare = "";
+            ultimo_valore = "";
+            document.getElementById("gesture_output").innerText = "";
         };
 
         // Export global functions

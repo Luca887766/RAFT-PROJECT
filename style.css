@@ -118,7 +118,7 @@ video {
 
 #webcam {
     width: 100vw;
-    height: 100vh;
+    height: 100%;
     object-fit: cover;
     z-index: -1;
 }
@@ -128,7 +128,7 @@ video {
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: 100%;
     object-fit: cover;
     display: block;
     z-index: 1;

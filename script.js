@@ -61,6 +61,7 @@ const predictWebcam = async () => {
             const { categoryName, score } = results.gestures[0][0];
             const handedness = results.handednesses[0][0].displayName;
             gestureOutput.innerText = `Gesture: ${categoryName}\nConfidence: ${(score * 100).toFixed(2)}%\nHandedness: ${handedness}`;
+            // appendi(categoryName); // Call the appendi function with the recognized gesture
         } else {
             gestureOutput.style.display = "none";
         }
@@ -70,6 +71,32 @@ const predictWebcam = async () => {
         window.requestAnimationFrame(predictWebcam);
     }
 };
+
+// Function to handle appending text
+// const appendi = (result_text) => {
+//     const gestureOutput = document.getElementById("gesture_output");
+//     if (!result_text) {
+//         return;
+//     }
+
+//     if (result_text === ultimo_valore) {
+//         // Do nothing if the same character is entered twice in a row
+//     } else if (result_text === "del") {
+//         daStampare = daStampare.slice(0, -1); // Delete the last character
+//         gestureOutput.innerText = daStampare;
+//         ultimo_valore = "del";
+//     } else if (result_text === "not" || result_text === "None") {
+//         ultimo_valore = ""; // Reset the count
+//     } else if (result_text === "space") {
+//         daStampare += " ";
+//         gestureOutput.innerText = daStampare;
+//         ultimo_valore = "space"; // Reset the count
+//     } else {
+//         daStampare += result_text;
+//         ultimo_valore = result_text;
+//         gestureOutput.innerText = daStampare;
+//     }
+// };
 
 (async () => {
     const visionLibUrl = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3";
@@ -149,6 +176,9 @@ const predictWebcam = async () => {
         const clearOutput = () => {
             gestureOutput.innerText = "";
             gestureOutput.style.display = "none";
+            // daStampare = "";
+            // ultimo_valore = "";
+            // document.getElementById("gesture_output").innerText = "";
         };
 
         // Export global functions

@@ -331,6 +331,10 @@ function inizializzaEventi() {
             }
         });
     }
+
+    // Call aggiornaVocabolario initially to display all letters by default
+    aggiornaVocabolario();
+
     inputRicerca.addEventListener('input', aggiornaVocabolario);
 }
 

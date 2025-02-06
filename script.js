@@ -340,6 +340,8 @@ const europeButton = document.querySelector('.lang-btn[data-lang="Europe"]');
 const containerRect = container.getBoundingClientRect();
 const EUROPE_OFFSET = europeButton ? europeButton.getBoundingClientRect().left - containerRect.left : 0;
 
+container.style.transform = `translateX(${EUROPE_OFFSET}px)`;
+
 document.addEventListener('DOMContentLoaded', () => {
     const buttons = document.querySelectorAll('.lang-btn:not(#noClick)');
     let activeButton = document.querySelector('.lang-btn.active');
@@ -351,11 +353,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 button.classList.add('active');
                 activeButton = button;
 
-                // Ottieni la posizione del pulsante cliccato rispetto al container
                 const buttonRect = button.getBoundingClientRect();
                 const newOffset = buttonRect.left - container.getBoundingClientRect().left;
 
-                // Sposta il container per portare il pulsante selezionato alla posizione originale di "Europe"
                 const translateX = EUROPE_OFFSET - newOffset;
                 container.style.transform = `translateX(${translateX}px)`;
             }
@@ -366,17 +366,15 @@ document.addEventListener('DOMContentLoaded', () => {
 window.toSlide = toSlide;
 window.caricaVocabolario = caricaVocabolario;
 
-
-
 //----------------------------FOOTER---------------------------
 document.addEventListener("DOMContentLoaded", () => {
     const navButtons = document.querySelectorAll("#nav button");
 
     navButtons.forEach(button => {
         button.addEventListener("click", () => {
-            // Rimuovi la classe active da tutti i bottoni
+            // Rimuove la classe active da tutti i bottoni
             navButtons.forEach(btn => btn.classList.remove("active"));
-            // Aggiungi la classe active al pulsante cliccato
+            // Aggiunge la classe active al pulsante cliccato
             button.classList.add("active");
         });
     });
@@ -406,4 +404,3 @@ document.addEventListener("DOMContentLoaded", () => {
       informationDiv.style.display = "none";
     });
   });
-  

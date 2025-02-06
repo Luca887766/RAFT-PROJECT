@@ -12,6 +12,7 @@ body {
     display: flex;
     flex-direction: column;
     background-color: #ffffff;
+    overflow: hidden;
 }
 
 .marginBottom {
@@ -292,13 +293,33 @@ video {
     color: #ffffff;
 }
 
-#nav button.active svg,
-#svg {
-    fill: #FCB200;
+#nav button.active svg {
+    fill: #FCB200; 
     transform: scale(1.2);
     transition: transform 0.3s ease, fill 0.3s ease;
     color: #ffffff;
 }
+
+#nav button {
+    position: relative;
+}
+
+.indicator {
+    position: absolute;
+    top: -25px; /* Posiziona sopra l'icona */
+    left: 50%;
+    width: 60px;
+    height: 8px;
+    background-color: transparent;
+    border-radius: 10px;
+    transform: translateX(-50%);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#nav button.active .indicator {
+    background-color: #FCB200;
+}
+
 
 /*------------------------- CONTATTI PAGE---------------------------*/
 #contatti {
@@ -481,9 +502,77 @@ form {
     font-family: "titolo";
     src: url(fonts/Quantico-Regular.ttf);
 }
+  
+/*------------------------------------SELEZIONE MODALITà--------------------------------*/
+/* Stile comune alle card */
+.card {
+    border-radius: 1.25rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 18rem;
+    height: 23rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 1rem;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
-/* ...existing code... */
+/* Stile comune alle immagini */
+.card img {
+    width: 18rem;
+    height: auto;
+    margin-top: 7rem;
+}
 
+/* Hover per tutte le card */
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Testo comune */
+.card h3 {
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.card p {
+    font-size: 1rem;
+    color: #555;
+}
+
+/* Stile specifico per la card Traduzione */
+.traduzione {
+    background: radial-gradient(circle, #ffca28, #ff9800);
+    color: #000;
+}
+
+.traduzione h3 {
+    color: #222;
+}
+
+.traduzione p {
+    font-weight: bold;
+}
+
+/* Stile specifico per la card Allenamento */
+.allenamento {
+    background: radial-gradient(circle, #001f3f, #0074D9);
+    color: #fff;
+}
+
+.allenamento h3 {
+    color: #f1f1f1;
+}
+
+.allenamento p {
+    font-style: italic;
+    color: #d9eaff;
+}
+  
 #loadingLogo {
     display: flex;
     justify-content: center;
@@ -496,5 +585,3 @@ form {
     width: 200px;
     height: auto;
 }
-
-/* ...existing code... */

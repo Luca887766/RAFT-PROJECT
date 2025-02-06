@@ -104,8 +104,7 @@ body {
 
 .videoContainer {
     position: relative;
-    flex: 1;
-    /* Ensure the video container takes full height */
+    height: 100vh;
     width: 100%;
     overflow: hidden;
     background-color: #ffffff;
@@ -119,9 +118,10 @@ video {
 
 #webcam {
     width: 100vw;
-    height: 100vh;
+    height: 100%;
     object-fit: cover;
     z-index: -1;
+    transform: scaleX(-1);
 }
 
 #output_canvas {
@@ -129,11 +129,11 @@ video {
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: 100%;
     object-fit: cover;
     display: block;
     z-index: 1;
-    /* Set canvas above the video */
+    transform: scaleX(-1);
 }
 
 #gesture_output_container {

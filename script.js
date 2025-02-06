@@ -98,7 +98,7 @@ const predictWebcam = async () => {
 //     }
 // };
 
-(async () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const visionLibUrl = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3";
     const { FilesetResolver, GestureRecognizer: ImportedGestureRecognizer, DrawingUtils: ImportedDrawingUtils } = await import(visionLibUrl);
     DrawingUtils = ImportedDrawingUtils;
@@ -124,69 +124,66 @@ const predictWebcam = async () => {
     };
 
     // Main logic when window loads
-    window.addEventListener('load', async () => {
-        document.getElementById("enableWebcamButton").disabled = true;
-        await loadGestureRecognizer();
+    await loadGestureRecognizer();
 
-        const video = document.getElementById("webcam");
-        const canvasElement = document.getElementById("output_canvas");
-        const canvasCtx = canvasElement ? canvasElement.getContext("2d") : null;
-        const gestureOutput = document.getElementById("gesture_output");
+    const video = document.getElementById("webcam");
+    const canvasElement = document.getElementById("output_canvas");
+    const canvasCtx = canvasElement ? canvasElement.getContext("2d") : null;
+    const gestureOutput = document.getElementById("gesture_output");
 
-        const enableWebcamButton = document.getElementById("enableWebcamButton");
-        const diseableWebcamButton = document.getElementById("diseableWebcamButton");
+    const enableWebcamButton = document.getElementById("enableWebcamButton");
+    const diseableWebcamButton = document.getElementById("diseableWebcamButton");
 
-        // Check for webcam support
-        const hasGetUserMedia = () => !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+    // Check for webcam support
+    const hasGetUserMedia = () => !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
 
-        if (!hasGetUserMedia()) {
-            console.warn("getUserMedia() is not supported by your browser");
+    if (!hasGetUserMedia()) {
+        console.warn("getUserMedia() is not supported by your browser");
+        return;
+    }
+
+    // Enable webcam and start predictions
+    const enableCam = async () => {
+        if (!gestureRecognizer) {
+            alert("Please wait for gestureRecognizer to load");
             return;
         }
 
-        // Enable webcam and start predictions
-        const enableCam = async () => {
-            if (!gestureRecognizer) {
-                alert("Please wait for gestureRecognizer to load");
-                return;
+        const constraints = { video: { width: videoWidth, height: videoHeight } };
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia(constraints);
+            if (video) {
+                video.srcObject = stream;
+                video.addEventListener("loadeddata", () => {
+                    if (video.videoWidth > 0 && video.videoHeight > 0) {
+                        document.getElementById("loadingLogo").style.display = "none";
+                        document.getElementById("traduzione").style.display = "block";
+                        predictWebcam();
+                        webcamRunning = true;
+                    } else {
+                        console.error("Video dimensions are not set correctly.");
+                    }
+                });
             }
+        } catch (err) {
+            console.error("Error accessing the webcam: ", err);
+        }
+    };
 
-            const constraints = { video: { width: videoWidth, height: videoHeight } };
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia(constraints);
-                if (video) {
-                    video.srcObject = stream;
-                    video.addEventListener("loadeddata", () => {
-                        if (video.videoWidth > 0 && video.videoHeight > 0) {
-                            document.getElementById("loadingLogo").style.display = "none";
-                            document.getElementById("traduzione").style.display = "block";
-                            predictWebcam();
-                            webcamRunning = true;
-                        } else {
-                            console.error("Video dimensions are not set correctly.");
-                        }
-                    });
-                }
-            } catch (err) {
-                console.error("Error accessing the webcam: ", err);
-            }
-        };
+    // Clear gesture output
+    const clearOutput = () => {
+        gestureOutput.innerText = "";
+        gestureOutput.style.display = "none";
+        // daStampare = "";
+        // ultimo_valore = "";
+        // document.getElementById("gesture_output").innerText = "";
+    };
 
-        // Clear gesture output
-        const clearOutput = () => {
-            gestureOutput.innerText = "";
-            gestureOutput.style.display = "none";
-            // daStampare = "";
-            // ultimo_valore = "";
-            // document.getElementById("gesture_output").innerText = "";
-        };
-
-        // Export global functions
-        window.disableCam = disableCam;
-        window.enableCam = enableCam;
-        window.clearOutput = clearOutput;
-    });
-})();
+    // Export global functions
+    window.disableCam = disableCam;
+    window.enableCam = enableCam;
+    window.clearOutput = clearOutput;
+});
 
 // Slide management
 function toSlide(dest) {

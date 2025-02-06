@@ -24,8 +24,16 @@
         <button class="lang-btn disabled" id="noClick" disabled>Altre lingue</button>
     </div>
     <div id="selModalita" class="slide marginBottom">
-        <button id="enableWebcamButton" onclick="enableCam(); toSlide('traduzione')" disabled>Traduzione</button>
-        <button onclick="toSlide('selDifficolta')">Allenamento</button>
+        <div class="card traduzione" onclick="enableCam(); toSlide('traduzione')">
+            <img src="img/allenamentoOff.png" alt="Traduzione">
+            <h3>Traduttore</h3>
+            <p>Traduci istantaneamente l’alfabeto dattilologico</p>
+        </div>
+        <div class="card allenamento" onclick="toSlide('selDifficolta')">
+            <img src="img/allenamentoOff.png" alt="Allenamento">
+            <h3>Allenamento</h3>
+            <p>Divertiti allenandoti</p>
+        </div>
     </div>
 
     <div id="loadingLogo" class="slide">

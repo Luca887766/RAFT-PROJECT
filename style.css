@@ -70,6 +70,7 @@ body {
     gap: 1.25rem;
     padding-bottom: 0.3rem;
     border-bottom: 3px solid #21279B;
+    flex-direction: row;
 }
 
 #nomeApp {

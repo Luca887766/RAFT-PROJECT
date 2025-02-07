@@ -394,3 +394,9 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 });
+
+/*------------------------------ RUOTA LA FRECCIA--------------*/
+function toggleFrecciaRotation() {
+    const freccia = document.getElementById('freccia');
+    freccia.classList.toggle('rotated');
+}

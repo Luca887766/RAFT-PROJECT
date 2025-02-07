@@ -22,7 +22,7 @@ body {
 /*--------------------------- SELEZIONE LINGUE-----------------------------*/
 #selezioneLinguaBarra {
     display: flex;
-    gap: 1rem;
+    gap: 0.5rem;
     justify-content: center;
     align-items: center;
     margin-top: 2rem;
@@ -543,12 +543,6 @@ form {
     width: 18rem;
     height: auto;
     margin-top: 9rem;
-}
-
-/* Hover per tutte le card */
-.card:hover {
-    transform: translateY(0.3rem);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
 }
 
 .card h3 {

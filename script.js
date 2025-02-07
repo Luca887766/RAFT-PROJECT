@@ -346,34 +346,39 @@ function inizializzaEventi() {
 }
 
 /*----------------- FUNZIONE DELLA SELEZIONE LINGUA ----------------------*/
-
-const container = document.getElementById('selezioneLinguaBarra');
-const europeButton = document.querySelector('.lang-btn[data-lang="Europe"]');
-const containerRect = container.getBoundingClientRect();
-const EUROPE_OFFSET = europeButton ? europeButton.getBoundingClientRect().left - containerRect.left : 20;
-
 document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('selezioneLinguaBarra');
     const buttons = document.querySelectorAll('.lang-btn:not(#noClick)');
     let activeButton = document.querySelector('.lang-btn.active');
+    
+    function updateOffset() {
+        const containerRect = container.getBoundingClientRect();
+        const europeButton = document.querySelector('.lang-btn[data-lang="Europe"]');
+        const EUROPE_OFFSET = europeButton ? europeButton.getBoundingClientRect().left - containerRect.left : 20;
 
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                if (button !== activeButton) {
+                    buttons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    activeButton = button;
 
-    buttons.forEach(button => {
-        button.addEventListener('click', () => {
-            if (button !== activeButton) {
-                buttons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-                activeButton = button;
-
-                // Ricalcola la posizione quando cambia il pulsante attivo
-                const buttonRect = button.getBoundingClientRect();
-                const newOffset = buttonRect.left - container.getBoundingClientRect().left;
-                const translateX = EUROPE_OFFSET - newOffset;
-                container.style.transform = `translateX(${translateX}px)`;
-            }
+                    // Ricalcola la posizione ogni volta che viene cliccato un pulsante
+                    const buttonRect = button.getBoundingClientRect();
+                    const newOffset = buttonRect.left - container.getBoundingClientRect().left;
+                    const translateX = EUROPE_OFFSET - newOffset;
+                    container.style.transform = 'translateX(${translateX}px)';
+                }
+            });
         });
-    });
-});
+    }
 
+    // Aggiorna il calcolo dell'offset al ridimensionamento della finestra
+    window.addEventListener('resize', updateOffset);
+    
+    // Inizializza l'offset correttamente al caricamento della pagina
+    updateOffset();
+});
 
 
 window.toSlide = toSlide;

@@ -582,3 +582,37 @@ form {
     width: 12.5rem;
     height: auto;
 }
+
+/*-------------- SCHERMATA DI CARICAMENTO-------------*/
+#caricamento {
+    position: relative;
+    height: 100vh;
+    background-color: rgb(164, 164, 216);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  #pattern {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('img/pattern.png');
+    background-repeat: repeat;
+    background-size: 10rem; 
+    z-index: 1;
+  }
+
+  #caricamento > div:last-child {
+    z-index: 2;
+  }
+
+  #caricamento img {
+    max-width: 300px;
+    width: 100%;
+    height: auto;
+    z-index: 2;
+  }

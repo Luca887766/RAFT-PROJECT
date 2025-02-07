@@ -399,3 +399,5 @@ function toggleFrecciaRotation() {
     const freccia = document.getElementById('freccia');
     freccia.classList.toggle('rotated');
 }
+
+/*---------------FUNZIONE PER IL CARICAMENTO INIZIALE--------------*/

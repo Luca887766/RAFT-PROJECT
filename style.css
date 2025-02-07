@@ -544,6 +544,8 @@ form {
     width: 18rem;
     height: auto;
     margin-top: 9rem;
+}
+
 /* Hover per tutte le card */
 .card:hover {
     transform: translateY(0.3rem);

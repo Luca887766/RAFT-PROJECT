@@ -176,7 +176,18 @@ video {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(6.25rem, 1fr));
     gap: 0.5rem;
-    margin-top: 1.25rem;
+    padding: 1rem;
+}
+
+#imgVocabolario.alternato {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-top: 4rem;
+}
+
+#imgVocabolario.alternato .lettera:nth-child(odd) {
+    transform: translateY(-5rem);
 }
 
 .lettera {
@@ -225,7 +236,7 @@ video {
 .input-container svg {
     position: absolute;
     top: 50%;
-    left: 0.6rem;
+    left: 1.5rem;
     transform: translateY(-50%);
     pointer-events: none;
     color: #aaa;
@@ -241,6 +252,7 @@ video {
     outline: none;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     transition: box-shadow 0.3s ease;
+    margin: 1rem;
 }
 
 .input-container input[type="search"]::placeholder {
@@ -306,7 +318,7 @@ video {
 
 .indicator {
     position: absolute;
-    top: -25px; /* Posiziona sopra l'icona */
+    top: -25px;
     left: 50%;
     width: 60px;
     height: 8px;
@@ -335,6 +347,7 @@ video {
     font-weight: bold;
     color: #21279B;
     margin: 0;
+    margin-top: 1rem;
 }
 
 .contattiTesto {

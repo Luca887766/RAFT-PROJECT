@@ -199,7 +199,7 @@ function toSlide(dest) {
 
     const elementsToShow = getElementsForSlide(dest);
     elementsToShow.forEach((element) => {
-        if (element.id === "nav") {
+        if (element.id === "nav" || element.id === "barraLogo" || element.id === "selezioneLinguaBarra" || element.id === "selModalita") {
             element.style.display = "flex";
         } else {
             element.style.display = "block";
@@ -292,6 +292,13 @@ function inizializzaEventi() {
 
     function aggiornaVocabolario() {
         const testo = inputRicerca.value.toUpperCase(); // Converte il testo in maiuscolo
+
+        //controlla se mettere le immagini in fila o in modo alternato
+        if (testo.length === 0) {
+            imgContainer.classList.add('alternato');
+        } else {
+            imgContainer.classList.remove('alternato');
+        }
 
         // Logica per ottenere la lingua selezionata dai radio
         const linguaSelezionata = "italiano";
@@ -387,3 +394,9 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 });
+
+/*------------------------------ RUOTA LA FRECCIA--------------*/
+function toggleFrecciaRotation() {
+    const freccia = document.getElementById('freccia');
+    freccia.classList.toggle('rotated');
+}

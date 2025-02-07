@@ -70,6 +70,7 @@ body {
     gap: 1.25rem;
     padding-bottom: 0.3rem;
     border-bottom: 3px solid #21279B;
+    flex-direction: row;
 }
 
 #nomeApp {
@@ -176,7 +177,18 @@ video {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(6.25rem, 1fr));
     gap: 0.5rem;
-    margin-top: 1.25rem;
+    padding: 1rem;
+}
+
+#imgVocabolario.alternato {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-top: 4rem;
+}
+
+#imgVocabolario.alternato .lettera:nth-child(odd) {
+    transform: translateY(-5rem);
 }
 
 .lettera {
@@ -186,7 +198,7 @@ video {
     border: 0.6rem solid transparent;
     border-radius: 0.75rem;
     background-color: #10145C;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 0.25rem 0.6rem rgba(0, 0, 0, 0.2);
     overflow: hidden;
 }
 
@@ -225,7 +237,7 @@ video {
 .input-container svg {
     position: absolute;
     top: 50%;
-    left: 0.6rem;
+    left: 1.5rem;
     transform: translateY(-50%);
     pointer-events: none;
     color: #aaa;
@@ -235,12 +247,13 @@ video {
     width: 100%;
     padding: 0.6rem 0.9rem 0.6rem 2rem;
     border: 1px solid #ccc;
-    border-radius: 10px;
+    border-radius: 0.6rem;
     background-color: #f9f9f9;
-    font-size: 16px;
+    font-size: 1rem;
     outline: none;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     transition: box-shadow 0.3s ease;
+    margin: 1rem;
 }
 
 .input-container input[type="search"]::placeholder {
@@ -306,10 +319,10 @@ video {
 
 .indicator {
     position: absolute;
-    top: -25px; /* Posiziona sopra l'icona */
+    top: -1.5rem;
     left: 50%;
-    width: 60px;
-    height: 8px;
+    width: 3.75rem;
+    height: 0.5rem;
     background-color: transparent;
     border-radius: 10px;
     transform: translateX(-50%);
@@ -335,6 +348,7 @@ video {
     font-weight: bold;
     color: #21279B;
     margin: 0;
+    margin-top: 1rem;
 }
 
 .contattiTesto {
@@ -453,7 +467,7 @@ form {
     pointer-events: none;
 }
 
-/*additional information*/
+/*additional information per computer*/
 #testoOpzionale{
     font-size: 0.8rem;
     color: #6e6e6e;
@@ -530,6 +544,10 @@ form {
     width: 18rem;
     height: auto;
     margin-top: 9rem;
+/* Hover per tutte le card */
+.card:hover {
+    transform: translateY(0.3rem);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
 }
 
 .card h3 {

@@ -343,11 +343,12 @@ function inizializzaEventi() {
 const container = document.getElementById('selezioneLinguaBarra');
 const europeButton = document.querySelector('.lang-btn[data-lang="Europe"]');
 const containerRect = container.getBoundingClientRect();
-const EUROPE_OFFSET = europeButton ? europeButton.getBoundingClientRect().left - containerRect.left : 0;
+const EUROPE_OFFSET = europeButton ? europeButton.getBoundingClientRect().left - containerRect.left : 20;
 
 document.addEventListener('DOMContentLoaded', () => {
     const buttons = document.querySelectorAll('.lang-btn:not(#noClick)');
     let activeButton = document.querySelector('.lang-btn.active');
+
 
     buttons.forEach(button => {
         button.addEventListener('click', () => {
@@ -356,17 +357,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 button.classList.add('active');
                 activeButton = button;
 
-                // Ottieni la posizione del pulsante cliccato rispetto al container
+                // Ricalcola la posizione quando cambia il pulsante attivo
                 const buttonRect = button.getBoundingClientRect();
                 const newOffset = buttonRect.left - container.getBoundingClientRect().left;
-
-                // Sposta il container per portare il pulsante selezionato alla posizione originale di "Europe"
                 const translateX = EUROPE_OFFSET - newOffset;
                 container.style.transform = `translateX(${translateX}px)`;
             }
         });
     });
 });
+
 
 
 window.toSlide = toSlide;

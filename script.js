@@ -199,7 +199,7 @@ function toSlide(dest) {
 
     const elementsToShow = getElementsForSlide(dest);
     elementsToShow.forEach((element) => {
-        if (element.id === "nav" || element.id === "barraLogo" || element.id === "selezioneLinguaBarra" || element.id === "selModalita") {
+        if (element.id === "nav" || element.id === "barraLogo" || element.id === "selezioneLinguaBarra" || element.id === "selModalita" || element.id === "caricamento") {
             element.style.display = "flex";
         } else {
             element.style.display = "block";

@@ -606,12 +606,14 @@ form {
     z-index: 1;
   }
 
-  #caricamento > div:last-child {
+  #logoNome{
     z-index: 2;
+    position: absolute;
+    align-self: center;
   }
 
   #caricamento img {
-    max-width: 300px;
+    max-width: 55rem;
     width: 100%;
     height: auto;
     z-index: 2;

@@ -211,7 +211,9 @@ function getElementsForSlide(dest) {
     const elements = [];
     switch (dest) {
         case "caricamento":
-            elements.push(document.getElementById("caricamento"));
+            elements.push(
+                document.getElementById("caricamento")
+            );
             break;
         case "homePage":
             elements.push(

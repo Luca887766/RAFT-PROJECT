@@ -9,13 +9,13 @@
     <script type="module" src="script.js"></script>
 </head>
 
-<body onload="toSlide('caricamento'), caricaVocabolario()">
+<body onload="caricaVocabolario(), toSlide('caricamento')">
     <div id="caricamento" class="slide">
         <div id="pattern"></div>
         <div>
           <img src="img/logoRaft.png" alt="Logo Raft">
         </div>
-      </div>
+    </div>
 
     <header id="barraLogo" class="slide">
         <div id="nomeApp">RAFT</div>
@@ -130,7 +130,7 @@
     </div>
 
 
-    <footer id="nav">
+    <footer id="nav" class="slide">
         <button onclick="toSlide('homePage')" class="active">
             <div class="indicator"></div>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-translate" viewBox="0 0 16 16">

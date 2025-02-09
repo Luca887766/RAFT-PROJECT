@@ -458,31 +458,11 @@ document.addEventListener("DOMContentLoaded", () => {
         if (activeCard) {
             activeCard.classList.remove("active");
             activeCard.classList.add("disactive");
-            changeImage(activeCard); // Cambia l'immagine della card disattiva
         }
 
         card.classList.add("active");
         card.classList.remove("disactive");
-        changeImage(card); // Cambia l'immagine della card attiva
         activeCard = card;
-    }
-
-    function changeImage(card) {
-        const img = card.querySelector(".card-img");
-
-        if (card.classList.contains("active")) {
-            if (card.querySelector("h3").textContent === "Traduttore") {
-                img.src = "img/traduzioneOn.png";  // Cambia immagine per Traduzione attiva
-            } else if (card.querySelector("h3").textContent === "Allenamento") {
-                img.src = "img/allenamentoOn.png";  // Cambia immagine per Allenamento attivo
-            }
-        } else if (card.classList.contains("disactive")) {
-            if (card.querySelector("h3").textContent === "Traduttore") {
-                img.src = "img/traduzioneOff.png";  // Cambia immagine per Traduzione disattiva
-            } else if (card.querySelector("h3").textContent === "Allenamento") {
-                img.src = "img/allenamentoOff.png";  // Cambia immagine per Allenamento disattivo
-            }
-        }
     }
 });
 

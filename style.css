@@ -527,22 +527,25 @@ form {
 .card {
     border-radius: 1.25rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 16rem;
-    height: 19rem;
+    width: 18rem;  /* Maggiore larghezza per una card più grande */
+    height: 22rem; /* Maggiore altezza per accomodare l'immagine più grande */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 1rem;
     cursor: pointer;
+    position: relative; /* Per posizionare il testo fuori dalla card */
+    overflow: hidden;  /* Nasconde gli elementi fuori dalla card */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card img {
     width: 100%;
     height: auto;
-    margin-top: 4rem;
-    margin-bottom: 1rem;
+    object-fit: cover;  /* Assicura che l'immagine copra tutta la card senza distorsioni */
+    margin-top: 0; /* Rimuove il margine iniziale */
+    margin-bottom: 0; /* Rimuove il margine inferiore */
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -563,18 +566,24 @@ form {
 #cardAllenamento.disactive img {
     content: url('img/allenamentoOff.png');
 }
-
 .card h3 {
     font-size: 1.5rem;
     color: #000000;
-    margin: 0;
-    margin-top: 1rem;
+    margin: 1rem 0 0 0; /* Distanzia il titolo dal bordo della card */
+    position: absolute;
+    bottom: 50px; /* Posiziona il titolo sopra il bordo inferiore */
+    left: 50%;
+    transform: translateX(-50%); /* Centra il titolo orizzontalmente */
 }
 
 .card p {
     font-size: 1rem;
     color: #858585;
     margin: 0;
+    position: absolute;
+    bottom: 20px; /* Posiziona il paragrafo appena sopra il bordo inferiore */
+    left: 50%;
+    transform: translateX(-50%); /* Centra il paragrafo orizzontalmente */
 }
 
 .active {
@@ -593,7 +602,6 @@ form {
     opacity: 0.5;
     transform: scale(1.1);
 }
-
 
 
 

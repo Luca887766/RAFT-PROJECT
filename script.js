@@ -443,46 +443,50 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function handleCardClick(card) {
-        // Se la card cliccata è già attiva, non fare nulla
         if (card === activeCard) return;
 
-        // Se la card cliccata è disattivata, prima anima e poi cambia
         if (card.classList.contains("disactive")) {
             card.classList.add("animate");
             setTimeout(() => {
                 updateActiveCard(card);
-                // Esegui la funzione toSlide dopo l'animazione
-                toSlide('traduzione');  // Sostituisci con la slide desiderata
-            }, 300);  // Tempo dell'animazione (in ms)
+                toSlide('traduzione');
+            }, 300); 
         }
     }
 
-    function updateActiveCard(newActiveCard) {
-        cards.forEach((card) => {
-            card.classList.remove("active");
-            card.classList.add("disactive");
+    function updateActiveCard(card) {
+        if (activeCard) {
+            activeCard.classList.remove("active");
+            activeCard.classList.add("disactive");
+            changeImage(activeCard); // Cambia l'immagine della card disattiva
+        }
 
-            const img = card.querySelector("img");
+        card.classList.add("active");
+        card.classList.remove("disactive");
+        changeImage(card); // Cambia l'immagine della card attiva
+        activeCard = card;
+    }
 
-            if (card.dataset.mode === "traduzione") {
-                img.src = "img/traduzioneOff.png";
-            } else if (card.dataset.mode === "allenamento") {
-                img.src = "img/allenamentoOn.png";
+    function changeImage(card) {
+        const img = card.querySelector(".card-img");
+
+        if (card.classList.contains("active")) {
+            if (card.querySelector("h3").textContent === "Traduttore") {
+                img.src = "img/traduzioneOn.png";  // Cambia immagine per Traduzione attiva
+            } else if (card.querySelector("h3").textContent === "Allenamento") {
+                img.src = "img/allenamentoOn.png";  // Cambia immagine per Allenamento attivo
             }
-        });
-
-        newActiveCard.classList.add("active");
-        newActiveCard.classList.remove("disactive");
-        activeCard = newActiveCard;
-
-        const newImg = activeCard.querySelector("img");
-        if (activeCard.dataset.mode === "traduzione") {
-            newImg.src = "img/traduzioneOff.png";
-        } else if (activeCard.dataset.mode === "allenamento") {
-            newImg.src = "img/allenamentoOn.png";
+        } else if (card.classList.contains("disactive")) {
+            if (card.querySelector("h3").textContent === "Traduttore") {
+                img.src = "img/traduzioneOff.png";  // Cambia immagine per Traduzione disattiva
+            } else if (card.querySelector("h3").textContent === "Allenamento") {
+                img.src = "img/allenamentoOff.png";  // Cambia immagine per Allenamento disattivo
+            }
         }
     }
 });
+
+
 
 
 //----------------------------FOOTER---------------------------

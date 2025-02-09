@@ -355,7 +355,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const buttons = document.querySelectorAll('.lang-btn:not(#noClick)');
     let activeButton = document.querySelector('.lang-btn.active');
 
-
     buttons.forEach(button => {
         button.addEventListener('click', () => {
             if (button !== activeButton) {
@@ -367,15 +366,108 @@ document.addEventListener('DOMContentLoaded', () => {
                 const buttonRect = button.getBoundingClientRect();
                 const newOffset = buttonRect.left - container.getBoundingClientRect().left;
                 const translateX = EUROPE_OFFSET - newOffset;
-                container.style.transform = 'translateX(${translateX}px)';
+                container.style.transform = `translateX(${translateX}px)`;
             }
         });
     });
 });
 
 
+
 window.toSlide = toSlide;
 window.caricaVocabolario = caricaVocabolario;
+
+//----------------------------SELEZIONE MODALITA'--------------------------- 
+document.addEventListener("DOMContentLoaded", () => {
+    const container = document.getElementById("selModalita");
+    const cards = document.querySelectorAll(".card");
+
+    let activeCard = document.querySelector(".card.active");
+    let startX = 0;
+    let currentX = 0;
+    let isDragging = false;
+
+    cards.forEach((card) => {
+        card.addEventListener("mousedown", startDrag);
+        card.addEventListener("touchstart", startDrag);
+        card.addEventListener("click", () => handleCardClick(card));
+    });
+
+    function startDrag(event) {
+        isDragging = true;
+        startX = event.touches ? event.touches[0].clientX : event.clientX;
+
+        document.addEventListener("mousemove", onDrag);
+        document.addEventListener("touchmove", onDrag);
+        document.addEventListener("mouseup", stopDrag);
+        document.addEventListener("touchend", stopDrag);
+    }
+
+    function onDrag(event) {
+        if (!isDragging) return;
+        currentX = event.touches ? event.touches[0].clientX : event.clientX;
+
+        const deltaX = currentX - startX;
+
+        container.style.transform = `translateX(${deltaX}px)`;
+    }
+
+    function stopDrag() {
+        isDragging = false;
+
+        document.removeEventListener("mousemove", onDrag);
+        document.removeEventListener("touchmove", onDrag);
+        document.removeEventListener("mouseup", stopDrag);
+        document.removeEventListener("touchend", stopDrag);
+
+        const centerX = window.innerWidth / 2;
+        let closestCard = null;
+        let closestDistance = Infinity;
+
+        cards.forEach((card) => {
+            const cardRect = card.getBoundingClientRect();
+            const cardCenter = cardRect.left + cardRect.width / 2;
+            const distance = Math.abs(cardCenter - centerX);
+
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                closestCard = card;
+            }
+        });
+
+        if (closestCard && closestCard !== activeCard) {
+            updateActiveCard(closestCard);
+        }
+
+        container.style.transform = "translateX(0)";
+    }
+
+    function handleCardClick(card) {
+        if (card === activeCard) return;
+
+        if (card.classList.contains("disactive")) {
+            card.classList.add("animate");
+            setTimeout(() => {
+                updateActiveCard(card);
+                toSlide('traduzione');
+            }, 300); 
+        }
+    }
+
+    function updateActiveCard(card) {
+        if (activeCard) {
+            activeCard.classList.remove("active");
+            activeCard.classList.add("disactive");
+        }
+
+        card.classList.add("active");
+        card.classList.remove("disactive");
+        activeCard = card;
+    }
+});
+
+
+
 
 //----------------------------FOOTER---------------------------
 document.addEventListener("DOMContentLoaded", () => {

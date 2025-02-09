@@ -9,7 +9,7 @@
     <script type="module" src="script.js"></script>
 </head>
 
-<body onload="caricaVocabolario(), toSlide('caricamento')">
+<body onload="toSlide('caricamento')">
     <div id="caricamento" class="slide">
         <div id="logoNome">
             <img src="img/logoRaft.png" alt="Logo Raft">
@@ -174,5 +174,16 @@
     </footer>
 
 </body>
-
 </html>
+
+
+<!--Se non sta qua non va-->
+<script>
+    function apertura() {
+    toSlide("caricamento");
+    caricaVocabolario();
+    setTimeout(() => {
+        toSlide("homePage");
+    }, 3000);
+}
+</script>

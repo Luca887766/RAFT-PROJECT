@@ -613,9 +613,9 @@ form {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('img/patternNuovo.png');
+    background-image: url('img/pattern.png');
     background-repeat: repeat;
-    background-size: 17rem; 
+    background-size: 12rem; 
     z-index: 1;
   }
 
@@ -626,11 +626,11 @@ form {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    bottom: 15%; /* Puoi regolare questa percentuale per posizionarlo meglio sotto l'immagine */
+    bottom: 15%;
 }
 
   #caricamento img {
-    max-width: 55rem;
+    max-width: 14rem;
     width: 100%;
     height: auto;
     z-index: 2;

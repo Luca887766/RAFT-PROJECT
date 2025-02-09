@@ -372,7 +372,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const buttonRect = button.getBoundingClientRect();
                 const newOffset = buttonRect.left - container.getBoundingClientRect().left;
                 const translateX = EUROPE_OFFSET - newOffset;
-                container.style.transform = 'translateX(${translateX}px)';
+                container.style.transform = `translateX(${translateX}px)`;
             }
         });
     });
@@ -403,11 +403,11 @@ function toggleFrecciaRotation() {
 }
 
 /*---------------FUNZIONE PER IL CARICAMENTO INIZIALE--------------*/
-/*window.onload = () => {
+//ORA NEL INDEX
+function apertura() {
     toSlide("caricamento");
-
+    caricaVocabolario();
     setTimeout(() => {
         toSlide("homePage");
     }, 3000);
-};
-*/
+}

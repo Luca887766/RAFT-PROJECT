@@ -529,7 +529,7 @@ form {
     border-radius: 1.25rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     width: 18rem;
-    height: 23rem;
+    height: 21rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -542,26 +542,28 @@ form {
 .card img {
     width: 18rem;
     height: auto;
-    margin-top: 9rem;
+    margin-top: 4rem;
 }
 
 .card h3 {
     font-size: 1.5rem;
     color: #000000;
-    margin-top: 2rem;
+    margin: 0;
+    margin-top:0.5rem;
 }
 
 .card p {
     font-size: 1rem;
     color: #858585;
+    margin:0;
 }
 
-.traduzione {
+.active {
     background: radial-gradient(circle, #ffca28, #ff9800);
     color: #000;
 }
 
-.allenamento {
+.disactive {
     background: radial-gradient(80.97% 1714.77% at 58.68% -1061.36%, #21279B 0%, #10145C 100%);
     color: #fff;
     transform: scale(0.85);

@@ -25,17 +25,17 @@
     </div>
     
     <div id="selModalita" class="slide marginBottom">
-        <div class="card traduzione" onclick="enableCam(); toSlide('traduzione')">
-            <img src="img/tradusioneOn.png" alt="Traduzione">
+        <div class="card active" data-mode="traduzione">
+            <img src="img/traduzioneOn.png" alt="Traduzione">
             <h3>Traduttore</h3>
             <p>Traduci istantaneamente l’alfabeto dattilologico</p>
         </div>
-        <div class="card allenamento" onclick="toSlide('selDifficolta')">
+        <div class="card disactive" data-mode="allenamento">
             <img src="img/allenamentoOff.png" alt="Allenamento">
             <h3>Allenamento</h3>
             <p>Divertiti allenandoti</p>
         </div>
-    </div>
+    </div>    
 
     <div id="loadingLogo" class="slide">
         <img src="img/logoGalilei.png" alt="Loading Logo">

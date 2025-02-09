@@ -9,7 +9,7 @@
     <script type="module" src="script.js"></script>
 </head>
 
-<body onload="toSlide('caricamento')">
+<body onload="fadeToHomePage()">
     <div id="caricamento" class="slide">
         <div id="logoNome">
             <img src="img/logoRaft.png" alt="Logo Raft">
@@ -129,7 +129,7 @@
                 </div>
             </div>
 
-            <label for="selLingua">Lingua/e di riferimento</label>
+            <label>Lingua/e di riferimento</label>
             <form>
                 <input type="checkbox" id="linguaEuropeo" name="linguaEuropeo" value="linguaEuropeo">
                 <label for="linguaEuropeo" class="check" style="font-size: 1rem;">Europe</label>
@@ -174,16 +174,30 @@
     </footer>
 
 </body>
-</html>
 
-
-<!--Se non sta qua non va-->
 <script>
-    function apertura() {
-    toSlide("caricamento");
-    caricaVocabolario();
-    setTimeout(() => {
-        toSlide("homePage");
-    }, 3000);
-}
+    function fadeToHomePage() {
+        toSlide('caricamento');
+        caricaVocabolario()
+        const loadingSlide = document.getElementById("caricamento");
+
+        if (loadingSlide) {
+            setTimeout(() => {
+                loadingSlide.style.transition = "opacity 0.5s ease-out";
+                loadingSlide.style.opacity = "0";
+
+                setTimeout(() => {
+                    loadingSlide.style.display = "none";
+                    toSlide('homePage'); 
+                }, 500);
+            }, 2000);
+        }
+    }
+
+    function toggleFrecciaRotation() {
+        const freccia = document.getElementById('freccia');
+        freccia.classList.toggle('rotated');
+    }
 </script>
+
+</html>

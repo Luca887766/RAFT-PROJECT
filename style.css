@@ -72,7 +72,7 @@ body {
     padding: 0.6rem 1.25rem;
     border-top-left-radius: 1.25rem;
     border-top-right-radius: 1.25rem;
-    border-bottom: 0.3rem solid #1E3A8A;
+    border-bottom: 0.3rem solid #21279b;;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   }
   
@@ -80,7 +80,7 @@ body {
     font-family: 'logoTitolo';
     font-size: 2rem;
     font-weight: bold;
-    color: #1E3A8A;
+    color: #21279b;;
     letter-spacing: 0.1rem;
   }
   
@@ -417,7 +417,7 @@ form {
 .formContainer button {
     width: 100%;
     padding: 0.8rem;
-    background-color: #007bff;
+    background-color: #21279b;
     color: white;
     border: none;
     border-radius: 0.5rem;
@@ -426,7 +426,7 @@ form {
 }
 
 .formContainer button:hover {
-    background-color: #0056b3;
+    background-color: #3238ab;
 }
 
 #selMessaggio {

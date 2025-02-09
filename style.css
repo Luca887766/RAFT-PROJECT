@@ -517,7 +517,6 @@ form {
 }
   
 /*------------------------------------SELEZIONE MODALITà--------------------------------*/
-
 #selModalita {
     margin-top: 2rem;
     display: flex;
@@ -528,8 +527,8 @@ form {
 .card {
     border-radius: 1.25rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 18rem;
-    height: 21rem;
+    width: 16rem;
+    height: 19rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -540,27 +539,27 @@ form {
 }
 
 .card img {
-    width: 18rem;
+    width: 100%;
     height: auto;
     margin-top: 4rem;
+    margin-bottom: 1rem;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-/* Caso 1: Traduttore attivo */
 #cardTraduttore.active img {
     content: url('img/traduzioneOn.png');
 }
 
-/* Caso 2: Allenamento attivo */
 #cardAllenamento.active img {
     content: url('img/allenamentoOn.png');
 }
 
-/* Caso 3: Traduttore disattivo */
 #cardTraduttore.disactive img {
     content: url('img/traduzioneOff.png');
 }
 
-/* Caso 4: Allenamento disattivo */
 #cardAllenamento.disactive img {
     content: url('img/allenamentoOff.png');
 }
@@ -569,7 +568,7 @@ form {
     font-size: 1.5rem;
     color: #000000;
     margin: 0;
-    margin-top: 0.5rem;
+    margin-top: 1rem;
 }
 
 .card p {

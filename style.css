@@ -13,10 +13,19 @@ body {
     flex-direction: column;
     background-color: #ffffff;
     overflow-x: hidden;
+    transition: opacity 0.5s ease-in-out;
 }
 
 .marginBottom {
     padding-bottom: 8rem;
+}
+
+.fade-out {
+    opacity: 0;
+}
+
+.fade-in {
+    opacity: 1;
 }
 
 /*--------------------------- SELEZIONE LINGUE-----------------------------*/
@@ -515,7 +524,11 @@ form {
     font-family: "titolo";
     src: url(fonts/Quantico-Regular.ttf);
 }
-  
+
+@font-face {
+    font-family: "logoTitolo";
+    src: url(fonts/Bluffolk-nAD4V.ttf);
+}
 /*------------------------------------SELEZIONE MODALITà--------------------------------*/
 
 #selModalita {
@@ -606,11 +619,15 @@ form {
     z-index: 1;
   }
 
-  #logoNome{
+  #logoNome {
     z-index: 2;
     position: absolute;
-    align-self: center;
-  }
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    bottom: 15%; /* Puoi regolare questa percentuale per posizionarlo meglio sotto l'immagine */
+}
 
   #caricamento img {
     max-width: 55rem;
@@ -618,3 +635,22 @@ form {
     height: auto;
     z-index: 2;
   }
+
+  #caricamento h1 {
+    font-family: 'logoTitolo';
+    font-size: 3em;
+    -webkit-text-stroke: 2px #007bff;
+    color: white;
+    text-shadow: 3px 3px 6px rgba(145, 186, 230, 0.8);
+}
+
+#caricamento p {
+    font-family: 'logoTitolo';
+    font-size: 1.2rem;
+    color: #ffffff;
+    margin-top: 5px;
+    letter-spacing: 0.5px;
+    text-shadow: 1px 1px 2px rgba(145, 186, 230, 0.9);
+}
+
+

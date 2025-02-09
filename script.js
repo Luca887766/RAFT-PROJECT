@@ -403,3 +403,11 @@ function toggleFrecciaRotation() {
 }
 
 /*---------------FUNZIONE PER IL CARICAMENTO INIZIALE--------------*/
+/*window.onload = () => {
+    toSlide("caricamento");
+
+    setTimeout(() => {
+        toSlide("homePage");
+    }, 3000);
+};
+*/

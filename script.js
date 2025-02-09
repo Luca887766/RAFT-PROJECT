@@ -199,7 +199,7 @@ function toSlide(dest) {
 
     const elementsToShow = getElementsForSlide(dest);
     elementsToShow.forEach((element) => {
-        if (element.id === "nav" || element.id === "barraLogo" || element.id === "selezioneLinguaBarra" || element.id === "selModalita") {
+        if (element.id === "nav" || element.id === "barraLogo" || element.id === "selezioneLinguaBarra" || element.id === "selModalita" || element.id === "caricamento") {
             element.style.display = "flex";
         } else {
             element.style.display = "block";
@@ -210,6 +210,11 @@ function toSlide(dest) {
 function getElementsForSlide(dest) {
     const elements = [];
     switch (dest) {
+        case "caricamento":
+            elements.push(
+                document.getElementById("caricamento")
+            );
+            break;
         case "homePage":
             elements.push(
                 document.getElementById("barraLogo"),
@@ -487,4 +492,14 @@ document.addEventListener("DOMContentLoaded", () => {
 function toggleFrecciaRotation() {
     const freccia = document.getElementById('freccia');
     freccia.classList.toggle('rotated');
+}
+
+/*---------------FUNZIONE PER IL CARICAMENTO INIZIALE--------------*/
+//ORA NEL INDEX
+function apertura() {
+    toSlide("caricamento");
+    caricaVocabolario();
+    setTimeout(() => {
+        toSlide("homePage");
+    }, 3000);
 }

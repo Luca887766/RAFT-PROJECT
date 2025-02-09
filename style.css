@@ -13,6 +13,7 @@ body {
     flex-direction: column;
     background-color: #ffffff;
     overflow-x: hidden;
+    transition: opacity 0.5s ease-in-out;
 }
 
 .marginBottom {
@@ -65,34 +66,35 @@ body {
 /*--------------------------- BARRA LOGO ----------------------------*/
 #barraLogo {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 1.25rem;
-    padding-bottom: 0.3rem;
-    border-bottom: 3px solid #21279B;
-    flex-direction: row;
-}
-
-#nomeApp {
+    background-color: white;
+    padding: 0.6rem 1.25rem;
+    border-top-left-radius: 1.25rem;
+    border-top-right-radius: 1.25rem;
+    border-bottom: 0.3rem solid #21279b;;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  #nomeApp {
+    font-family: 'logoTitolo';
     font-size: 2rem;
     font-weight: bold;
-    color: #21279B;
-    margin: 0;
-    padding: 0;
-    line-height: 1;
-    font-family: "titolo";
-}
-
-#imgLoghi {
+    color: #21279b;;
+    letter-spacing: 0.1rem;
+  }
+  
+  #imgLoghi {
     display: flex;
     gap: 0.6rem;
-    align-items: center;
-}
-
-#imgLoghi img {
-    width: 3rem;
-    height: auto;
-    object-fit: contain;
-}
+  }
+  
+  #imgLoghi img {
+    max-height: 3rem;
+    max-width: 100%;
+    border-radius: 0.6rem;
+  }
+  
 
 /*--------------------------- SLIDE TRADUZIONE ----------------------------*/
 
@@ -306,7 +308,7 @@ video {
 }
 
 #nav button.active svg {
-    fill: #FCB200; 
+    fill: #FCB200;
     transform: scale(1.2);
     transition: transform 0.3s ease, fill 0.3s ease;
     color: #ffffff;
@@ -323,7 +325,7 @@ video {
     width: 3.75rem;
     height: 0.5rem;
     background-color: transparent;
-    border-radius: 10px;
+    border-radius: 0.6rem;
     transform: translateX(-50%);
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
@@ -386,7 +388,7 @@ textarea {
     border: 1px solid #ccc;
     border-radius: 0.5rem;
     margin-bottom: 1rem;
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.07);
+    box-shadow: 0 0.3rem 0.6rem rgba(0, 0, 0, 0.07);
 }
 
 select {
@@ -415,7 +417,7 @@ form {
 .formContainer button {
     width: 100%;
     padding: 0.8rem;
-    background-color: #007bff;
+    background-color: #21279b;
     color: white;
     border: none;
     border-radius: 0.5rem;
@@ -424,7 +426,7 @@ form {
 }
 
 .formContainer button:hover {
-    background-color: #0056b3;
+    background-color: #3238ab;
 }
 
 #selMessaggio {
@@ -467,12 +469,12 @@ form {
 }
 
 /*additional information per computer*/
-#testoOpzionale{
+#testoOpzionale {
     font-size: 0.8rem;
     color: #6e6e6e;
 }
 
-#iconOpzionale{
+#iconOpzionale {
     color: #6e6e6e;
 }
 
@@ -490,11 +492,11 @@ form {
     transform: translateX(-50%);
     top: -3rem;
     padding: 0.5rem;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
     z-index: 10;
     display: none;
     word-wrap: break-word;
-    white-space: normal; 
+    white-space: normal;
 }
 
 .label-svg-container {
@@ -515,7 +517,12 @@ form {
     font-family: "titolo";
     src: url(fonts/Quantico-Regular.ttf);
 }
-  
+
+@font-face {
+    font-family: "logoTitolo";
+    src: url(fonts/Bluffolk-nAD4V.ttf);
+}
+
 /*------------------------------------SELEZIONE MODALITà--------------------------------*/
 #selModalita {
     margin-top: 2rem;
@@ -617,4 +624,62 @@ form {
 #loadingLogo img {
     width: 12.5rem;
     height: auto;
+}
+
+/*-------------- SCHERMATA DI CARICAMENTO-------------*/
+#caricamento {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    background-color: #10145C;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+#pattern {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('img/pattern.png');
+    background-repeat: repeat;
+    background-size: 12rem;
+    z-index: 1;
+}
+
+#logoNome {
+    z-index: 2;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    bottom: 15%;
+}
+
+#caricamento img {
+    max-width: 14rem;
+    width: 100%;
+    height: auto;
+    z-index: 2;
+}
+
+#caricamento h1 {
+    font-family: 'logoTitolo';
+    font-size: 3em;
+    -webkit-text-stroke: 2px #007bff;
+    color: white;
+    text-shadow: 3px 3px 6px rgba(145, 186, 230, 0.8);
+}
+
+#caricamento p {
+    font-family: 'logoTitolo';
+    font-size: 1.2rem;
+    color: #ffffff;
+    margin-top: 5px;
+    letter-spacing: 0.5px;
+    text-shadow: 1px 1px 2px rgba(145, 186, 230, 0.9);
 }

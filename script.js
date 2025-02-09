@@ -378,7 +378,7 @@ window.toSlide = toSlide;
 window.caricaVocabolario = caricaVocabolario;
 
 //----------------------------SELEZIONE MODALITA'--------------------------- 
-    document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
     const container = document.getElementById("selModalita");
     const cards = document.querySelectorAll(".card");
 
@@ -390,7 +390,7 @@ window.caricaVocabolario = caricaVocabolario;
     cards.forEach((card) => {
         card.addEventListener("mousedown", startDrag);
         card.addEventListener("touchstart", startDrag);
-        card.addEventListener("click", () => handleCardClick(card)); // Aggiungi questo evento
+        card.addEventListener("click", () => handleCardClick(card));
     });
 
     function startDrag(event) {
@@ -406,7 +406,7 @@ window.caricaVocabolario = caricaVocabolario;
     function onDrag(event) {
         if (!isDragging) return;
         currentX = event.touches ? event.touches[0].clientX : event.clientX;
-        
+
         const deltaX = currentX - startX;
 
         container.style.transform = `translateX(${deltaX}px)`;
@@ -446,7 +446,15 @@ window.caricaVocabolario = caricaVocabolario;
         // Se la card cliccata è già attiva, non fare nulla
         if (card === activeCard) return;
 
-        updateActiveCard(card);
+        // Se la card cliccata è disattivata, prima anima e poi cambia
+        if (card.classList.contains("disactive")) {
+            card.classList.add("animate");
+            setTimeout(() => {
+                updateActiveCard(card);
+                // Esegui la funzione toSlide dopo l'animazione
+                toSlide('traduzione');  // Sostituisci con la slide desiderata
+            }, 300);  // Tempo dell'animazione (in ms)
+        }
     }
 
     function updateActiveCard(newActiveCard) {
@@ -459,7 +467,7 @@ window.caricaVocabolario = caricaVocabolario;
             if (card.dataset.mode === "traduzione") {
                 img.src = "img/traduzioneOff.png";
             } else if (card.dataset.mode === "allenamento") {
-                img.src = "img/allenamentoOff.png";
+                img.src = "img/allenamentoOn.png";
             }
         });
 
@@ -469,12 +477,13 @@ window.caricaVocabolario = caricaVocabolario;
 
         const newImg = activeCard.querySelector("img");
         if (activeCard.dataset.mode === "traduzione") {
-            newImg.src = "img/traduzioneOn.png";
+            newImg.src = "img/traduzioneOff.png";
         } else if (activeCard.dataset.mode === "allenamento") {
             newImg.src = "img/allenamentoOn.png";
         }
     }
 });
+
 
 //----------------------------FOOTER---------------------------
 document.addEventListener("DOMContentLoaded", () => {

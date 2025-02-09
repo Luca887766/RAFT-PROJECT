@@ -376,8 +376,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 window.toSlide = toSlide;
 window.caricaVocabolario = caricaVocabolario;
+
 //----------------------------SELEZIONE MODALITA'--------------------------- 
-document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener("DOMContentLoaded", () => {
     const container = document.getElementById("selModalita");
     const cards = document.querySelectorAll(".card");
 
@@ -389,6 +390,7 @@ document.addEventListener("DOMContentLoaded", () => {
     cards.forEach((card) => {
         card.addEventListener("mousedown", startDrag);
         card.addEventListener("touchstart", startDrag);
+        card.addEventListener("click", () => handleCardClick(card)); // Aggiungi questo evento
     });
 
     function startDrag(event) {
@@ -438,6 +440,13 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         container.style.transform = "translateX(0)";
+    }
+
+    function handleCardClick(card) {
+        // Se la card cliccata è già attiva, non fare nulla
+        if (card === activeCard) return;
+
+        updateActiveCard(card);
     }
 
     function updateActiveCard(newActiveCard) {

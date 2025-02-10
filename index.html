@@ -2,13 +2,13 @@
 <html lang="it">
 
 <head>
-    <meta charset="utf-8">
-    <title>RAFT-app</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <script type="text/javascript" src="script.js"></script>
-    <link rel="manifest" href="manifest.json">
-    <link rel="icon" type="image/png" href="img/logoRaft.png">
-    <meta name="viewport" content="width=device-width">
+    <meta charset="utf-8" />
+    <title>RAFT</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script src="script.js" type="text/javascript"></script>
+    <link rel="manifest" href="manifest.json" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <meta name="viewport" content="width=device-width" />
 </head>
 
 <body onload="fadeToHomePage()">
@@ -27,7 +27,7 @@
             <img src="img/logoGalilei.png" alt="Logo Galilei">
             <img src="img/logoOverlimits.png" alt="Logo Overlimits">
         </div>
-    </header>    
+    </header>
 
     <div id="selezioneLinguaBarra" class="slide">
         <button class="lang-btn active" data-lang="Europe">Europe</button>
@@ -46,7 +46,7 @@
             <h3>Allenamento</h3>
             <p>Divertiti allenandoti</p>
         </div>
-    </div>      
+    </div>
 
     <div id="loadingLogo" class="slide">
         <img src="img/logoGalilei.png" alt="Loading Logo">
@@ -190,7 +190,7 @@
 
                 setTimeout(() => {
                     loadingSlide.style.display = "none";
-                    toSlide('homePage'); 
+                    toSlide('homePage');
                 }, 500);
             }, 2000);
         }

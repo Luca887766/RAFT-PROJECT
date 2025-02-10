@@ -12,7 +12,7 @@
         }
     ],
     "start_url": "index.html",
-    "scope": "raftonline.live",
+    "scope": "/",
     "display": "standalone",
     "theme_color": "#10145C",
     "background_color": "#10145C"

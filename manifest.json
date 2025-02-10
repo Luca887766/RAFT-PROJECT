@@ -1,0 +1,19 @@
+{
+    "name": "Real Time Automated Fingerspelling Translator",
+    "short_name": "RAFT",
+    "id": "RAFTpwa",
+    "description": "App sponsorizzata da Overlimits per la traduzione dell'alfabeto dattilologico",
+    "icons": [
+        {
+            "src": "img/logoRaft.png",
+            "sizes": "581x918",
+            "type": "image/png",
+            "purpose": "maskable any"
+        }
+    ],
+    "start_url": "index.html",
+    "scope": "raftonline.live",
+    "display": "standalone",
+    "theme_color": "#10145C",
+    "background_color": "#10145C"
+}

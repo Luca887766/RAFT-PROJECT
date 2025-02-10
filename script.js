@@ -1,3 +1,12 @@
+//impostanzioni per PWA
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js');
+}
+if(location.protocol=="http:"){
+    location.href="https"+location.href.substring(4);
+}
+
+
 let webcamRunning = false;
 let gestureRecognizer;
 let runningMode = "IMAGE";

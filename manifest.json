@@ -5,7 +5,7 @@
     "description": "App sponsorizzata da Overlimits per la traduzione dell'alfabeto dattilologico",
     "icons": [
         {
-            "src": "img/logoRaft.png",
+            "src": "favicon.png",
             "sizes": "581x918",
             "type": "image/png",
             "purpose": "maskable any"

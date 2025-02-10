@@ -399,11 +399,7 @@ document.addEventListener("DOMContentLoaded", () => {
     cards.forEach((card) => {
         card.addEventListener("mousedown", startDrag);
         card.addEventListener("touchstart", startDrag);
-
-        // Aggiungi l'evento solo se la card non è disattivata
-        if (!card.classList.contains("disactive")) {
-            card.addEventListener("click", () => handleCardClick(card));
-        }
+        card.addEventListener("click", () => handleCardClick(card));
     });
 
     function startDrag(event) {
@@ -455,7 +451,33 @@ document.addEventListener("DOMContentLoaded", () => {
         container.style.transform = "translateX(0)";
     }
 
+    function handleCardClick(card) {
+        if (card === activeCard) return;
+
+        if (card.classList.contains("disactive")) {
+            card.classList.add("animate");
+            setTimeout(() => {
+                updateActiveCard(card);
+                toSlide('traduzione');
+            }, 300); 
+        }
+    }
+
+    function updateActiveCard(card) {
+        if (activeCard) {
+            activeCard.classList.remove("active");
+            activeCard.classList.add("disactive");
+        }
+
+        card.classList.add("active");
+        card.classList.remove("disactive");
+        activeCard = card;
+    }
+
+    
 });
+
+
 
 
 //----------------------------FOOTER---------------------------

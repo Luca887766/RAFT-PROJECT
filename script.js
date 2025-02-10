@@ -1,4 +1,4 @@
-//impostanzioni per PWA
+//----------------IMPOSTAZIONI PWA--------------------------
 const cacheName='RAFTpwa'; //PWA id here
 //Register PWA service worker
 if ('serviceWorker' in navigator) {
@@ -26,6 +26,7 @@ xhr.onerror=function(){
 xhr.open("GET","pwaversion.txt?t="+Date.now())
 xhr.send();
 
+/*-------------------INTELLIGENZA------------------*/
 
 let webcamRunning = false;
 let gestureRecognizer;

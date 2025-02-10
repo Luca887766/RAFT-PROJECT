@@ -387,6 +387,7 @@ window.toSlide = toSlide;
 window.caricaVocabolario = caricaVocabolario;
 
 //----------------------------SELEZIONE MODALITA'--------------------------- 
+
 document.addEventListener("DOMContentLoaded", () => {
     const container = document.getElementById("selModalita");
     const cards = document.querySelectorAll(".card");

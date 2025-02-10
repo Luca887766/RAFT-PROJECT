@@ -4,6 +4,7 @@ const appFiles = [
     'script.js',
     'style.css',
     'sw.js',
+    'favicon.ico',
     'vocabolario.json',
     'manifest.json',
     'README.md',

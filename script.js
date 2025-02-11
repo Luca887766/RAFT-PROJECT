@@ -452,18 +452,6 @@ document.addEventListener("DOMContentLoaded", () => {
         container.style.transform = "translateX(0)";
     }
 
-    function handleCardClick(card) {
-        if (card === activeCard) return;
-
-        if (card.classList.contains("disactive")) {
-            card.classList.add("animate");
-            setTimeout(() => {
-                updateActiveCard(card);
-                toSlide('traduzione');
-            }, 300); 
-        }
-    }
-
     function updateActiveCard(card) {
         if (activeCard) {
             activeCard.classList.remove("active");

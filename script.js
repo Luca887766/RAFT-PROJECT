@@ -220,10 +220,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     window.disableCam = disableCam;
 });
 
-// Slide management
+//--------------------------------- SLIDE MANAGEMENT -----------------------------------*/
 function toSlide(dest) {
     const slides = document.querySelectorAll(".slide");
     slides.forEach((slide) => (slide.style.display = "none"));
+
+    // Disattiva tutti i bottoni della selezione difficoltà
+    const buttons = document.querySelectorAll("#selDifficolta button");
+    buttons.forEach(button => button.classList.remove("active"));
 
     if (dest === "traduzione") {
         const nav = document.getElementById("nav");
@@ -243,6 +247,7 @@ function toSlide(dest) {
         }
     });
 }
+
 
 function getElementsForSlide(dest) {
     const elements = [];

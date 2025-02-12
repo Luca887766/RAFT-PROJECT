@@ -697,19 +697,18 @@ form {
     box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease-in-out;
     position: relative;
-    
+
     width: 350px;
     height: 120px;
-    
+
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     text-align: center;
 }
 
 #selDifficolta button.active {
-    background-color: #FFD700;
+    background: radial-gradient(circle, #FFDE3A 30%, #FCB200 100%);
     height: 170px;
 }
 
@@ -723,23 +722,17 @@ form {
 }
 
 #selDifficolta button span {
-    width: 100%;
-    text-align: center;
-    transition: transform 0.3s ease-in-out;
-}
-
-#selDifficolta button.active span {
-    transform: translateY(-20px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
 }
 
 #selDifficolta .description {
     font-size: 1.5rem;
-    font-weight: normal;
-    color: rgba(255, 165, 0, 0.8);
-    margin-top: 5px; 
-    
-    text-shadow: 1px 1px 5px rgba(255, 140, 0, 0.3);
-    
+    font-weight: bold;
+    color: #E6A200;
+    margin-top: 5px;
     visibility: hidden;
     opacity: 0;
     transition: opacity 0.3s ease-in-out;

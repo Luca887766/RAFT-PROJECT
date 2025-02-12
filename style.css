@@ -672,3 +672,34 @@ form {
     width: 12.5rem;
     height: auto;
 }
+
+/*--------------SCELTA DIFFICOLTA'-------------------*/
+#selDifficolta {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+#selDifficolta button {
+    background-color: #0C1E60;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+#selDifficolta button:hover {
+    transform: translateY(-2px);
+    box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+#selDifficolta button:active {
+    transform: translateY(1px);
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+}

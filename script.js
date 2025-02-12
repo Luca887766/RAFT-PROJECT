@@ -554,8 +554,3 @@ function fadeToHomePage() {
         }, 2000);
     }
 }
-
-function toggleFrecciaRotation() {
-    const freccia = document.getElementById('freccia');
-    freccia.classList.toggle('rotated');
-}

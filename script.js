@@ -535,3 +535,27 @@ function apertura() {
         toSlide("homePage");
     }, 3000);
 }
+
+/*--------------------------*/
+function fadeToHomePage() {
+    toSlide('caricamento');
+    caricaVocabolario()
+    const loadingSlide = document.getElementById("caricamento");
+
+    if (loadingSlide) {
+        setTimeout(() => {
+            loadingSlide.style.transition = "opacity 0.5s ease-out";
+            loadingSlide.style.opacity = "0";
+
+            setTimeout(() => {
+                loadingSlide.style.display = "none";
+                toSlide('homePage');
+            }, 500);
+        }, 2000);
+    }
+}
+
+function toggleFrecciaRotation() {
+    const freccia = document.getElementById('freccia');
+    freccia.classList.toggle('rotated');
+}

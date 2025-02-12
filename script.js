@@ -393,6 +393,11 @@ const europeButton = document.querySelector('.lang-btn[data-lang="Europe"]');
 const containerRect = container.getBoundingClientRect();
 const EUROPE_OFFSET = europeButton ? europeButton.getBoundingClientRect().left - containerRect.left : 20;
 
+// Imposta sempre il div spostandolo del 10% della larghezza dello schermo verso destra
+const screenWidth = window.innerWidth;
+const initialOffset = screenWidth * 0.1;
+container.style.transform = `translateX(${initialOffset}px)`;
+
 document.addEventListener('DOMContentLoaded', () => {
     const buttons = document.querySelectorAll('.lang-btn:not(#noClick)');
     let activeButton = document.querySelector('.lang-btn.active');
@@ -407,7 +412,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Ricalcola la posizione quando cambia il pulsante attivo
                 const buttonRect = button.getBoundingClientRect();
                 const newOffset = buttonRect.left - container.getBoundingClientRect().left;
-                const translateX = EUROPE_OFFSET - newOffset;
+                const translateX = EUROPE_OFFSET - newOffset + initialOffset;
                 container.style.transform = `translateX(${translateX}px)`;
             }
         });
@@ -415,11 +420,11 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-
 window.toSlide = toSlide;
 window.caricaVocabolario = caricaVocabolario;
 
 //----------------------------SELEZIONE MODALITA'--------------------------- 
+
 document.addEventListener("DOMContentLoaded", () => {
     const container = document.getElementById("selModalita");
     const cards = document.querySelectorAll(".card");
@@ -484,31 +489,21 @@ document.addEventListener("DOMContentLoaded", () => {
         container.style.transform = "translateX(0)";
     }
 
-    function handleCardClick(card) {
-        if (card === activeCard) return;
-
-        if (card.classList.contains("disactive")) {
-            card.classList.add("animate");
-            setTimeout(() => {
-                updateActiveCard(card);
-                toSlide('traduzione');
-            }, 300); 
-        }
-    }
-
     function updateActiveCard(card) {
         if (activeCard) {
             activeCard.classList.remove("active");
+            activeCard.classList.add("enableCam");
             activeCard.classList.add("disactive");
         }
 
         card.classList.add("active");
+        activeCard.classList.remove("enableCam");
         card.classList.remove("disactive");
         activeCard = card;
     }
+
+    
 });
-
-
 
 
 //----------------------------FOOTER---------------------------

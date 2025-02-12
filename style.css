@@ -268,6 +268,7 @@ video {
 }
 
 /*----------------------- FOOTER ---------------------*/
+
 #nav {
     position: fixed;
     bottom: 0;
@@ -526,7 +527,7 @@ form {
 /*------------------------------------SELEZIONE MODALITà--------------------------------*/
 #selModalita {
     margin-top: 2rem;
-    display: flex;
+    align-items: center;
     justify-content: center;
     gap: 2rem;
 }
@@ -534,28 +535,19 @@ form {
 .card {
     border-radius: 1.25rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 18rem;  /* Maggiore larghezza per una card più grande */
-    height: 22rem; /* Maggiore altezza per accomodare l'immagine più grande */
+    width: 18rem;  
+    height: 22rem; 
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
     padding: 1rem;
     cursor: pointer;
-    position: relative; /* Per posizionare il testo fuori dalla card */
-    overflow: hidden;  /* Nasconde gli elementi fuori dalla card */
+    position: relative; 
+    overflow: hidden;  
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card img {
     width: 100%;
-    height: auto;
-    object-fit: cover;  /* Assicura che l'immagine copra tutta la card senza distorsioni */
-    margin-top: 0; /* Rimuove il margine iniziale */
-    margin-bottom: 0; /* Rimuove il margine inferiore */
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
 }
 
 #cardTraduttore.active img {
@@ -573,24 +565,21 @@ form {
 #cardAllenamento.disactive img {
     content: url('img/allenamentoOff.png');
 }
-.card h3 {
+
+.card-container h3 {
     font-size: 1.5rem;
-    color: #000000;
-    margin: 1rem 0 0 0; /* Distanzia il titolo dal bordo della card */
-    position: absolute;
-    bottom: 50px; /* Posiziona il titolo sopra il bordo inferiore */
-    left: 50%;
-    transform: translateX(-50%); /* Centra il titolo orizzontalmente */
+    color: #000;
+    margin:0;
+    margin-left:0.5rem;
+    max-width: 18rem;
 }
 
-.card p {
+.card-container p {
     font-size: 1rem;
     color: #858585;
-    margin: 0;
-    position: absolute;
-    bottom: 20px; /* Posiziona il paragrafo appena sopra il bordo inferiore */
-    left: 50%;
-    transform: translateX(-50%); /* Centra il paragrafo orizzontalmente */
+    margin:0;
+    margin-left:0.5rem;
+    max-width: 18rem;
 }
 
 .active {
@@ -604,27 +593,14 @@ form {
     transform: scale(0.85);
 }
 
-.card.animate {
-    transition: transform 0.3s ease, opacity 0.3s ease;
-    opacity: 0.5;
-    transform: scale(1.1);
-}
+.card.disactive ~ h3 {
+    font-size: 1.2rem;
+    margin:0;
+    margin-left:0.5rem;
+    max-width: 15rem;
+} 
 
 
-
-
-#loadingLogo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #ffffff;
-}
-
-#loadingLogo img {
-    width: 12.5rem;
-    height: auto;
-}
 
 /*-------------- SCHERMATA DI CARICAMENTO-------------*/
 #caricamento {
@@ -682,4 +658,17 @@ form {
     margin-top: 5px;
     letter-spacing: 0.5px;
     text-shadow: 1px 1px 2px rgba(145, 186, 230, 0.9);
+}
+
+#loadingLogo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #ffffff;
+}
+
+#loadingLogo img {
+    width: 12.5rem;
+    height: auto;
 }

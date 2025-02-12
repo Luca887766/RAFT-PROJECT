@@ -1,3 +1,40 @@
+//----------------IMPOSTAZIONI PWA--------------------------
+const cacheName = 'RAFTpwa'; //PWA id here
+
+// Register PWA service worker
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').then(() => {
+        console.log('Service Worker registered successfully');
+    }).catch(err => console.error('Service Worker registration failed:', err));
+}
+
+// Redirect HTTP to HTTPS
+if (location.protocol === "http:") {
+    location.href = "https" + location.href.substring(4);
+}
+
+// Check for updates
+const xhr = new XMLHttpRequest();
+xhr.onload = function () {
+    const version = xhr.responseText.trim();
+    if (!localStorage.pwaversion) {
+        localStorage.pwaversion = version;
+    } else if (localStorage.pwaversion !== version) {
+        console.log("Updating PWA");
+        delete localStorage.pwaversion;
+        caches.delete(cacheName).then(() => {
+            location.reload();
+        });
+    }
+};
+xhr.onerror = function () {
+    console.log("Update check failed");
+};
+xhr.open("GET", "pwaversion.txt?t=" + Date.now());
+xhr.send();
+
+/*-------------------INTELLIGENZA------------------*/
+
 let webcamRunning = false;
 let gestureRecognizer;
 let runningMode = "IMAGE";

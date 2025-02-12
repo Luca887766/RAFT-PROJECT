@@ -289,6 +289,15 @@ function getElementsForSlide(dest) {
         case "allenamento":
             elements.push(document.getElementById("allenamento"));
             break;
+        case "giocoFacile":
+            elements.push(document.getElementById("giocoFacile"));
+            break;
+        case "giocoMedio":
+            elements.push(document.getElementById("giocoMedio"));
+            break;
+        case "giocoDifficile":
+            elements.push(document.getElementById("giocoDifficile"));
+            break;
         default:
             break;
     }
@@ -502,7 +511,7 @@ document.addEventListener("DOMContentLoaded", () => {
         activeCard = card;
     }
 
-    
+
 });
 
 
@@ -543,4 +552,27 @@ function fadeToHomePage() {
             }, 500);
         }, 2000);
     }
+}
+
+/*------------BOTTONI SELEZIONE DIFFICOLTA-------------*/
+function selectDifficulty(selectedButton) {
+    const mode = selectedButton.id;
+
+    // Se il bottone è già attivo, chiama toSlide con il valore specifico
+    if (selectedButton.classList.contains("active")) {
+        if (mode === "modFacile") {
+            toSlide("giocoFacile")
+        } else if (mode === "modMedia") {
+            toSlide("giocoMedio")
+        } else if (mode === "modDifficile") {
+            toSlide("giocoDifficile")
+        }
+        return;
+    }
+
+    const buttons = document.querySelectorAll("#selDifficolta button");
+
+    buttons.forEach(button => button.classList.remove("active"));
+
+    selectedButton.classList.add("active");
 }

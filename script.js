@@ -520,23 +520,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-/*------------------------------ RUOTA LA FRECCIA--------------*/
+/*------------------------------ RUOTA LA FRECCIA DEI CONTATTI--------------*/
 function toggleFrecciaRotation() {
     const freccia = document.getElementById('freccia');
     freccia.classList.toggle('rotated');
 }
 
-/*---------------FUNZIONE PER IL CARICAMENTO INIZIALE--------------*/
-//ORA NEL INDEX
-function apertura() {
-    toSlide("caricamento");
-    caricaVocabolario();
-    setTimeout(() => {
-        toSlide("homePage");
-    }, 3000);
-}
-
-/*--------------------------*/
+/*------------------------CARICAMENTO INIZIALE DELLA PAGINA-------------------------*/
 function fadeToHomePage() {
     toSlide('caricamento');
     caricaVocabolario()

@@ -679,44 +679,56 @@ form {
 #selDifficolta {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 20px;
     align-items: center;
+    justify-content: center;
+    height: 100vh;
 }
 
 #selDifficolta button {
     background-color: #0C1E60;
     color: white;
     border: none;
-    padding: 12px 24px;
-    font-size: 18px;
+    padding: 20px 40px;
+    font-size: 4rem;
     font-weight: bold;
-    border-radius: 10px;
+    border-radius: 15px;
     cursor: pointer;
-    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s, padding-bottom 0.2s;
+    box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
     position: relative;
-    min-width: 120px;
+    min-width: 200px;
 }
 
 #selDifficolta button:hover {
-    transform: translateY(-2px);
-    box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.3);
+    transform: translateY(-5px);
+    box-shadow: 8px 8px 18px rgba(0, 0, 0, 0.3);
 }
 
 #selDifficolta button:active {
-    transform: scale(1.1);
+    transform: scale(1.15);
     background-color: #FFD700;
-    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
-    padding-bottom: 30px;
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+#modFacile::after {
+    content: "Modalità più semplice";
+}
+
+#modMedia::after {
+    content: "Sfida intermedia";
+}
+
+#modDifficile::after {
+    content: "Solo per esperti!";
 }
 
 #selDifficolta button::after {
-    content: "Selezionato";
-    font-size: 14px;
+    font-size: 16px;
     color: black;
     font-weight: normal;
     position: absolute;
-    bottom: 5px;
+    bottom: -25px;
     left: 50%;
     transform: translateX(-50%);
     opacity: 0;

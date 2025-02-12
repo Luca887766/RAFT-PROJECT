@@ -455,18 +455,18 @@ document.addEventListener("DOMContentLoaded", () => {
     function updateActiveCard(card) {
         if (activeCard) {
             activeCard.classList.remove("active");
+            activeCard.classList.add("enableCam");
             activeCard.classList.add("disactive");
         }
 
         card.classList.add("active");
+        activeCard.classList.remove("enableCam");
         card.classList.remove("disactive");
         activeCard = card;
     }
 
     
 });
-
-
 
 
 //----------------------------FOOTER---------------------------

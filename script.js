@@ -232,7 +232,7 @@ function toSlide(dest) {
     if (dest === "traduzione") {
         const nav = document.getElementById("nav");
         nav.style.display = "none";
-        document.getElementById("loadingIntelligenza").style.display = "block";
+        document.getElementById("traduzione").style.display = "block";
         enableCam();
     } else {
         disableCam();

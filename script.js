@@ -193,7 +193,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 video.srcObject = stream;
                 video.addEventListener("loadeddata", () => {
                     if (video.videoWidth > 0 && video.videoHeight > 0) {
-                        document.getElementById("loadingLogo").style.display = "none";
+                        document.getElementById("loadingIntelligenza").style.display = "none";
                         document.getElementById("traduzione").style.display = "block";
                         predictWebcam();
                         webcamRunning = true;
@@ -232,7 +232,7 @@ function toSlide(dest) {
     if (dest === "traduzione") {
         const nav = document.getElementById("nav");
         nav.style.display = "none";
-        document.getElementById("loadingLogo").style.display = "block";
+        document.getElementById("loadingIntelligenza").style.display = "block";
         enableCam();
     } else {
         disableCam();
@@ -240,7 +240,7 @@ function toSlide(dest) {
 
     const elementsToShow = getElementsForSlide(dest);
     elementsToShow.forEach((element) => {
-        if (element.id === "nav" || element.id === "barraLogo" || element.id === "selezioneLinguaBarra" || element.id === "selModalita" || element.id === "caricamento" || element.id === "selDifficolta") {
+        if (element.id === "nav" || element.id === "barraLogo" || element.id === "selezioneLinguaBarra" || element.id === "selModalita" || element.id === "loadingIntelligenza" || element.id === "loadingIniziale" || element.id === "selDifficolta") {
             element.style.display = "flex";
         } else {
             element.style.display = "block";
@@ -252,9 +252,14 @@ function toSlide(dest) {
 function getElementsForSlide(dest) {
     const elements = [];
     switch (dest) {
-        case "caricamento":
+        case "loadingIntelligenza":
             elements.push(
-                document.getElementById("caricamento")
+                document.getElementById("loadingIntelligenza")
+            );
+            break;
+        case "loadingIniziale":
+            elements.push(
+                document.getElementById("loadingIniziale")
             );
             break;
         case "homePage":
@@ -542,9 +547,9 @@ function toggleFrecciaRotation() {
 
 /*------------------------CARICAMENTO INIZIALE DELLA PAGINA-------------------------*/
 function fadeToHomePage() {
-    toSlide('caricamento');
+    toSlide('loadingIniziale');
     caricaVocabolario()
-    const loadingSlide = document.getElementById("caricamento");
+    const loadingSlide = document.getElementById("loadingIniziale");
 
     if (loadingSlide) {
         setTimeout(() => {

@@ -605,7 +605,7 @@ form {
 
 
 /*-------------- SCHERMATA DI CARICAMENTO-------------*/
-#caricamento {
+.loading {
     position: relative;
     height: 100vh;
     width: 100%;
@@ -616,7 +616,7 @@ form {
     overflow: hidden;
 }
 
-#pattern {
+.pattern {
     position: absolute;
     top: 0;
     left: 0;
@@ -628,7 +628,7 @@ form {
     z-index: 1;
 }
 
-#logoNome {
+.logoNome {
     z-index: 2;
     position: absolute;
     display: flex;
@@ -638,14 +638,14 @@ form {
     bottom: 15%;
 }
 
-#caricamento img {
+.loading img {
     max-width: 14rem;
     width: 100%;
     height: auto;
     z-index: 2;
 }
 
-#caricamento h1 {
+.loading h1 {
     font-family: 'logoTitolo';
     font-size: 3em;
     -webkit-text-stroke: 0.1rem #007bff;
@@ -653,7 +653,7 @@ form {
     text-shadow: 0.2rem 0.2rem 0.3rem rgba(145, 186, 230, 0.8);
 }
 
-#caricamento p {
+.loading p {
     font-family: 'logoTitolo';
     font-size: 1.2rem;
     color: #ffffff;
@@ -662,15 +662,7 @@ form {
     text-shadow: 0.05rem 0.05rem 0.1rem rgba(145, 186, 230, 0.9);
 }
 
-#loadingLogo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #ffffff;
-}
-
-#loadingLogo img {
+.loading img {
     width: 12.5rem;
     height: auto;
 }

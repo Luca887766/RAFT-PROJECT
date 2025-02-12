@@ -236,7 +236,7 @@ function toSlide(dest) {
 
     const elementsToShow = getElementsForSlide(dest);
     elementsToShow.forEach((element) => {
-        if (element.id === "nav" || element.id === "barraLogo" || element.id === "selezioneLinguaBarra" || element.id === "selModalita" || element.id === "caricamento") {
+        if (element.id === "nav" || element.id === "barraLogo" || element.id === "selezioneLinguaBarra" || element.id === "selModalita" || element.id === "caricamento" || element.id === "selDifficolta") {
             element.style.display = "flex";
         } else {
             element.style.display = "block";

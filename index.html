@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 
 <head>
     <meta charset="utf-8" />
@@ -22,69 +22,68 @@
 </head>
 
 <body onload="fadeToHomePage()">
-    <!-- ---------------------------------- PAGINA DI CARICAMENTO ----------------------------------------- -->
+    <!-- ---------------------------------- LOADING PAGE ----------------------------------------- -->
     <div id="loadingIniziale" class="slide loading">
         <div class="logoNome">
-            <img src="img/logoRaft.png" alt="Logo Raft">
+            <img src="img/logoRaft.png" alt="Raft Logo">
             <h1>RAFT</h1>
             <p>Real Time Automated Fingerspelling Translator</p>
         </div>
         <div class="pattern"></div>
     </div>
 
-    <!-- ---------------------------------- BARRA TITOLO E LOGO ----------------------------------------- -->
+    <!-- ---------------------------------- TITLE BAR AND LOGO ----------------------------------------- -->
     <header id="barraLogo" class="slide">
         <div id="nomeApp">RAFT</div>
         <div id="imgLoghi">
             <a href="https://www.galileicrema.edu.it/" target="_blank">
-                <img src="img/logoGalilei.png" alt="Logo Galilei">
+                <img src="img/logoGalilei.png" alt="Galilei Logo">
             </a>
             <a href="https://www.asdoverlimits.com/" target="_blank">
-                <img src="img/logoOverlimits.png" alt="Logo Overlimits">
+                <img src="img/logoOverlimits.png" alt="Overlimits Logo">
             </a>
         </div>
     </header>
 
-    <!-- ---------------------------------- BARRA SELEZIONE DELLA LINGUA ----------------------------------------- -->
+    <!-- ---------------------------------- LANGUAGE SELECTION BAR ----------------------------------------- -->
     <div id="selezioneLinguaBarra" class="slide">
         <button class="lang-btn active" data-lang="Europe">Europe</button>
         <button class="lang-btn" data-lang="American">American</button>
-        <button class="lang-btn disabled" id="noClick" disabled>Altre lingue</button>
+        <button class="lang-btn disabled" id="noClick" disabled>Other languages</button>
     </div>
 
-    <!-- ---------------------------------- PAGINA SELEZIONE DELLA MODALITA ----------------------------------------- -->
+    <!-- ---------------------------------- MODE SELECTION PAGE ----------------------------------------- -->
     <div id="selModalita" class="slide marginBottom">
         <div class="card-container">
-            <div class="card disactive" id="cardTraduttore" onclick="enableCam(); toSlide('traduzione')">
-                <img class="card-img" src="img/traduzioneOff.png" alt="Traduzione">
+            <div class="card active" id="cardTraduttore" onclick="enableCam(); toSlide('traduzione')">
+                <img class="card-img" src="img/traduzioneOff.png" alt="Translation">
             </div>
-            <h3>Traduttore</h3>
-            <p>Traduci istantaneamente l’alfabeto dattilologico</p>
+            <h3>Translator</h3>
+            <p>Instantly translate the fingerspelling alphabet</p>
         </div>
 
         <div class="card-container">
-            <div class="card active" id="cardAllenamento" onclick="toSlide('selDifficolta')">
-                <img class="card-img" src="img/allenamentoOff.png" alt="Allenamento">
+            <div class="card disactive" id="cardAllenamento" onclick="toSlide('selDifficolta')">
+                <img class="card-img" src="img/allenamentoOff.png" alt="Training">
             </div>
-            <h3>Allenamento</h3>
-            <p>Divertiti allenandoti</p>
+            <h3>Training</h3>
+            <p>Have fun training</p>
         </div>
     </div>
 
-    <!-- ---------------------------------- PAGINA DI LOADING DELL'INTELLGENZA ----------------------------------------- -->
-    <div id="loadingIntelligenza" class="slide loading">
+    <!-- ---------------------------------- INTELLIGENCE LOADING PAGE ----------------------------------------- -->
+    <div id="loadingIntelligenza" class="slide loading" style="display: none;">
         <div class="logoNome">
-            <img src="img/logoRaft.png" alt="Logo Raft">
+            <img src="img/logoRaft.png" alt="Raft Logo">
             <h1>RAFT</h1>
-            <p>Caricamento...</p>
+            <p>Loading...</p>
         </div>
         <div id="pattern" class="pattern"></div>
     </div>
 
-    <!-- ---------------------------------- PAGINA DI TRADUZIONE ----------------------------------------- -->
+    <!-- ---------------------------------- TRANSLATION PAGE ----------------------------------------- -->
     <div id="traduzione" class="slide" style="display: none;">
-        <button class="backButton" id="diseableWebcamButton" onclick="disableCam(); toSlide('homePage')">Torna
-            Indietro</button>
+        <button class="backButton" id="diseableWebcamButton" onclick="disableCam(); toSlide('homePage'); clearOutput()">Go Back</button>
         <button class="clearButton" onclick="clearOutput()">Clear</button>
         <div class="videoContainer">
             <video id="webcam" autoplay playsinline></video>
@@ -95,27 +94,25 @@
         </div>
     </div>
 
-    <!-- ---------------------------------- PAGINA DI SELEZIONE DIFFICOLTA ----------------------------------------- -->
-    <div id="selDifficolta" class="slide marginBottom">
+    <!-- ---------------------------------- DIFFICULTY SELECTION PAGE ----------------------------------------- -->
+    <div id="selDifficolta" class="slide marginBottom" style="display: none;">
         <button id="modFacile" onclick="selectDifficulty(this)">
-            <span>Facile</span>
-            <span class="description">Questa è la modalità facile...</span>
+            <span>Easy</span>
+            <span class="description">This is the easy mode...</span>
         </button>
         <button id="modMedia" onclick="selectDifficulty(this)">
-            <span>Media</span>
-            <span class="description">Modalità avanzata</span>
+            <span>Medium</span>
+            <span class="description">Advanced mode</span>
         </button>
         <button id="modDifficile" onclick="selectDifficulty(this)">
-            <span>Difficile</span>
-            <span class="description">Solo per esperti!</span>
+            <span>Hard</span>
+            <span class="description">Only for experts!</span>
         </button>
     </div>
 
-
-    <!-- ---------------------------------- PAGINE DI GIOCO ----------------------------------------- -->
+    <!-- ---------------------------------- EASY GAME PAGE ----------------------------------------- -->
     <div id="giocoFacile" class="slide" style="display: none;">
-        <button class="backButton" id="diseableWebcamButton" onclick="disableCam(); toSlide('homePage')">Torna
-            Indietro</button>
+        <button class="backButton" id="diseableWebcamButton" onclick="disableCam(); toSlide('homePage')">Go Back</button>
         <div class="videoContainer">
             <video id="webcam" autoplay playsinline></video>
             <canvas class="output_canvas" id="output_canvas" width="1280" height="720"></canvas>
@@ -125,19 +122,20 @@
         </div>
     </div>
 
-    <div id="giocoMedio" class="slide marginBottom giocoSviluppo">
-        <p>Modalità di gioco media ancora in sviluppo</p>
-        <button onclick="toSlide('selDifficolta')"> Torna indietro </button>
+    <!-- ---------------------------------- MEDIUM GAME PAGE ----------------------------------------- -->
+    <div id="giocoMedio" class="slide marginBottom giocoSviluppo" style="display: none;">
+        <p>Medium game mode still in development</p>
+        <button onclick="toSlide('selDifficolta')"> Go Back </button>
     </div>
 
-    <div id="giocoDifficile" class="slide marginBottom giocoSviluppo">
-        <p>Modalità di gioco difficile ancora in sviluppo</p>
-        <button onclick="toSlide('selDifficolta')"> Torna indietro </button>
+    <!-- ---------------------------------- HARD GAME PAGE ----------------------------------------- -->
+    <div id="giocoDifficile" class="slide marginBottom giocoSviluppo" style="display: none;">
+        <p>Hard game mode still in development</p>
+        <button onclick="toSlide('selDifficolta')"> Go Back </button>
     </div>
 
-
-    <!-- ---------------------------------- PAGINA DI VOCABOLARIO ----------------------------------------- -->
-    <div id="vocabolario" class="slide marginBottom">
+    <!-- ---------------------------------- VOCABULARY PAGE ----------------------------------------- -->
+    <div id="vocabolario" class="slide marginBottom" style="display: none;">
         <div id="barraRicerca">
             <div class="input-container">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search"
@@ -145,18 +143,17 @@
                     <path
                         d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
                 </svg>
-                <input type="search" placeholder="Cerca...">
+                <input type="search" placeholder="Search...">
             </div>
         </div>
         <div id="imgVocabolario"></div>
     </div>
 
-
-    <!-- ---------------------------------- PAGINA DEI CONTATTI ----------------------------------------- -->
-    <div id="contatti" class="slide marginBottom">
+    <!-- ---------------------------------- CONTACT PAGE ----------------------------------------- -->
+    <div id="contatti" class="slide marginBottom" style="display: none;">
         <div id="contattiHeader">
-            <div class="contattiTitolo">Contatta il nostro team</div>
-            <div class="contattiTesto">Inviaci un feedback o segnala un problema nella nostra applicazione</div>
+            <div class="contattiTitolo">Contact our team</div>
+            <div class="contattiTesto">Send us feedback or report an issue with our application</div>
         </div>
 
         <div class="formContainer">
@@ -165,17 +162,17 @@
 
             <div class="label-svg-container">
                 <label for="selEmail">Email</label>
-                <p id="testoOpzionale">Opzionale</p>
+                <p id="testoOpzionale">Optional</p>
             </div>
             <input type="text" id="selEmail" placeholder="Email">
 
             <div class="select-container">
-                <label for="motivazione">Motivazione</label>
+                <label for="motivazione">Reason</label>
                 <div class="select-wrapper" onclick="toggleFrecciaRotation()">
                     <select id="motivazione" name="motivazione">
-                        <option value="malfunzionamento">Malfunzionamento</option>
+                        <option value="malfunzionamento">Malfunction</option>
                         <option value="feedback">Feedback</option>
-                        <option value="erroreAlfabeto">Alfabeto Errato</option>
+                        <option value="erroreAlfabeto">Alphabet Error</option>
                     </select>
                     <svg id="freccia" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                         class="bi bi-chevron-compact-down" viewBox="0 0 16 16">
@@ -185,7 +182,7 @@
                 </div>
             </div>
 
-            <label>Lingua/e di riferimento</label>
+            <label>Reference Language(s)</label>
             <form>
                 <input type="checkbox" id="linguaEuropeo" name="linguaEuropeo" value="linguaEuropeo">
                 <label for="linguaEuropeo" class="check" style="font-size: 1rem;">Europe</label>
@@ -193,10 +190,10 @@
                 <label for="linguaAmericana" class="check" style="font-size: 1rem;">American</label>
             </form>
 
-            <label for="selMessaggio">Messaggio</label>
-            <textarea id="selMessaggio" placeholder="Messaggio"></textarea>
+            <label for="selMessaggio">Message</label>
+            <textarea id="selMessaggio" placeholder="Message"></textarea>
 
-            <button id="bottoneInvio">Invia</button>
+            <button id="bottoneInvio">Send</button>
         </div>
     </div>
 
@@ -236,9 +233,9 @@
 
         navButtons.forEach(button => {
             button.addEventListener("click", () => {
-                // Rimuovi la classe active da tutti i bottoni
+                // Remove the active class from all buttons
                 navButtons.forEach(btn => btn.classList.remove("active"));
-                // Aggiungi la classe active al pulsante cliccato
+                // Add the active class to the clicked button
                 button.classList.add("active");
             });
         });

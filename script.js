@@ -96,15 +96,17 @@ const predictWebcam = async () => {
             }
         }
 
-        if (results.gestures.length > 0) {
+        // if (results.gestures.length > 0) {
             gestureOutput.style.display = "block";
             const { categoryName, score } = results.gestures[0][0];
             const handedness = results.handednesses[0][0].displayName;
             // gestureOutput.innerText = `Gesture: ${categoryName}\nConfidence: ${(score * 100).toFixed(2)}%\nHandedness: ${handedness}`;
-            appendi(categoryName); // Call the appendi function with the recognized gesture
-        } else {
-            gestureOutput.style.display = "none";
-        }
+            if (score > 0.7) {
+                appendi(categoryName); // Call the appendi function with the recognized gesture
+            }
+        // } else {
+        //     gestureOutput.style.display = "none";
+        // }
     }
 
     if (webcamRunning) {
@@ -114,7 +116,7 @@ const predictWebcam = async () => {
 
 // Function to handle appending text
 const appendi = (result_text) => {
-    
+
     const gestureOutput = document.getElementById("gesture_output");
     if (!result_text) {
         return;
@@ -215,9 +217,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     window.clearOutput = () => {
         gestureOutput.innerText = "";
         gestureOutput.style.display = "none";
-        // daStampare = "";
-        // ultimo_valore = "";
-        // document.getElementById("gesture_output").innerText = "";
+        daStampare = "";
+        ultimo_valore = "";
+        document.getElementById("gesture_output").innerText = "";
     };
 
     // Export global functions

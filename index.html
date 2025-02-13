@@ -72,7 +72,7 @@
     </div>
 
     <!-- ---------------------------------- INTELLIGENCE LOADING PAGE ----------------------------------------- -->
-    <div id="loadingIntelligenza" class="slide loading">
+    <div id="loadingIntelligenza" class="slide loading" style="display: none;">
         <div class="logoNome">
             <img src="img/logoRaft.png" alt="Raft Logo">
             <h1>RAFT</h1>
@@ -95,7 +95,7 @@
     </div>
 
     <!-- ---------------------------------- DIFFICULTY SELECTION PAGE ----------------------------------------- -->
-    <div id="selDifficolta" class="slide marginBottom">
+    <div id="selDifficolta" class="slide marginBottom" style="display: none;">
         <button id="modFacile" onclick="selectDifficulty(this)">
             <span>Easy</span>
             <span class="description">This is the easy mode...</span>
@@ -111,7 +111,7 @@
     </div>
 
     <!-- ---------------------------------- EASY GAME PAGE ----------------------------------------- -->
-    <div id="giocoFacile" class="slide" style="display: none;"></div>
+    <div id="giocoFacile" class="slide" style="display: none;">
         <button class="backButton" id="diseableWebcamButton" onclick="disableCam(); toSlide('homePage')">Go Back</button>
         <div class="videoContainer">
             <video id="webcam" autoplay playsinline></video>
@@ -123,19 +123,19 @@
     </div>
 
     <!-- ---------------------------------- MEDIUM GAME PAGE ----------------------------------------- -->
-    <div id="giocoMedio" class="slide marginBottom giocoSviluppo">
+    <div id="giocoMedio" class="slide marginBottom giocoSviluppo" style="display: none;">
         <p>Medium game mode still in development</p>
         <button onclick="toSlide('selDifficolta')"> Go Back </button>
     </div>
 
     <!-- ---------------------------------- HARD GAME PAGE ----------------------------------------- -->
-    <div id="giocoDifficile" class="slide marginBottom giocoSviluppo"></div>
+    <div id="giocoDifficile" class="slide marginBottom giocoSviluppo" style="display: none;">
         <p>Hard game mode still in development</p>
         <button onclick="toSlide('selDifficolta')"> Go Back </button>
     </div>
 
     <!-- ---------------------------------- VOCABULARY PAGE ----------------------------------------- -->
-    <div id="vocabolario" class="slide marginBottom">
+    <div id="vocabolario" class="slide marginBottom" style="display: none;">
         <div id="barraRicerca">
             <div class="input-container">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search"
@@ -150,7 +150,7 @@
     </div>
 
     <!-- ---------------------------------- CONTACT PAGE ----------------------------------------- -->
-    <div id="contatti" class="slide marginBottom"></div>
+    <div id="contatti" class="slide marginBottom" style="display: none;">
         <div id="contattiHeader">
             <div class="contattiTitolo">Contact our team</div>
             <div class="contattiTesto">Send us feedback or report an issue with our application</div>
@@ -168,7 +168,7 @@
 
             <div class="select-container">
                 <label for="motivazione">Reason</label>
-                <div class="select-wrapper" onclick="toggleFrecciaRotation()"></div>
+                <div class="select-wrapper" onclick="toggleFrecciaRotation()">
                     <select id="motivazione" name="motivazione">
                         <option value="malfunzionamento">Malfunction</option>
                         <option value="feedback">Feedback</option>

@@ -236,7 +236,15 @@ function toSlide(dest) {
         document.getElementById("traduzione").style.display = "none";
         enableCam();
         return
-    } else {
+    } else if (dest === "giocoFacile") {
+        const nav = document.getElementById("nav");
+        nav.style.display = "none";
+        document.getElementById("loadingIntelligenza").style.display = "flex";
+        document.getElementById("giocoFacile").style.display = "none";
+        enableCam();
+        return
+    }
+    else {
         disableCam();
     }
 
@@ -482,7 +490,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 document.querySelectorAll('.lang-btn').forEach(button => {
-    button.onclick = function() {
+    button.onclick = function () {
         document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
         this.classList.add('active');
     };
@@ -581,12 +589,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-document.getElementById('cardTraduttore').onclick = function() {
+document.getElementById('cardTraduttore').onclick = function () {
     enableCam();
     toSlide('traduzione');
 };
 
-document.getElementById('cardAllenamento').onclick = function() {
+document.getElementById('cardAllenamento').onclick = function () {
     toSlide('selDifficolta');
 };
 
@@ -623,6 +631,7 @@ function selectDifficulty(selectedButton) {
     if (selectedButton.classList.contains("active")) {
         if (mode === "modFacile") {
             toSlide("giocoFacile")
+            enableCam();
         } else if (mode === "modMedia") {
             toSlide("giocoMedio")
         } else if (mode === "modDifficile") {

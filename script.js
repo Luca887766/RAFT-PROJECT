@@ -43,6 +43,9 @@ const videoWidth = 1280;
 let DrawingUtils;
 let GestureRecognizer;
 
+let ultimo_valore = "";
+let daStampare = "";
+
 // Disable webcam
 const disableCam = () => {
     webcamRunning = false;
@@ -111,9 +114,7 @@ const predictWebcam = async () => {
 
 // Function to handle appending text
 const appendi = (result_text) => {
-    if(!isDefined(ultimo_valore)){
-        ultimo_valore = "";
-    }
+    
     const gestureOutput = document.getElementById("gesture_output");
     if (!result_text) {
         return;

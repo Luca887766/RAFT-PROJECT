@@ -526,7 +526,7 @@ form {
 
 /*------------------------------------SELEZIONE MODALITà--------------------------------*/
 #selModalita {
-    margin-top: calc(35vh - 40% - 1.5rem); /* Center vertically between footer and language selection */
+    margin-top: calc(30vh - 40% - 1.5rem); /* Center vertically between footer and language selection */
     align-items: center;
     justify-content: center;
     gap: 2rem;

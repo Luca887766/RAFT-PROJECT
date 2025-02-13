@@ -225,9 +225,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     window.clearOutput = () => {
         gestureOutput.innerText = "";
         gestureOutput.style.display = "none";
-        // daStampare = "";
-        // ultimo_valore = "";
-        // document.getElementById("gesture_output").innerText = "";
+        daStampare = "";
+        ultimo_valore = "";
+        document.getElementById("gesture_output").innerText = "";
     };
 
     // Export global functions

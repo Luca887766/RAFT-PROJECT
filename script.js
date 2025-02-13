@@ -96,7 +96,7 @@ const predictWebcam = async () => {
             }
         }
 
-        // if (results.gestures.length > 0) {
+         if (results.gestures.length > 0) {
             gestureOutput.style.display = "block";
             const { categoryName, score } = results.gestures[0][0];
             const handedness = results.handednesses[0][0].displayName;
@@ -104,9 +104,9 @@ const predictWebcam = async () => {
             // if (score > 0.7) {
                 appendi(categoryName); // Call the appendi function with the recognized gesture
             // }
-        // } else {
+         } else {
         //     gestureOutput.style.display = "none";
-        // }
+         }
     }
 
     if (webcamRunning) {

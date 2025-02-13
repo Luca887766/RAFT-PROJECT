@@ -151,50 +151,34 @@
 
     <!-- ---------------------------------- CONTACT PAGE ----------------------------------------- -->
     <div id="contatti" class="slide marginBottom" style="display: none;">
-        <div id="contattiHeader">
-            <div class="contattiTitolo">Contact our team</div>
-            <div class="contattiTesto">Send us feedback or report an issue with our application</div>
-        </div>
-
-        <div class="formContainer">
-            <label for="selNickname">Nickname</label>
-            <input type="text" id="selNickname" placeholder="Nickname">
-
-            <div class="label-svg-container">
-                <label for="selEmail">Email</label>
-                <p id="testoOpzionale">Optional</p>
-            </div>
-            <input type="text" id="selEmail" placeholder="Email">
-
-            <div class="select-container">
-                <label for="motivazione">Reason</label>
-                <div class="select-wrapper" onclick="toggleFrecciaRotation()">
-                    <select id="motivazione" name="motivazione">
-                        <option value="malfunzionamento">Malfunction</option>
-                        <option value="feedback">Feedback</option>
-                        <option value="erroreAlfabeto">Alphabet Error</option>
-                    </select>
-                    <svg id="freccia" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                        class="bi bi-chevron-compact-down" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd"
-                            d="M1.553 6.776a.5.5 0 0 1 .67-.223L8 9.44l5.776-2.888a.5.5 0 1 1 .448.894l-6 3a.5.5 0 0 1-.448 0l-6-3a.5.5 0 0 1-.223-.67" />
-                    </svg>
-                </div>
-            </div>
-
+        <form action="https://formsubmit.co/melissa.chater@galileo.galileicrema.it" method="POST" class="formContainer">
+            <!-- Nascondere CAPTCHA e risposta -->
+            <input type="hidden" name="_captcha" value="false">
+    
+            <label for="nickname">Nickname</label>
+            <input type="text" id="nickname" name="nickname" placeholder="Nickname" required>
+    
+            <label for="email">Email (Optional)</label>
+            <input type="email" id="email" name="email" placeholder="Email">
+    
+            <label for="reason">Reason</label>
+            <select id="reason" name="motivazione">
+                <option value="malfunzionamento">Malfunction</option>
+                <option value="feedback">Feedback</option>
+                <option value="erroreAlfabeto">Alphabet Error</option>
+            </select>
+    
             <label>Reference Language(s)</label>
-            <form>
-                <input type="checkbox" id="linguaEuropeo" name="linguaEuropeo" value="linguaEuropeo">
-                <label for="linguaEuropeo" class="check" style="font-size: 1rem;">Europe</label>
-                <input type="checkbox" id="linguaAmericana" name="linguaAmericana" value="linguaAmericana">
-                <label for="linguaAmericana" class="check" style="font-size: 1rem;">American</label>
-            </form>
-
-            <label for="selMessaggio">Message</label>
-            <textarea id="selMessaggio" placeholder="Message"></textarea>
-
-            <button id="bottoneInvio">Send</button>
-        </div>
+            <input type="checkbox" id="europe" name="linguaEuropeo" value="Europe">
+            <label for="europe">Europe</label>
+            <input type="checkbox" id="american" name="linguaAmericana" value="American">
+            <label for="american">American</label>
+    
+            <label for="message">Message</label>
+            <textarea id="message" name="messaggio" placeholder="Write your message..." required></textarea>
+    
+            <button type="submit">Send</button>
+        </form>
     </div>
 
     <!-- ---------------------------------- FOOTER ----------------------------------------- -->

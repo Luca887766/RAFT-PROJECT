@@ -138,7 +138,7 @@ const appendi = (result_text) => {
         gestureOutput.innerText = daStampare;
         ultimo_valore = "space"; 
     } else {
-        if (currentTime - lastAppendTime < 600) { // Adjust the threshold as needed
+        if (currentTime - lastAppendTime < 200) { // Adjust the threshold as needed
             daStampare = daStampare.slice(0, -1); // Remove the last character if too quick
         }
         daStampare += result_text;

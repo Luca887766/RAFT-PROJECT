@@ -43,6 +43,9 @@ const videoWidth = 1280;
 let DrawingUtils;
 let GestureRecognizer;
 
+let ultimo_valore = "";
+let daStampare = "";
+
 // Disable webcam
 const disableCam = () => {
     webcamRunning = false;
@@ -97,10 +100,12 @@ const predictWebcam = async () => {
             gestureOutput.style.display = "block";
             const { categoryName, score } = results.gestures[0][0];
             const handedness = results.handednesses[0][0].displayName;
-            gestureOutput.innerText = `Gesture: ${categoryName}\nConfidence: ${(score * 100).toFixed(2)}%\nHandedness: ${handedness}`;
-            // appendi(categoryName); // Call the appendi function with the recognized gesture
+            //gestureOutput.innerText = `Gesture: ${categoryName}\nConfidence: ${(score * 100).toFixed(2)}%\nHandedness: ${handedness}`;
+            if (score > 0.70 && categoryName !== ultimo_valore) {
+                appendi(categoryName); // Call the appendi function with the recognized gesture
+            }
         } else {
-            gestureOutput.style.display = "none";
+            //gestureOutput.style.display = "none";
         }
     }
 
@@ -110,30 +115,39 @@ const predictWebcam = async () => {
 };
 
 // Function to handle appending text
-// const appendi = (result_text) => {
-//     const gestureOutput = document.getElementById("gesture_output");
-//     if (!result_text) {
-//         return;
-//     }
+let lastAppendTime = 0;
+const appendi = (result_text) => {
+    const gestureOutput = document.getElementById("gesture_output");
+    const currentTime = Date.now();
 
-//     if (result_text === ultimo_valore) {
-//         // Do nothing if the same character is entered twice in a row
-//     } else if (result_text === "del") {
-//         daStampare = daStampare.slice(0, -1); // Delete the last character
-//         gestureOutput.innerText = daStampare;
-//         ultimo_valore = "del";
-//     } else if (result_text === "not" || result_text === "None") {
-//         ultimo_valore = ""; // Reset the count
-//     } else if (result_text === "space") {
-//         daStampare += " ";
-//         gestureOutput.innerText = daStampare;
-//         ultimo_valore = "space"; // Reset the count
-//     } else {
-//         daStampare += result_text;
-//         ultimo_valore = result_text;
-//         gestureOutput.innerText = daStampare;
-//     }
-// };
+    if (!result_text) {
+        return;
+    }
+
+    // if (result_text === ultimo_valore) {
+    //     // Do nothing if the same character is entered twice in a row
+    // } else 
+    if (result_text === "del") {
+        daStampare = daStampare.slice(0, -1); 
+        gestureOutput.innerText = daStampare;
+        ultimo_valore = "del";
+    } else if (result_text === "not" || result_text === "None") {
+        ultimo_valore = ""; 
+    } else if (result_text === "space") {
+        daStampare += " ";
+        gestureOutput.innerText = daStampare;
+        ultimo_valore = "space"; 
+    } else {
+        if (currentTime - lastAppendTime < 300) { // Adjust the threshold as needed
+            daStampare = daStampare.slice(0, -1); // Remove the last character if too quick
+        }
+        daStampare += result_text;
+        ultimo_valore = result_text;
+        gestureOutput.innerText = daStampare;
+    }
+
+    lastAppendTime = currentTime;
+};
 
 document.addEventListener('DOMContentLoaded', async () => {
     const visionLibUrl = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3";
@@ -506,7 +520,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 document.querySelectorAll('.lang-btn').forEach(button => {
-    button.onclick = function() {
+    button.onclick = function () {
         document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
         this.classList.add('active');
     };

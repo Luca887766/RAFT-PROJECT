@@ -43,8 +43,6 @@
                 <img src="img/logoOverlimits.png" alt="Logo Overlimits">
             </a>
         </div>
-        <button onclick="mostraLetteraCasuale()">prova</button>
-        <div id="imgManiFacile"></div>
     </header>
 
     <!-- ---------------------------------- BARRA SELEZIONE DELLA LINGUA ----------------------------------------- -->
@@ -57,7 +55,7 @@
     <!-- ---------------------------------- PAGINA SELEZIONE DELLA MODALITA ----------------------------------------- -->
     <div id="selModalita" class="slide marginBottom">
         <div class="card-container">
-            <div class="card active" id="cardTraduttore" onclick="enableCam(); toSlide('traduzione')">
+            <div class="card active" id="cardTraduttore" onclick="toSlide('traduzione')">
                 <img class="card-img" src="img/traduzioneOff.png" alt="Traduzione">
             </div>
             <h3>Traduttore</h3>
@@ -116,6 +114,10 @@
 
     <!-- ---------------------------------- PAGINE DI GIOCO ----------------------------------------- -->
     <div id="giocoFacile" class="slide" style="display: none;">
+        <div id="regoleSemplice" class="regola">
+            <p>regole del gioco bla bla...</p>
+            <button onclick="hideGameRules('regoleSemplice')">OK</button>
+        </div>
         <button class="backButton" id="diseableWebcamButton" onclick="disableCam(); toSlide('homePage')">Torna
             Indietro</button>
         <div class="videoContainer">

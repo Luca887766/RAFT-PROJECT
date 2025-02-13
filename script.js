@@ -60,7 +60,7 @@ const disableCam = () => {
 
 // Predict gestures from webcam
 let lastVideoTime = -1;
-const predictWebcam = async () => {
+const predictWebcam = async (mod) => {
     const video = document.getElementById("webcam");
     const canvasElement = document.getElementById("output_canvas");
     const canvasCtx = canvasElement ? canvasElement.getContext("2d") : null;
@@ -101,8 +101,10 @@ const predictWebcam = async () => {
             const { categoryName, score } = results.gestures[0][0];
             const handedness = results.handednesses[0][0].displayName;
             // gestureOutput.innerText = `Gesture: ${categoryName}\nConfidence: ${(score * 100).toFixed(2)}%\nHandedness: ${handedness}`;
-            if (score > 0.70 && categoryName !== ultimo_valore) {
+            if (score > 0.70 && categoryName !== ultimo_valore && mod === "base") {
                 appendi(categoryName); // Call the appendi function with the recognized gesture
+            }else if(mod === "facile"){
+                //logica modalità facile di gioco
             }
         } else {
             // gestureOutput.style.display = "none";
@@ -128,15 +130,15 @@ const appendi = (result_text) => {
     //     // Do nothing if the same character is entered twice in a row
     // } else 
     if (result_text === "del") {
-        daStampare = daStampare.slice(0, -1); 
+        daStampare = daStampare.slice(0, -1);
         gestureOutput.innerText = daStampare;
         ultimo_valore = "del";
     } else if (result_text === "not" || result_text === "None") {
-        ultimo_valore = ""; 
+        ultimo_valore = "";
     } else if (result_text === "space") {
         daStampare += " ";
         gestureOutput.innerText = daStampare;
-        ultimo_valore = "space"; 
+        ultimo_valore = "space";
     } else {
         if (currentTime - lastAppendTime < 300) { // Adjust the threshold as needed
             daStampare = daStampare.slice(0, -1); // Remove the last character if too quick
@@ -194,7 +196,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // Enable webcam and start predictions
-    window.enableCam = async () => {
+    window.enableCam = async (mod) => {
         if (!gestureRecognizer) {
             alert("Please wait for gestureRecognizer to load");
             return;
@@ -206,10 +208,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (video) {
                 video.srcObject = stream;
                 video.addEventListener("loadeddata", () => {
-                    if (video.videoWidth > 0 && video.videoHeight > 0) {
+                    if (video.videoWidth > 0 && video.videoHeight > 0 && mod === "base") {
                         document.getElementById("loadingIntelligenza").style.display = "none";
                         document.getElementById("traduzione").style.display = "block";
-                        predictWebcam();
+                        predictWebcam(mod);
+                        webcamRunning = true;
+                    } else if (video.videoWidth > 0 && video.videoHeight > 0 && mod === "facile") {
+                        document.getElementById("loadingIntelligenza").style.display = "none";
+                        document.getElementById("giocoFacile").style.display = "block";
+                        predictWebcam(mod);
                         webcamRunning = true;
                     } else {
                         console.error("Video dimensions are not set correctly.");
@@ -248,14 +255,14 @@ function toSlide(dest) {
         nav.style.display = "none";
         document.getElementById("loadingIntelligenza").style.display = "flex";
         document.getElementById("traduzione").style.display = "none";
-        enableCam();
+        enableCam("base");
         return
     } else if (dest === "giocoFacile") {
         const nav = document.getElementById("nav");
         nav.style.display = "none";
         document.getElementById("loadingIntelligenza").style.display = "flex";
         document.getElementById("giocoFacile").style.display = "none";
-        enableCam();
+        enableCam("facile");
         return
     }
     else {
@@ -668,7 +675,6 @@ function selectDifficulty(selectedButton) {
     if (selectedButton.classList.contains("active")) {
         if (mode === "modFacile") {
             toSlide("giocoFacile")
-            enableCam();
         } else if (mode === "modMedia") {
             toSlide("giocoMedio")
         } else if (mode === "modDifficile") {
@@ -690,7 +696,7 @@ function mostraLetteraCasuale() {
     const letteraCasuale = lettereFiltrate[Math.floor(Math.random() * lettereFiltrate.length)];
 
     const container = document.getElementById('imgManiFacile');
-    container.innerHTML = ''; 
+    container.innerHTML = '';
 
     const div = document.createElement('div');
     div.className = 'lettera';
@@ -712,4 +718,19 @@ function mostraLetteraCasuale() {
 
     //Restituisce la lettera mostrata
     return letteraCasuale.lettera;
+}
+
+/*---------------------- MOSTRA REGOLE GIOCHI -------------------*/
+function showGameRules(regola) {
+    const rulesDiv = document.getElementById(regola);
+    if (rulesDiv) {
+        rulesDiv.style.display = "flex"; // Mostra il div
+    }
+}
+
+function hideGameRules(regola) {
+    const rulesDiv = document.getElementById(regola);
+    if (rulesDiv) {
+        rulesDiv.style.display = "none"; // Nasconde il div
+    }
 }

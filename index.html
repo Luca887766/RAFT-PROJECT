@@ -95,11 +95,6 @@
         </div>
     </div>
 
-
-    <div id="allenamento" class="slide">
-        <p>Pagina di Allenamento</p>
-    </div>
-
     <!-- ---------------------------------- PAGINA DI SELEZIONE DIFFICOLTA ----------------------------------------- -->
     <div id="selDifficolta" class="slide marginBottom">
         <button id="modFacile" onclick="selectDifficulty(this)">
@@ -118,8 +113,16 @@
 
 
     <!-- ---------------------------------- PAGINE DI GIOCO ----------------------------------------- -->
-    <div id="giocoFacile" class="slide marginBottom">
-        <p>schermata mod facile</p>
+    <div id="giocoFacile" class="slide" style="display: none;">
+        <button class="backButton" id="diseableWebcamButton" onclick="disableCam(); toSlide('homePage')">Torna
+            Indietro</button>
+        <div class="videoContainer">
+            <video id="webcam" autoplay playsinline></video>
+            <canvas class="output_canvas" id="output_canvas" width="1280" height="720"></canvas>
+            <div id="gesture_output_container">
+                <p id='gesture_output' class="output"></p>
+            </div>
+        </div>
     </div>
 
     <div id="giocoMedio" class="slide marginBottom giocoSviluppo">
@@ -229,17 +232,17 @@
 </body>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-    const navButtons = document.querySelectorAll("#nav button");
+        const navButtons = document.querySelectorAll("#nav button");
 
-    navButtons.forEach(button => {
-        button.addEventListener("click", () => {
-            // Rimuovi la classe active da tutti i bottoni
-            navButtons.forEach(btn => btn.classList.remove("active"));
-            // Aggiungi la classe active al pulsante cliccato
-            button.classList.add("active");
+        navButtons.forEach(button => {
+            button.addEventListener("click", () => {
+                // Rimuovi la classe active da tutti i bottoni
+                navButtons.forEach(btn => btn.classList.remove("active"));
+                // Aggiungi la classe active al pulsante cliccato
+                button.classList.add("active");
+            });
         });
     });
-});
 </script>
 
 </html>

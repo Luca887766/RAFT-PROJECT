@@ -605,35 +605,7 @@ document.addEventListener("DOMContentLoaded", () => {
         card.classList.remove("disactive");
         activeCard = card;
     }
-
-    function handleCardClick(card) {
-        if (card.classList.contains("disactive")) return;
-
-        if (card !== activeCard) {
-            updateActiveCard(card);
-        }
-
-        if (card.id === "cardTraduttore") {
-            enableCam();
-            toSlide('traduzione');
-        } else if (card.id === "cardAllenamento") {
-            toSlide('selDifficolta');
-        }
-    }
-
-    cards.forEach((card) => {
-        card.addEventListener("click", () => handleCardClick(card));
-    });
 });
-
-document.getElementById('cardTraduttore').onclick = function () {
-    enableCam();
-    toSlide('traduzione');
-};
-
-document.getElementById('cardAllenamento').onclick = function () {
-    toSlide('selDifficolta');
-};
 
 /*------------------------------ RUOTA LA FRECCIA DEI CONTATTI--------------*/
 function toggleFrecciaRotation() {

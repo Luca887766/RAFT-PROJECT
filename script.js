@@ -480,6 +480,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+document.querySelectorAll('.lang-btn').forEach(button => {
+    button.onclick = function() {
+        document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+        this.classList.add('active');
+    };
+});
+
 //----------------------------SELEZIONE MODALITA'--------------------------- 
 document.addEventListener("DOMContentLoaded", () => {
     const container = document.getElementById("selModalita");
@@ -571,35 +578,6 @@ document.getElementById('cardTraduttore').onclick = function() {
 document.getElementById('cardAllenamento').onclick = function() {
     toSlide('selDifficolta');
 };
-
-document.querySelectorAll('.lang-btn').forEach(button => {
-    button.onclick = function() {
-        document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-        this.classList.add('active');
-    };
-});
-
-document.querySelectorAll('#nav button').forEach(button => {
-    button.onclick = function() {
-        document.querySelectorAll('#nav button').forEach(btn => btn.classList.remove('active'));
-        this.classList.add('active');
-        toSlide(this.getAttribute('onclick').match(/'([^']+)'/)[1]);
-    };
-});
-
-//----------------------------FOOTER---------------------------
-document.addEventListener("DOMContentLoaded", () => {
-    const navButtons = document.querySelectorAll("#nav button");
-
-    navButtons.forEach(button => {
-        button.addEventListener("click", () => {
-            // Rimuovi la classe active da tutti i bottoni
-            navButtons.forEach(btn => btn.classList.remove("active"));
-            // Aggiungi la classe active al pulsante cliccato
-            button.classList.add("active");
-        });
-    });
-});
 
 /*------------------------------ RUOTA LA FRECCIA DEI CONTATTI--------------*/
 function toggleFrecciaRotation() {

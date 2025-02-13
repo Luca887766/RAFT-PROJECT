@@ -436,7 +436,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const containerRect = container.getBoundingClientRect();
     const EUROPE_OFFSET = europeButton ? europeButton.getBoundingClientRect().left - containerRect.left : 20;
 
-    // Imposta sempre il div spostandolo del 10% della larghezza dello schermo verso destra
     const screenWidth = window.innerWidth;
     const initialOffset = screenWidth * 0.1;
     container.style.transform = `translateX(${initialOffset}px)`;
@@ -454,7 +453,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 button.classList.add('active');
                 activeButton = button;
 
-                // Ricalcola la posizione quando cambia il pulsante attivo
                 const buttonRect = button.getBoundingClientRect();
                 const newOffset = buttonRect.left - container.getBoundingClientRect().left;
                 const translateX = EUROPE_OFFSET - newOffset + initialOffset;
@@ -492,16 +490,41 @@ document.addEventListener('DOMContentLoaded', () => {
         document.removeEventListener('mouseup', stopDrag);
         document.removeEventListener('touchend', stopDrag);
 
-        const buttonRect = event.target.getBoundingClientRect();
-        const newOffset = buttonRect.left - container.getBoundingClientRect().left;
-        const translateX = EUROPE_OFFSET - newOffset + initialOffset;
-        container.style.transform = `translateX(${translateX}px)`;
+        let closestInactiveButton = findClosestInactiveButton(event.target);
 
-        buttons.forEach(btn => btn.classList.remove('active'));
-        event.target.classList.add('active');
-        activeButton = event.target;
+        if (closestInactiveButton) {
+            buttons.forEach(btn => btn.classList.remove('active'));
+            closestInactiveButton.classList.add('active');
+            activeButton = closestInactiveButton;
+
+            const buttonRect = closestInactiveButton.getBoundingClientRect();
+            const newOffset = buttonRect.left - container.getBoundingClientRect().left;
+            const translateX = EUROPE_OFFSET - newOffset + initialOffset;
+            container.style.transform = `translateX(${translateX}px)`;
+        }
+    }
+
+    function findClosestInactiveButton(activeButton) {
+        let activeRect = activeButton.getBoundingClientRect();
+        let closestButton = null;
+        let minDistance = Infinity;
+
+        buttons.forEach(button => {
+            if (!button.classList.contains('active')) {
+                let buttonRect = button.getBoundingClientRect();
+                let distance = Math.abs(buttonRect.left - activeRect.left);
+
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    closestButton = button;
+                }
+            }
+        });
+
+        return closestButton;
     }
 });
+
 
 document.querySelectorAll('.lang-btn').forEach(button => {
     button.onclick = function () {

@@ -250,7 +250,6 @@ function toSlide(dest) {
     });
 }
 
-
 function getElementsForSlide(dest) {
     const elements = [];
     switch (dest) {

@@ -368,6 +368,7 @@ video {
 
 #contattiHeader {
     text-align: center;
+    max-width: 23rem;
 }
 
 .contattiTitolo {
@@ -500,38 +501,12 @@ form {
     color: #6e6e6e;
 }
 
-#iconOpzionale {
-    color: #6e6e6e;
-}
-
-#information {
-    border: 0.05rem solid #ddd;
-    border-radius: 0.75rem;
-    background-color: #f9f9f9;
-    max-width: 12.5rem;
-    color: #6e6e6e;
-    font-size: 0.8rem;
-    line-height: 1.4;
-    text-align: center;
-    position: absolute;
-    left: 60%;
-    transform: translateX(-50%);
-    top: -3rem;
-    padding: 0.5rem;
-    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
-    z-index: 10;
-    display: none;
-    word-wrap: break-word;
-    white-space: normal;
-}
-
 .label-svg-container {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     position: relative;
 }
-
 
 /* -------------------------------------FONT DEL SITO---------------------------------- */
 @font-face {

@@ -90,11 +90,6 @@
         "lingua": ["italiano", "inglese"]
     },
     {
-        "img": "img/A.jpg",
-        "lettera": "A",
-        "lingua": ["italiano", "inglese"]
-    },
-    {
         "img": "img/P.jpg",
         "lettera": "P",
         "lingua": ["italiano"]

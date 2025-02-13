@@ -246,8 +246,10 @@ function toSlide(dest) {
     if (dest === "traduzione") {
         const nav = document.getElementById("nav");
         nav.style.display = "none";
-        document.getElementById("traduzione").style.display = "block";
+        document.getElementById("loadingIntelligenza").style.display = "flex";
+        document.getElementById("traduzione").style.display = "none";
         enableCam();
+        return
     } else {
         disableCam();
     }
@@ -261,7 +263,6 @@ function toSlide(dest) {
         }
     });
 }
-
 
 function getElementsForSlide(dest) {
     const elements = [];
@@ -421,23 +422,26 @@ function inizializzaEventi() {
 }
 
 /*----------------- FUNZIONE DELLA SELEZIONE LINGUA ----------------------*/
-const container = document.getElementById('selezioneLinguaBarra');
-const europeButton = document.querySelector('.lang-btn[data-lang="Europe"]');
-const containerRect = container.getBoundingClientRect();
-const EUROPE_OFFSET = europeButton ? europeButton.getBoundingClientRect().left - containerRect.left : 20;
-
-// Imposta sempre il div spostandolo del 10% della larghezza dello schermo verso destra
-const screenWidth = window.innerWidth;
-const initialOffset = screenWidth * 0.1;
-container.style.transform = `translateX(${initialOffset}px)`;
-
 document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('selezioneLinguaBarra');
+    const europeButton = document.querySelector('.lang-btn[data-lang="Europe"]');
+    const containerRect = container.getBoundingClientRect();
+    const EUROPE_OFFSET = europeButton ? europeButton.getBoundingClientRect().left - containerRect.left : 20;
+
+    // Imposta sempre il div spostandolo del 10% della larghezza dello schermo verso destra
+    const screenWidth = window.innerWidth;
+    const initialOffset = screenWidth * 0.1;
+    container.style.transform = `translateX(${initialOffset}px)`;
+
     const buttons = document.querySelectorAll('.lang-btn:not(#noClick)');
     let activeButton = document.querySelector('.lang-btn.active');
+    let isDragging = false;
+    let startX = 0;
+    let currentX = 0;
 
     buttons.forEach(button => {
         button.addEventListener('click', () => {
-            if (button !== activeButton) {
+            if (!isDragging && button !== activeButton) {
                 buttons.forEach(btn => btn.classList.remove('active'));
                 button.classList.add('active');
                 activeButton = button;
@@ -449,15 +453,56 @@ document.addEventListener('DOMContentLoaded', () => {
                 container.style.transform = `translateX(${translateX}px)`;
             }
         });
+
+        button.addEventListener('mousedown', startDrag);
+        button.addEventListener('touchstart', startDrag);
     });
+
+    function startDrag(event) {
+        isDragging = true;
+        startX = event.touches ? event.touches[0].clientX : event.clientX;
+
+        document.addEventListener('mousemove', onDrag);
+        document.addEventListener('touchmove', onDrag);
+        document.addEventListener('mouseup', stopDrag);
+        document.addEventListener('touchend', stopDrag);
+    }
+
+    function onDrag(event) {
+        if (!isDragging) return;
+        currentX = event.touches ? event.touches[0].clientX : event.clientX;
+
+        const deltaX = currentX - startX;
+        container.style.transform = `translateX(${initialOffset + deltaX}px)`;
+    }
+
+    function stopDrag(event) {
+        isDragging = false;
+
+        document.removeEventListener('mousemove', onDrag);
+        document.removeEventListener('touchmove', onDrag);
+        document.removeEventListener('mouseup', stopDrag);
+        document.removeEventListener('touchend', stopDrag);
+
+        const buttonRect = event.target.getBoundingClientRect();
+        const newOffset = buttonRect.left - container.getBoundingClientRect().left;
+        const translateX = EUROPE_OFFSET - newOffset + initialOffset;
+        container.style.transform = `translateX(${translateX}px)`;
+
+        buttons.forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        activeButton = event.target;
+    }
 });
 
-
-window.toSlide = toSlide;
-window.caricaVocabolario = caricaVocabolario;
+document.querySelectorAll('.lang-btn').forEach(button => {
+    button.onclick = function() {
+        document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+        this.classList.add('active');
+    };
+});
 
 //----------------------------SELEZIONE MODALITA'--------------------------- 
-
 document.addEventListener("DOMContentLoaded", () => {
     const container = document.getElementById("selModalita");
     const cards = document.querySelectorAll(".card");
@@ -467,11 +512,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentX = 0;
     let isDragging = false;
 
-    cards.forEach((card) => {
-        card.addEventListener("mousedown", startDrag);
-        card.addEventListener("touchstart", startDrag);
-        card.addEventListener("click", () => handleCardClick(card));
-    });
+    container.addEventListener("mousedown", startDrag);
+    container.addEventListener("touchstart", startDrag);
 
     function startDrag(event) {
         isDragging = true;
@@ -533,23 +575,34 @@ document.addEventListener("DOMContentLoaded", () => {
         activeCard = card;
     }
 
+    function handleCardClick(card) {
+        if (card.classList.contains("disactive")) return;
 
-});
+        if (card !== activeCard) {
+            updateActiveCard(card);
+        }
 
+        if (card.id === "cardTraduttore") {
+            enableCam();
+            toSlide('traduzione');
+        } else if (card.id === "cardAllenamento") {
+            toSlide('selDifficolta');
+        }
+    }
 
-//----------------------------FOOTER---------------------------
-document.addEventListener("DOMContentLoaded", () => {
-    const navButtons = document.querySelectorAll("#nav button");
-
-    navButtons.forEach(button => {
-        button.addEventListener("click", () => {
-            // Rimuovi la classe active da tutti i bottoni
-            navButtons.forEach(btn => btn.classList.remove("active"));
-            // Aggiungi la classe active al pulsante cliccato
-            button.classList.add("active");
-        });
+    cards.forEach((card) => {
+        card.addEventListener("click", () => handleCardClick(card));
     });
 });
+
+document.getElementById('cardTraduttore').onclick = function() {
+    enableCam();
+    toSlide('traduzione');
+};
+
+document.getElementById('cardAllenamento').onclick = function() {
+    toSlide('selDifficolta');
+};
 
 /*------------------------------ RUOTA LA FRECCIA DEI CONTATTI--------------*/
 function toggleFrecciaRotation() {

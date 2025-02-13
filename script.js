@@ -43,9 +43,6 @@ const videoWidth = 1280;
 let DrawingUtils;
 let GestureRecognizer;
 
-let ultimo_valore = "";
-let daStampare = "";
-
 // Disable webcam
 const disableCam = () => {
     webcamRunning = false;
@@ -100,12 +97,10 @@ const predictWebcam = async () => {
             gestureOutput.style.display = "block";
             const { categoryName, score } = results.gestures[0][0];
             const handedness = results.handednesses[0][0].displayName;
-            // gestureOutput.innerText = `Gesture: ${categoryName}\nConfidence: ${(score * 100).toFixed(2)}%\nHandedness: ${handedness}`;
-            if (score > 0.70 && categoryName !== ultimo_valore) {
-                appendi(categoryName); // Call the appendi function with the recognized gesture
-            }
+            gestureOutput.innerText = `Gesture: ${categoryName}\nConfidence: ${(score * 100).toFixed(2)}%\nHandedness: ${handedness}`;
+            // appendi(categoryName); // Call the appendi function with the recognized gesture
         } else {
-            // gestureOutput.style.display = "none";
+            gestureOutput.style.display = "none";
         }
     }
 
@@ -115,39 +110,30 @@ const predictWebcam = async () => {
 };
 
 // Function to handle appending text
-let lastAppendTime = 0;
-const appendi = (result_text) => {
-    const gestureOutput = document.getElementById("gesture_output");
-    const currentTime = Date.now();
+// const appendi = (result_text) => {
+//     const gestureOutput = document.getElementById("gesture_output");
+//     if (!result_text) {
+//         return;
+//     }
 
-    if (!result_text) {
-        return;
-    }
-
-    // if (result_text === ultimo_valore) {
-    //     // Do nothing if the same character is entered twice in a row
-    // } else 
-    if (result_text === "del") {
-        daStampare = daStampare.slice(0, -1); 
-        gestureOutput.innerText = daStampare;
-        ultimo_valore = "del";
-    } else if (result_text === "not" || result_text === "None") {
-        ultimo_valore = ""; 
-    } else if (result_text === "space") {
-        daStampare += " ";
-        gestureOutput.innerText = daStampare;
-        ultimo_valore = "space"; 
-    } else {
-        if (currentTime - lastAppendTime < 300) { // Adjust the threshold as needed
-            daStampare = daStampare.slice(0, -1); // Remove the last character if too quick
-        }
-        daStampare += result_text;
-        ultimo_valore = result_text;
-        gestureOutput.innerText = daStampare;
-    }
-
-    lastAppendTime = currentTime;
-};
+//     if (result_text === ultimo_valore) {
+//         // Do nothing if the same character is entered twice in a row
+//     } else if (result_text === "del") {
+//         daStampare = daStampare.slice(0, -1); // Delete the last character
+//         gestureOutput.innerText = daStampare;
+//         ultimo_valore = "del";
+//     } else if (result_text === "not" || result_text === "None") {
+//         ultimo_valore = ""; // Reset the count
+//     } else if (result_text === "space") {
+//         daStampare += " ";
+//         gestureOutput.innerText = daStampare;
+//         ultimo_valore = "space"; // Reset the count
+//     } else {
+//         daStampare += result_text;
+//         ultimo_valore = result_text;
+//         gestureOutput.innerText = daStampare;
+//     }
+// };
 
 document.addEventListener('DOMContentLoaded', async () => {
     const visionLibUrl = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3";
@@ -225,9 +211,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     window.clearOutput = () => {
         gestureOutput.innerText = "";
         gestureOutput.style.display = "none";
-        daStampare = "";
-        ultimo_valore = "";
-        document.getElementById("gesture_output").innerText = "";
+        // daStampare = "";
+        // ultimo_valore = "";
+        // document.getElementById("gesture_output").innerText = "";
     };
 
     // Export global functions
@@ -250,15 +236,7 @@ function toSlide(dest) {
         document.getElementById("traduzione").style.display = "none";
         enableCam();
         return
-    } else if (dest === "giocoFacile") {
-        const nav = document.getElementById("nav");
-        nav.style.display = "none";
-        document.getElementById("loadingIntelligenza").style.display = "flex";
-        document.getElementById("giocoFacile").style.display = "none";
-        enableCam();
-        return
-    }
-    else {
+    } else {
         disableCam();
     }
 
@@ -436,6 +414,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const containerRect = container.getBoundingClientRect();
     const EUROPE_OFFSET = europeButton ? europeButton.getBoundingClientRect().left - containerRect.left : 20;
 
+    // Imposta sempre il div spostandolo del 10% della larghezza dello schermo verso destra
     const screenWidth = window.innerWidth;
     const initialOffset = screenWidth * 0.1;
     container.style.transform = `translateX(${initialOffset}px)`;
@@ -453,6 +432,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 button.classList.add('active');
                 activeButton = button;
 
+                // Ricalcola la posizione quando cambia il pulsante attivo
                 const buttonRect = button.getBoundingClientRect();
                 const newOffset = buttonRect.left - container.getBoundingClientRect().left;
                 const translateX = EUROPE_OFFSET - newOffset + initialOffset;
@@ -490,44 +470,19 @@ document.addEventListener('DOMContentLoaded', () => {
         document.removeEventListener('mouseup', stopDrag);
         document.removeEventListener('touchend', stopDrag);
 
-        let closestInactiveButton = findClosestInactiveButton(event.target);
+        const buttonRect = event.target.getBoundingClientRect();
+        const newOffset = buttonRect.left - container.getBoundingClientRect().left;
+        const translateX = EUROPE_OFFSET - newOffset + initialOffset;
+        container.style.transform = `translateX(${translateX}px)`;
 
-        if (closestInactiveButton) {
-            buttons.forEach(btn => btn.classList.remove('active'));
-            closestInactiveButton.classList.add('active');
-            activeButton = closestInactiveButton;
-
-            const buttonRect = closestInactiveButton.getBoundingClientRect();
-            const newOffset = buttonRect.left - container.getBoundingClientRect().left;
-            const translateX = EUROPE_OFFSET - newOffset + initialOffset;
-            container.style.transform = `translateX(${translateX}px)`;
-        }
-    }
-
-    function findClosestInactiveButton(activeButton) {
-        let activeRect = activeButton.getBoundingClientRect();
-        let closestButton = null;
-        let minDistance = Infinity;
-
-        buttons.forEach(button => {
-            if (!button.classList.contains('active')) {
-                let buttonRect = button.getBoundingClientRect();
-                let distance = Math.abs(buttonRect.left - activeRect.left);
-
-                if (distance < minDistance) {
-                    minDistance = distance;
-                    closestButton = button;
-                }
-            }
-        });
-
-        return closestButton;
+        buttons.forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        activeButton = event.target;
     }
 });
 
-
 document.querySelectorAll('.lang-btn').forEach(button => {
-    button.onclick = function () {
+    button.onclick = function() {
         document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
         this.classList.add('active');
     };
@@ -559,9 +514,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function onDrag(event) {
         if (!isDragging) return;
         currentX = event.touches ? event.touches[0].clientX : event.clientX;
-
         const deltaX = currentX - startX;
-
         container.style.transform = `translateX(${deltaX}px)`;
     }
 
@@ -591,8 +544,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if (closestCard && closestCard !== activeCard) {
             updateActiveCard(closestCard);
         }
-
-        container.style.transform = "translateX(0)";
     }
 
     function updateActiveCard(card) {
@@ -600,40 +551,44 @@ document.addEventListener("DOMContentLoaded", () => {
             activeCard.classList.remove("active");
             activeCard.classList.add("disactive");
         }
-
         card.classList.add("active");
         card.classList.remove("disactive");
         activeCard = card;
-    }
 
-    function handleCardClick(card) {
-        if (card.classList.contains("disactive")) return;
+        // **Usiamo un piccolo delay per garantire che lo stato sia aggiornato**
+        setTimeout(adjustContainerPosition, 50);
 
-        if (card !== activeCard) {
-            updateActiveCard(card);
-        }
+        // **Abilita il click solo sulla card attiva**
+        cards.forEach((c) => {
+            c.onclick = null; // Rimuove tutti gli eventi onclick
+        });
 
         if (card.id === "cardTraduttore") {
-            enableCam();
-            toSlide('traduzione');
+            card.onclick = () => {
+                enableCam();
+                toSlide("traduzione");
+            };
         } else if (card.id === "cardAllenamento") {
-            toSlide('selDifficolta');
+            card.onclick = () => {
+                toSlide("selDifficolta");
+            };
         }
     }
 
-    cards.forEach((card) => {
-        card.addEventListener("click", () => handleCardClick(card));
-    });
+    function adjustContainerPosition() {
+        if (!activeCard) return;
+
+        if (activeCard.id === "cardTraduttore") {
+            container.style.transform = "translateX(6rem)"; // Sposta a destra
+        } else if (activeCard.id === "cardAllenamento") {
+            container.style.transform = "translateX(-6rem)"; // Sposta a sinistra
+        }
+    }
+
+    setTimeout(adjustContainerPosition, 50); // Corregge il posizionamento iniziale
 });
 
-document.getElementById('cardTraduttore').onclick = function () {
-    enableCam();
-    toSlide('traduzione');
-};
 
-document.getElementById('cardAllenamento').onclick = function () {
-    toSlide('selDifficolta');
-};
 
 /*------------------------------ ROTATE CONTACTS ARROW--------------*/
 function toggleFrecciaRotation() {
@@ -668,7 +623,6 @@ function selectDifficulty(selectedButton) {
     if (selectedButton.classList.contains("active")) {
         if (mode === "modFacile") {
             toSlide("giocoFacile")
-            enableCam();
         } else if (mode === "modMedia") {
             toSlide("giocoMedio")
         } else if (mode === "modDifficile") {

@@ -529,13 +529,13 @@ form {
     margin-top: calc(30vh - 40% - 1.5rem); /* Center vertically between footer and language selection */
     align-items: center;
     justify-content: center;
-    gap: 2rem;
+    gap: 1rem;
 }
 
 .card {
     border-radius: 1.25rem;
     box-shadow: 0 0.25rem 0.3rem rgba(0, 0, 0, 0.1);
-    width: 18rem;
+    width: 16rem;
     height: 22rem;
     display: flex;
     align-items: center;
@@ -570,6 +570,7 @@ form {
     font-size: 1.5rem;
     color: #000;
     margin: 0;
+    margin-top: 0.5rem;
     margin-left: 0.5rem;
     max-width: 18rem;
 }
@@ -578,6 +579,7 @@ form {
     font-size: 1rem;
     color: #858585;
     margin: 0;
+    margin-top: 0.5rem;
     margin-left: 0.5rem;
     max-width: 18rem;
 }

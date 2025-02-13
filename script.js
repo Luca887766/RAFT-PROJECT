@@ -1,4 +1,4 @@
-//----------------IMPOSTAZIONI PWA--------------------------
+//----------------PWA SETTINGS--------------------------
 const cacheName = 'RAFTpwa'; //PWA id here
 
 // Register PWA service worker
@@ -33,7 +33,7 @@ xhr.onerror = function () {
 xhr.open("GET", "pwaversion.txt?t=" + Date.now());
 xhr.send();
 
-/*-------------------INTELLIGENZA------------------*/
+/*-------------------INTELLIGENCE------------------*/
 
 let webcamRunning = false;
 let gestureRecognizer;
@@ -337,12 +337,12 @@ function getElementsForSlide(dest) {
     return elements;
 }
 
-/* ------------------------ VOCABOLARIO ----------------------*/
+/* ------------------------ VOCABULARY ----------------------*/
 
-// Variabile per salvare i dati del vocabolario e caricarli una volta sola
+// Variable to save vocabulary data and load it only once
 let vocabolario = null;
 
-// Funzione per caricare il vocabolario
+// Function to load the vocabulary
 function caricaVocabolario() {
     if (vocabolario) {
         return;
@@ -352,58 +352,58 @@ function caricaVocabolario() {
 
     xhr.onload = function () {
         try {
-            // Parse del JSON
+            // Parse the JSON
             vocabolario = JSON.parse(xhr.responseText);
             inizializzaEventi();
         } catch (e) {
             console.error("Error parsing vocabulary data: ", e);
-            document.querySelector('#imgVocabolario').innerText = "Caricamento fallito.";
+            document.querySelector('#imgVocabolario').innerText = "Loading failed.";
         }
     };
 
     xhr.onerror = function () {
-        document.querySelector('#imgVocabolario').innerText = "Errore di comunicazione.";
+        document.querySelector('#imgVocabolario').innerText = "Communication error.";
     };
 
     xhr.open("GET", "vocabolario.json");
     xhr.send();
 }
 
-// Funzione per visualizzare le lettere
+// Function to display letters
 function inizializzaEventi() {
     const inputRicerca = document.querySelector('#barraRicerca input');
     const imgContainer = document.querySelector('#imgVocabolario');
 
     function aggiornaVocabolario() {
-        const testo = inputRicerca.value.toUpperCase(); // Converte il testo in maiuscolo
+        const testo = inputRicerca.value.toUpperCase(); // Convert text to uppercase
 
-        //controlla se mettere le immagini in fila o in modo alternato
+        // Check whether to display images in a row or alternately
         if (testo.length === 0) {
             imgContainer.classList.add('alternato');
         } else {
             imgContainer.classList.remove('alternato');
         }
 
-        // Logica per ottenere la lingua selezionata dai radio
+        // Logic to get the selected language from the radio buttons
         const linguaSelezionata = "italiano";
 
         imgContainer.innerHTML = "";
 
-        //se il campo è vuoto mostra tutte le lettere
+        // If the field is empty, show all letters
         const lettereDaMostrare = testo.length > 0 ? testo.split('') : vocabolario
             .filter(item => item.lingua.includes(linguaSelezionata))
             .map(item => item.lettera);
 
         console.log(lettereDaMostrare);
 
-        //creo le lettere
+        // Create letters
         lettereDaMostrare.forEach(char => {
             const div = document.createElement('div');
             div.className = 'lettera';
 
             const lettera = char === " " ? "SPACE" : char;
 
-            // Cerca nel JSON l'immagine corrispondente
+            // Search the JSON for the corresponding image
             const elemento = vocabolario.find(item =>
                 item.lettera === lettera && item.lingua.includes(linguaSelezionata)
             );
@@ -429,7 +429,7 @@ function inizializzaEventi() {
     inputRicerca.addEventListener('input', aggiornaVocabolario);
 }
 
-/*----------------- FUNZIONE DELLA SELEZIONE LINGUA ----------------------*/
+/*----------------- LANGUAGE SELECTION FUNCTION ----------------------*/
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('selezioneLinguaBarra');
     const europeButton = document.querySelector('.lang-btn[data-lang="Europe"]');
@@ -533,7 +533,7 @@ document.querySelectorAll('.lang-btn').forEach(button => {
     };
 });
 
-//----------------------------SELEZIONE MODALITA'--------------------------- 
+//----------------------------MODE SELECTION--------------------------- 
 document.addEventListener("DOMContentLoaded", () => {
     const container = document.getElementById("selModalita");
     const cards = document.querySelectorAll(".card");
@@ -635,13 +635,13 @@ document.getElementById('cardAllenamento').onclick = function () {
     toSlide('selDifficolta');
 };
 
-/*------------------------------ RUOTA LA FRECCIA DEI CONTATTI--------------*/
+/*------------------------------ ROTATE CONTACTS ARROW--------------*/
 function toggleFrecciaRotation() {
     const freccia = document.getElementById('freccia');
     freccia.classList.toggle('rotated');
 }
 
-/*------------------------CARICAMENTO INIZIALE DELLA PAGINA-------------------------*/
+/*------------------------INITIAL PAGE LOAD-------------------------*/
 function fadeToHomePage() {
     toSlide('loadingIniziale');
     caricaVocabolario()
@@ -660,11 +660,11 @@ function fadeToHomePage() {
     }
 }
 
-/*------------BOTTONI SELEZIONE DIFFICOLTA-------------*/
+/*------------DIFFICULTY SELECTION BUTTONS-------------*/
 function selectDifficulty(selectedButton) {
     const mode = selectedButton.id;
 
-    // Se il bottone è già attivo, chiama toSlide con il valore specifico
+    // If the button is already active, call toSlide with the specific value
     if (selectedButton.classList.contains("active")) {
         if (mode === "modFacile") {
             toSlide("giocoFacile")

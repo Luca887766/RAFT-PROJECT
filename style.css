@@ -529,7 +529,7 @@ form {
     margin-top: calc(30vh - 40% - 1.5rem); /* Center vertically between footer and language selection */
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
+    gap: 1rem;
 }
 
 .card {

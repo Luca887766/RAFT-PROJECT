@@ -514,9 +514,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function onDrag(event) {
         if (!isDragging) return;
         currentX = event.touches ? event.touches[0].clientX : event.clientX;
-
         const deltaX = currentX - startX;
-
         container.style.transform = `translateX(${deltaX}px)`;
     }
 
@@ -546,8 +544,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if (closestCard && closestCard !== activeCard) {
             updateActiveCard(closestCard);
         }
-
-        container.style.transform = "translateX(0)";
     }
 
     function updateActiveCard(card) {
@@ -559,11 +555,15 @@ document.addEventListener("DOMContentLoaded", () => {
         card.classList.remove("disactive");
         activeCard = card;
 
+        // **Usiamo un piccolo delay per garantire che lo stato sia aggiornato**
+        setTimeout(adjustContainerPosition, 50);
     }
 
     function adjustContainerPosition() {
+        if (!activeCard) return;
+
         if (activeCard.id === "cardTraduttore") {
-            container.style.transform = "translateX(6rem)";  // Sposta a destra
+            container.style.transform = "translateX(6rem)"; // Sposta a destra
         } else if (activeCard.id === "cardAllenamento") {
             container.style.transform = "translateX(-6rem)"; // Sposta a sinistra
         }
@@ -588,8 +588,9 @@ document.addEventListener("DOMContentLoaded", () => {
         card.addEventListener("click", () => handleCardClick(card));
     });
 
-    adjustContainerPosition(); // All'inizio posiziona correttamente il contenitore
+    setTimeout(adjustContainerPosition, 50); // Corregge il posizionamento iniziale
 });
+
 
 /*------------------------------ RUOTA LA FRECCIA DEI CONTATTI--------------*/
 function toggleFrecciaRotation() {

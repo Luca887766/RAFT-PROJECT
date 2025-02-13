@@ -557,6 +557,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // **Usiamo un piccolo delay per garantire che lo stato sia aggiornato**
         setTimeout(adjustContainerPosition, 50);
+
+        // **Abilita il click solo sulla card attiva**
+        cards.forEach((c) => {
+            c.onclick = null; // Rimuove tutti gli eventi onclick
+        });
+
+        if (card.id === "cardTraduttore") {
+            card.onclick = () => {
+                enableCam();
+                toSlide("traduzione");
+            };
+        } else if (card.id === "cardAllenamento") {
+            card.onclick = () => {
+                toSlide("selDifficolta");
+            };
+        }
     }
 
     function adjustContainerPosition() {
@@ -569,27 +585,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    function handleCardClick(card) {
-        if (card.classList.contains("disactive")) return;
-
-        if (card !== activeCard) {
-            updateActiveCard(card);
-        }
-
-        if (card.id === "cardTraduttore") {
-            enableCam();
-            toSlide('traduzione');
-        } else if (card.id === "cardAllenamento") {
-            toSlide('selDifficolta');
-        }
-    }
-
-    cards.forEach((card) => {
-        card.addEventListener("click", () => handleCardClick(card));
-    });
-
     setTimeout(adjustContainerPosition, 50); // Corregge il posizionamento iniziale
 });
+
 
 
 /*------------------------------ RUOTA LA FRECCIA DEI CONTATTI--------------*/

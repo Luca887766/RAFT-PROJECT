@@ -551,7 +551,7 @@ form {
 
 /*------------------------------------SELEZIONE MODALITà--------------------------------*/
 #selModalita {
-    margin-top: 2rem;
+    margin-top: calc(40vh - 50% - 1.5rem); /* Center vertically between footer and language selection */
     align-items: center;
     justify-content: center;
     gap: 2rem;
@@ -624,7 +624,30 @@ form {
     margin-left: 0.5rem;
     max-width: 15rem;
 }
+/* Media queries for different devices */
+@media (min-width: 576px) {
+    #selModalita {
+        margin-top: calc(30vh - 50% - 1.5rem); /* Small devices */
+    }
+}
 
+@media (min-width: 768px) {
+    #selModalita {
+        margin-top: calc(25vh - 50% - 1.5rem); /* Medium devices */
+    }
+}
+
+@media (min-width: 992px) {
+    #selModalita {
+        margin-top: calc(20vh - 50% - 1.5rem); /* Large devices */
+    }
+}
+
+@media (min-width: 1200px) {
+    #selModalita {
+        margin-top: calc(15vh - 50% - 1.5rem); /* Extra large devices */
+    }
+}
 /*-------------- SCHERMATA DI CARICAMENTO-------------*/
 .loading {
     position: relative;

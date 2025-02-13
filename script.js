@@ -407,23 +407,26 @@ function inizializzaEventi() {
 }
 
 /*----------------- FUNZIONE DELLA SELEZIONE LINGUA ----------------------*/
-const container = document.getElementById('selezioneLinguaBarra');
-const europeButton = document.querySelector('.lang-btn[data-lang="Europe"]');
-const containerRect = container.getBoundingClientRect();
-const EUROPE_OFFSET = europeButton ? europeButton.getBoundingClientRect().left - containerRect.left : 20;
-
-// Imposta sempre il div spostandolo del 10% della larghezza dello schermo verso destra
-const screenWidth = window.innerWidth;
-const initialOffset = screenWidth * 0.1;
-container.style.transform = `translateX(${initialOffset}px)`;
-
 document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('selezioneLinguaBarra');
+    const europeButton = document.querySelector('.lang-btn[data-lang="Europe"]');
+    const containerRect = container.getBoundingClientRect();
+    const EUROPE_OFFSET = europeButton ? europeButton.getBoundingClientRect().left - containerRect.left : 20;
+
+    // Imposta sempre il div spostandolo del 10% della larghezza dello schermo verso destra
+    const screenWidth = window.innerWidth;
+    const initialOffset = screenWidth * 0.1;
+    container.style.transform = `translateX(${initialOffset}px)`;
+
     const buttons = document.querySelectorAll('.lang-btn:not(#noClick)');
     let activeButton = document.querySelector('.lang-btn.active');
+    let isDragging = false;
+    let startX = 0;
+    let currentX = 0;
 
     buttons.forEach(button => {
         button.addEventListener('click', () => {
-            if (button !== activeButton) {
+            if (!isDragging && button !== activeButton) {
                 buttons.forEach(btn => btn.classList.remove('active'));
                 button.classList.add('active');
                 activeButton = button;
@@ -435,15 +438,49 @@ document.addEventListener('DOMContentLoaded', () => {
                 container.style.transform = `translateX(${translateX}px)`;
             }
         });
+
+        button.addEventListener('mousedown', startDrag);
+        button.addEventListener('touchstart', startDrag);
     });
+
+    function startDrag(event) {
+        isDragging = true;
+        startX = event.touches ? event.touches[0].clientX : event.clientX;
+
+        document.addEventListener('mousemove', onDrag);
+        document.addEventListener('touchmove', onDrag);
+        document.addEventListener('mouseup', stopDrag);
+        document.addEventListener('touchend', stopDrag);
+    }
+
+    function onDrag(event) {
+        if (!isDragging) return;
+        currentX = event.touches ? event.touches[0].clientX : event.clientX;
+
+        const deltaX = currentX - startX;
+        container.style.transform = `translateX(${initialOffset + deltaX}px)`;
+    }
+
+    function stopDrag(event) {
+        isDragging = false;
+
+        document.removeEventListener('mousemove', onDrag);
+        document.removeEventListener('touchmove', onDrag);
+        document.removeEventListener('mouseup', stopDrag);
+        document.removeEventListener('touchend', stopDrag);
+
+        const buttonRect = event.target.getBoundingClientRect();
+        const newOffset = buttonRect.left - container.getBoundingClientRect().left;
+        const translateX = EUROPE_OFFSET - newOffset + initialOffset;
+        container.style.transform = `translateX(${translateX}px)`;
+
+        buttons.forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        activeButton = event.target;
+    }
 });
 
-
-window.toSlide = toSlide;
-window.caricaVocabolario = caricaVocabolario;
-
 //----------------------------SELEZIONE MODALITA'--------------------------- 
-
 document.addEventListener("DOMContentLoaded", () => {
     const container = document.getElementById("selModalita");
     const cards = document.querySelectorAll(".card");
@@ -519,9 +556,36 @@ document.addEventListener("DOMContentLoaded", () => {
         activeCard = card;
     }
 
-
+    function handleCardClick(card) {
+        if (card !== activeCard) {
+            updateActiveCard(card);
+        }
+    }
 });
 
+document.getElementById('cardTraduttore').onclick = function() {
+    enableCam();
+    toSlide('traduzione');
+};
+
+document.getElementById('cardAllenamento').onclick = function() {
+    toSlide('selDifficolta');
+};
+
+document.querySelectorAll('.lang-btn').forEach(button => {
+    button.onclick = function() {
+        document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+        this.classList.add('active');
+    };
+});
+
+document.querySelectorAll('#nav button').forEach(button => {
+    button.onclick = function() {
+        document.querySelectorAll('#nav button').forEach(btn => btn.classList.remove('active'));
+        this.classList.add('active');
+        toSlide(this.getAttribute('onclick').match(/'([^']+)'/)[1]);
+    };
+});
 
 //----------------------------FOOTER---------------------------
 document.addEventListener("DOMContentLoaded", () => {

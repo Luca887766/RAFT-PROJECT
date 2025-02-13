@@ -498,11 +498,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentX = 0;
     let isDragging = false;
 
-    cards.forEach((card) => {
-        card.addEventListener("mousedown", startDrag);
-        card.addEventListener("touchstart", startDrag);
-        card.addEventListener("click", () => handleCardClick(card));
-    });
+    container.addEventListener("mousedown", startDrag);
+    container.addEventListener("touchstart", startDrag);
 
     function startDrag(event) {
         isDragging = true;
@@ -565,10 +562,23 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function handleCardClick(card) {
+        if (card.classList.contains("disactive")) return;
+
         if (card !== activeCard) {
             updateActiveCard(card);
         }
+
+        if (card.id === "cardTraduttore") {
+            enableCam();
+            toSlide('traduzione');
+        } else if (card.id === "cardAllenamento") {
+            toSlide('selDifficolta');
+        }
     }
+
+    cards.forEach((card) => {
+        card.addEventListener("click", () => handleCardClick(card));
+    });
 });
 
 document.getElementById('cardTraduttore').onclick = function() {

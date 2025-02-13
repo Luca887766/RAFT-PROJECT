@@ -683,3 +683,33 @@ function selectDifficulty(selectedButton) {
 
     selectedButton.classList.add("active");
 }
+
+/*------------------MOD DI GIOCO FACILE ------------------*/
+function mostraLetteraCasuale() {
+    const lettereFiltrate = vocabolario.filter(item => item.lettera !== "SPACE" && item.lettera !== "DELETE");
+    const letteraCasuale = lettereFiltrate[Math.floor(Math.random() * lettereFiltrate.length)];
+
+    const container = document.getElementById('imgManiFacile');
+    container.innerHTML = ''; 
+
+    const div = document.createElement('div');
+    div.className = 'lettera';
+
+    const img = document.createElement('img');
+    img.src = letteraCasuale.img;
+    img.alt = letteraCasuale.lettera;
+
+    const titolo = document.createElement('h3');
+    titolo.innerText = letteraCasuale.lettera;
+
+    div.appendChild(img);
+    div.appendChild(titolo);
+    container.appendChild(div);
+
+    setTimeout(() => {
+        container.innerHTML = '';
+    }, 3000);
+
+    //Restituisce la lettera mostrata
+    return letteraCasuale.lettera;
+}

@@ -45,6 +45,7 @@ let GestureRecognizer;
 
 let ultimo_valore = "";
 let daStampare = "";
+let currentLetterFacile = "";
 
 // Disable webcam
 const disableCam = () => {
@@ -103,8 +104,10 @@ const predictWebcam = async (mod) => {
             // gestureOutput.innerText = `Gesture: ${categoryName}\nConfidence: ${(score * 100).toFixed(2)}%\nHandedness: ${handedness}`;
             if (score > 0.70 && categoryName !== ultimo_valore && mod === "base") {
                 appendi(categoryName); // Call the appendi function with the recognized gesture
-            }else if(mod === "facile"){
-                //logica modalità facile di gioco
+            } else if (mod === "facile") {
+                if (score > 0.70 && categoryName !== ultimo_valore && categoryName.toUpperCase() === currentLetterFacile) {
+                    currentLetterFacile = mostraLetteraCasuale();
+                }
             }
         } else {
             // gestureOutput.style.display = "none";
@@ -218,6 +221,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         document.getElementById("giocoFacile").style.display = "block";
                         predictWebcam(mod);
                         webcamRunning = true;
+                        currentLetterFacile = mostraLetteraCasuale();
                     } else {
                         console.error("Video dimensions are not set correctly.");
                     }

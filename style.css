@@ -11,7 +11,7 @@ body {
     padding: 0;
     display: flex;
     flex-direction: column;
-    background-color: #ffffff;
+    background-color: #a52626;
     overflow-x: hidden;
     transition: opacity 0.5s ease-in-out;
 }

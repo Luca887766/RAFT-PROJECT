@@ -555,10 +555,18 @@ document.addEventListener("DOMContentLoaded", () => {
             activeCard.classList.remove("active");
             activeCard.classList.add("disactive");
         }
-
         card.classList.add("active");
         card.classList.remove("disactive");
         activeCard = card;
+
+    }
+
+    function adjustContainerPosition() {
+        if (activeCard.id === "cardTraduttore") {
+            container.style.transform = "translateX(10rem)";  // Sposta a destra
+        } else if (activeCard.id === "cardAllenamento") {
+            container.style.transform = "translateX(-10rem)"; // Sposta a sinistra
+        }
     }
 
     function handleCardClick(card) {
@@ -579,16 +587,9 @@ document.addEventListener("DOMContentLoaded", () => {
     cards.forEach((card) => {
         card.addEventListener("click", () => handleCardClick(card));
     });
+
+    adjustContainerPosition(); // All'inizio posiziona correttamente il contenitore
 });
-
-document.getElementById('cardTraduttore').onclick = function() {
-    enableCam();
-    toSlide('traduzione');
-};
-
-document.getElementById('cardAllenamento').onclick = function() {
-    toSlide('selDifficolta');
-};
 
 /*------------------------------ RUOTA LA FRECCIA DEI CONTATTI--------------*/
 function toggleFrecciaRotation() {

@@ -83,7 +83,7 @@
 
     <!-- ---------------------------------- TRANSLATION PAGE ----------------------------------------- -->
     <div id="traduzione" class="slide" style="display: none;">
-        <button class="backButton" id="diseableWebcamButton" onclick="disableCam(); toSlide('homePage'); clearOutput()">Go Back</button>
+        <button class="backButton" id="diseableWebcamButton" onclick="disableCam(); toSlide('homePage')">Go Back</button>
         <button class="clearButton" onclick="clearOutput()">Clear</button>
         <div class="videoContainer">
             <video id="webcam" autoplay playsinline></video>
@@ -156,15 +156,15 @@
             <div class="contattiTesto">Send us feedback or report an issue with our application</div>
         </div>
 
-        <form action="https://formsubmit.co/melissachater@galileo.galileicrema.it" method="POST" class="formContainer">
+        <div class="formContainer">
             <label for="selNickname">Nickname</label>
-            <input type="text" id="selNickname" name = "nickname" placeholder="Nickname" required>
+            <input type="text" id="selNickname" placeholder="Nickname">
 
             <div class="label-svg-container">
                 <label for="selEmail">Email</label>
                 <p id="testoOpzionale">Optional</p>
             </div>
-            <input type="email" id="selEmail" name = "email" placeholder="Email">
+            <input type="text" id="selEmail" placeholder="Email">
 
             <div class="select-container">
                 <label for="motivazione">Reason</label>
@@ -191,10 +191,10 @@
             </form>
 
             <label for="selMessaggio">Message</label>
-            <textarea id="selMessaggio" name="messaggio" placeholder="Message" required></textarea>
+            <textarea id="selMessaggio" placeholder="Message"></textarea>
 
-            <button type="submit" id="bottoneInvio">Send</button>
-        </form>
+            <button id="bottoneInvio">Send</button>
+        </div>
     </div>
 
     <!-- ---------------------------------- FOOTER ----------------------------------------- -->

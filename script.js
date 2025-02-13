@@ -111,6 +111,9 @@ const predictWebcam = async () => {
 
 // Function to handle appending text
 const appendi = (result_text) => {
+    if(!isDefined(ultimo_valore)){
+        ultimo_valore = "";
+    }
     const gestureOutput = document.getElementById("gesture_output");
     if (!result_text) {
         return;

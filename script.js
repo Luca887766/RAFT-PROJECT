@@ -563,9 +563,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function adjustContainerPosition() {
         if (activeCard.id === "cardTraduttore") {
-            container.style.transform = "translateX(10rem)";  // Sposta a destra
+            container.style.transform = "translateX(6rem)";  // Sposta a destra
         } else if (activeCard.id === "cardAllenamento") {
-            container.style.transform = "translateX(-10rem)"; // Sposta a sinistra
+            container.style.transform = "translateX(-6rem)"; // Sposta a sinistra
         }
     }
 

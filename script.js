@@ -76,7 +76,7 @@ const predictWebcam = async () => {
     }
 
     const nowInMs = Date.now();
-    if (video.currentTime !== lastVideoTime) {
+    if (video.currentTime !== lastVideoTime && video.videoWidth > 0 && video.videoHeight > 0) {
         lastVideoTime = video.currentTime;
         const results = await gestureRecognizer.recognizeForVideo(video, nowInMs);
 
@@ -104,8 +104,6 @@ const predictWebcam = async () => {
             if (score > 0.70 && categoryName !== ultimo_valore) {
                 appendi(categoryName); // Call the appendi function with the recognized gesture
             }
-        } else {
-            //gestureOutput.style.display = "none";
         }
     }
 
@@ -124,9 +122,6 @@ const appendi = (result_text) => {
         return;
     }
 
-    // if (result_text === ultimo_valore) {
-    //     // Do nothing if the same character is entered twice in a row
-    // } else 
     if (result_text === "del") {
         daStampare = daStampare.slice(0, -1); 
         gestureOutput.innerText = daStampare;
@@ -138,8 +133,8 @@ const appendi = (result_text) => {
         gestureOutput.innerText = daStampare;
         ultimo_valore = "space"; 
     } else {
-        if (currentTime - lastAppendTime < 300) { // Adjust the threshold as needed
-            daStampare = daStampare.slice(0, -1); // Remove the last character if too quick
+        if (currentTime - lastAppendTime < 300) { 
+            daStampare = daStampare.slice(0, -1); 
         }
         daStampare += result_text;
         ultimo_valore = result_text;
@@ -170,10 +165,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     const loadGestureRecognizer = async () => {
-        await createGestureRecognizer();
-        const enableWebcamButton = document.getElementById("enableWebcamButton");
-        if (enableWebcamButton) {
-            enableWebcamButton.disabled = false;
+        if (!gestureRecognizer) {
+            await createGestureRecognizer();
+            const enableWebcamButton = document.getElementById("enableWebcamButton");
+            if (enableWebcamButton) {
+                enableWebcamButton.disabled = false;
+            }
         }
     };
 
@@ -211,6 +208,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const constraints = { video: { width: videoWidth, height: videoHeight } };
         try {
             const stream = await navigator.mediaDevices.getUserMedia(constraints);
+            const video = document.getElementById("webcam");
             if (video) {
                 video.srcObject = stream;
                 video.addEventListener("loadeddata", async () => {

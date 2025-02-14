@@ -193,6 +193,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
     }
 
+    // Function to reinitialize gesture recognizer
+    const reinitializeGestureRecognizer = async () => {
+        if (gestureRecognizer) {
+            await gestureRecognizer.close();
+        }
+        await createGestureRecognizer();
+    };
+
     // Enable webcam and start predictions
     window.enableCam = async () => {
         if (!gestureRecognizer) {
@@ -205,8 +213,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             const stream = await navigator.mediaDevices.getUserMedia(constraints);
             if (video) {
                 video.srcObject = stream;
-                video.addEventListener("loadeddata", () => {
+                video.addEventListener("loadeddata", async () => {
                     if (video.videoWidth > 0 && video.videoHeight > 0) {
+                        await reinitializeGestureRecognizer(); // Reinitialize gesture recognizer
                         document.getElementById("loadingIntelligenza").style.display = "none";
                         document.getElementById("traduzione").style.display = "block";
                         predictWebcam();

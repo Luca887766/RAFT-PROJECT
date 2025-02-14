@@ -1,4 +1,4 @@
-//----------------PWA SETTINGS--------------------------
+//----------------IMPOSTAZIONI PWA--------------------------
 const cacheName = 'RAFTpwa'; //PWA id here
 
 // Register PWA service worker
@@ -33,7 +33,7 @@ xhr.onerror = function () {
 xhr.open("GET", "pwaversion.txt?t=" + Date.now());
 xhr.send();
 
-/*-------------------INTELLIGENCE------------------*/
+/*-------------------INTELLIGENZA------------------*/
 
 let webcamRunning = false;
 let gestureRecognizer;
@@ -42,9 +42,6 @@ const videoHeight = 720;
 const videoWidth = 1280;
 let DrawingUtils;
 let GestureRecognizer;
-
-let ultimo_valore = "";
-let daStampare = "";
 
 // Disable webcam
 const disableCam = () => {
@@ -76,7 +73,7 @@ const predictWebcam = async () => {
     }
 
     const nowInMs = Date.now();
-    if (video.currentTime !== lastVideoTime && video.videoWidth > 0 && video.videoHeight > 0) {
+    if (video.currentTime !== lastVideoTime) {
         lastVideoTime = video.currentTime;
         const results = await gestureRecognizer.recognizeForVideo(video, nowInMs);
 
@@ -100,10 +97,10 @@ const predictWebcam = async () => {
             gestureOutput.style.display = "block";
             const { categoryName, score } = results.gestures[0][0];
             const handedness = results.handednesses[0][0].displayName;
-            //gestureOutput.innerText = `Gesture: ${categoryName}\nConfidence: ${(score * 100).toFixed(2)}%\nHandedness: ${handedness}`;
-            if (score > 0.70 && categoryName !== ultimo_valore) {
-                appendi(categoryName); // Call the appendi function with the recognized gesture
-            }
+            // gestureOutput.innerText = `Gesture: ${categoryName}\nConfidence: ${(score * 100).toFixed(2)}%\nHandedness: ${handedness}`;
+            appendi(categoryName); // Call the appendi function with the recognized gesture
+        } else {
+            gestureOutput.style.display = "none";
         }
     }
 
@@ -113,55 +110,33 @@ const predictWebcam = async () => {
 };
 
 // Function to handle appending text
-let lastAppendTime = 0;
 const appendi = (result_text) => {
+    if(!isDefined(ultimo_valore)){
+        let ultimo_valore = "";
+    }
     const gestureOutput = document.getElementById("gesture_output");
-    const currentTime = Date.now();
-
     if (!result_text) {
         return;
     }
 
-    if (result_text === "del") {
-        daStampare = daStampare.slice(0, -1); 
+    if (result_text === ultimo_valore) {
+        // Do nothing if the same character is entered twice in a row
+    } else if (result_text === "del") {
+        daStampare = daStampare.slice(0, -1); // Delete the last character
         gestureOutput.innerText = daStampare;
         ultimo_valore = "del";
     } else if (result_text === "not" || result_text === "None") {
-        ultimo_valore = ""; 
+        ultimo_valore = ""; // Reset the count
     } else if (result_text === "space") {
         daStampare += " ";
         gestureOutput.innerText = daStampare;
-        ultimo_valore = "space"; 
+        ultimo_valore = "space"; // Reset the count
     } else {
-        if (currentTime - lastAppendTime < 300) { 
-            daStampare = daStampare.slice(0, -1); 
-        }
         daStampare += result_text;
         ultimo_valore = result_text;
         gestureOutput.innerText = daStampare;
     }
-
-    lastAppendTime = currentTime;
 };
-
-async function listCameras() {
-    const devices = await navigator.mediaDevices.enumerateDevices();
-    const cameraSelect = document.getElementById("cameraSelect");
-    if (!cameraSelect) return;
-    cameraSelect.innerHTML = "";
-    devices.forEach((device) => {
-        if (device.kind === "videoinput") {
-            const option = document.createElement("option");
-            option.value = device.deviceId;
-            option.text = device.label || `Camera ${cameraSelect.length + 1}`;
-            cameraSelect.appendChild(option);
-        }
-    });
-    if (cameraSelect.options.length > 0) {
-        cameraSelect.selectedIndex = 0;
-        enableCam(cameraSelect.value);
-    }
-}
 
 document.addEventListener('DOMContentLoaded', async () => {
     const visionLibUrl = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3";
@@ -184,26 +159,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     const loadGestureRecognizer = async () => {
-        if (!gestureRecognizer) {
-            await createGestureRecognizer();
-            const enableWebcamButton = document.getElementById("enableWebcamButton");
-            if (enableWebcamButton) {
-                enableWebcamButton.disabled = false;
-            }
+        await createGestureRecognizer();
+        const enableWebcamButton = document.getElementById("enableWebcamButton");
+        if (enableWebcamButton) {
+            enableWebcamButton.disabled = false;
         }
     };
 
     // Main logic when window loads
     await loadGestureRecognizer();
-    await listCameras(); // populate camera list
-
-    const cameraSelect = document.getElementById("cameraSelect");
-    if (cameraSelect) {
-        cameraSelect.addEventListener("change", () => {
-            disableCam();
-            enableCam(cameraSelect.value);
-        });
-    }
 
     const video = document.getElementById("webcam");
     const canvasElement = document.getElementById("output_canvas");
@@ -218,42 +182,24 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
     }
 
-    // Function to reinitialize gesture recognizer
-    const reinitializeGestureRecognizer = async () => {
-        if (gestureRecognizer) {
-            await gestureRecognizer.close();
-        }
-        await createGestureRecognizer();
-    };
-
     // Enable webcam and start predictions
-    window.enableCam = async (deviceId) => {
+    window.enableCam = async (deviceId = "user") => {
         if (!gestureRecognizer) {
             alert("Please wait for gestureRecognizer to load");
             return;
         }
 
-        const constraints = {
-            video: {
-                width: videoWidth,
-                height: videoHeight,
-                deviceId: deviceId || undefined
-            }
-        };
+        const constraints = { video: { width: videoWidth, height: videoHeight, deviceId: { exact: deviceId } } };
         try {
             const stream = await navigator.mediaDevices.getUserMedia(constraints);
-            const video = document.getElementById("webcam");
             if (video) {
                 video.srcObject = stream;
-                video.addEventListener("loadeddata", async () => {
+                video.addEventListener("loadeddata", () => {
                     if (video.videoWidth > 0 && video.videoHeight > 0) {
                         document.getElementById("loadingIntelligenza").style.display = "none";
                         document.getElementById("traduzione").style.display = "block";
-                        if (!webcamRunning) {
-                            await reinitializeGestureRecognizer(); // Reinitialize gesture recognizer only if not running
-                            predictWebcam();
-                            webcamRunning = true;
-                        }
+                        predictWebcam();
+                        webcamRunning = true;
                     } else {
                         console.error("Video dimensions are not set correctly.");
                     }
@@ -268,9 +214,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     window.clearOutput = () => {
         gestureOutput.innerText = "";
         gestureOutput.style.display = "none";
-        daStampare = "";
-        ultimo_valore = "";
-        document.getElementById("gesture_output").innerText = "";
+        // daStampare = "";
+        // ultimo_valore = "";
+        // document.getElementById("gesture_output").innerText = "";
     };
 
     // Export global functions
@@ -289,10 +235,8 @@ function toSlide(dest) {
     if (dest === "traduzione") {
         const nav = document.getElementById("nav");
         nav.style.display = "none";
-        document.getElementById("loadingIntelligenza").style.display = "flex";
-        document.getElementById("traduzione").style.display = "none";
-        enableCam();
-        return;
+        document.getElementById("traduzione").style.display = "block";
+        //enableCam("user");
     } else {
         disableCam();
     }
@@ -306,6 +250,7 @@ function toSlide(dest) {
         }
     });
 }
+
 
 function getElementsForSlide(dest) {
     const elements = [];
@@ -372,12 +317,12 @@ function getElementsForSlide(dest) {
     return elements;
 }
 
-/* ------------------------ VOCABULARY ----------------------*/
+/* ------------------------ VOCABOLARIO ----------------------*/
 
-// Variable to save vocabulary data and load it only once
+// Variabile per salvare i dati del vocabolario e caricarli una volta sola
 let vocabolario = null;
 
-// Function to load the vocabulary
+// Funzione per caricare il vocabolario
 function caricaVocabolario() {
     if (vocabolario) {
         return;
@@ -387,58 +332,58 @@ function caricaVocabolario() {
 
     xhr.onload = function () {
         try {
-            // Parse the JSON
+            // Parse del JSON
             vocabolario = JSON.parse(xhr.responseText);
             inizializzaEventi();
         } catch (e) {
             console.error("Error parsing vocabulary data: ", e);
-            document.querySelector('#imgVocabolario').innerText = "Loading failed.";
+            document.querySelector('#imgVocabolario').innerText = "Caricamento fallito.";
         }
     };
 
     xhr.onerror = function () {
-        document.querySelector('#imgVocabolario').innerText = "Communication error.";
+        document.querySelector('#imgVocabolario').innerText = "Errore di comunicazione.";
     };
 
     xhr.open("GET", "vocabolario.json");
     xhr.send();
 }
 
-// Function to display letters
+// Funzione per visualizzare le lettere
 function inizializzaEventi() {
     const inputRicerca = document.querySelector('#barraRicerca input');
     const imgContainer = document.querySelector('#imgVocabolario');
 
     function aggiornaVocabolario() {
-        const testo = inputRicerca.value.toUpperCase(); // Convert text to uppercase
+        const testo = inputRicerca.value.toUpperCase(); // Converte il testo in maiuscolo
 
-        // Check whether to display images in a row or alternately
+        //controlla se mettere le immagini in fila o in modo alternato
         if (testo.length === 0) {
             imgContainer.classList.add('alternato');
         } else {
             imgContainer.classList.remove('alternato');
         }
 
-        // Logic to get the selected language from the radio buttons
+        // Logica per ottenere la lingua selezionata dai radio
         const linguaSelezionata = "italiano";
 
         imgContainer.innerHTML = "";
 
-        // If the field is empty, show all letters
+        //se il campo è vuoto mostra tutte le lettere
         const lettereDaMostrare = testo.length > 0 ? testo.split('') : vocabolario
             .filter(item => item.lingua.includes(linguaSelezionata))
             .map(item => item.lettera);
 
         console.log(lettereDaMostrare);
 
-        // Create letters
+        //creo le lettere
         lettereDaMostrare.forEach(char => {
             const div = document.createElement('div');
             div.className = 'lettera';
 
             const lettera = char === " " ? "SPACE" : char;
 
-            // Search the JSON for the corresponding image
+            // Cerca nel JSON l'immagine corrispondente
             const elemento = vocabolario.find(item =>
                 item.lettera === lettera && item.lingua.includes(linguaSelezionata)
             );
@@ -464,27 +409,24 @@ function inizializzaEventi() {
     inputRicerca.addEventListener('input', aggiornaVocabolario);
 }
 
-/*----------------- LANGUAGE SELECTION FUNCTION ----------------------*/
+/*----------------- FUNZIONE DELLA SELEZIONE LINGUA ----------------------*/
+const container = document.getElementById('selezioneLinguaBarra');
+const europeButton = document.querySelector('.lang-btn[data-lang="Europe"]');
+const containerRect = container.getBoundingClientRect();
+const EUROPE_OFFSET = europeButton ? europeButton.getBoundingClientRect().left - containerRect.left : 20;
+
+// Imposta sempre il div spostandolo del 10% della larghezza dello schermo verso destra
+const screenWidth = window.innerWidth;
+const initialOffset = screenWidth * 0.1;
+container.style.transform = `translateX(${initialOffset}px)`;
+
 document.addEventListener('DOMContentLoaded', () => {
-    const container = document.getElementById('selezioneLinguaBarra');
-    const europeButton = document.querySelector('.lang-btn[data-lang="Europe"]');
-    const containerRect = container.getBoundingClientRect();
-    const EUROPE_OFFSET = europeButton ? europeButton.getBoundingClientRect().left - containerRect.left : 20;
-
-    // Imposta sempre il div spostandolo del 10% della larghezza dello schermo verso destra
-    const screenWidth = window.innerWidth;
-    const initialOffset = screenWidth * 0.1;
-    container.style.transform = `translateX(${initialOffset}px)`;
-
     const buttons = document.querySelectorAll('.lang-btn:not(#noClick)');
     let activeButton = document.querySelector('.lang-btn.active');
-    let isDragging = false;
-    let startX = 0;
-    let currentX = 0;
 
     buttons.forEach(button => {
         button.addEventListener('click', () => {
-            if (!isDragging && button !== activeButton) {
+            if (button !== activeButton) {
                 buttons.forEach(btn => btn.classList.remove('active'));
                 button.classList.add('active');
                 activeButton = button;
@@ -496,80 +438,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 container.style.transform = `translateX(${translateX}px)`;
             }
         });
-
-        button.addEventListener('mousedown', startDrag);
-        button.addEventListener('touchstart', startDrag);
     });
-
-    function startDrag(event) {
-        isDragging = true;
-        startX = event.touches ? event.touches[0].clientX : event.clientX;
-
-        document.addEventListener('mousemove', onDrag);
-        document.addEventListener('touchmove', onDrag);
-        document.addEventListener('mouseup', stopDrag);
-        document.addEventListener('touchend', stopDrag);
-    }
-
-    function onDrag(event) {
-        if (!isDragging) return;
-        currentX = event.touches ? event.touches[0].clientX : event.clientX;
-
-        const deltaX = currentX - startX;
-        container.style.transform = `translateX(${initialOffset + deltaX}px)`;
-    }
-
-    function stopDrag(event) {
-        isDragging = false;
-
-        document.removeEventListener('mousemove', onDrag);
-        document.removeEventListener('touchmove', onDrag);
-        document.removeEventListener('mouseup', stopDrag);
-        document.removeEventListener('touchend', stopDrag);
-
-        let closestInactiveButton = findClosestInactiveButton(event.target);
-
-        if (closestInactiveButton) {
-            buttons.forEach(btn => btn.classList.remove('active'));
-            closestInactiveButton.classList.add('active');
-            activeButton = closestInactiveButton;
-
-            const buttonRect = closestInactiveButton.getBoundingClientRect();
-            const newOffset = buttonRect.left - container.getBoundingClientRect().left;
-            const translateX = EUROPE_OFFSET - newOffset + initialOffset;
-            container.style.transform = `translateX(${translateX}px)`;
-        }
-    }
-
-    function findClosestInactiveButton(activeButton) {
-        let activeRect = activeButton.getBoundingClientRect();
-        let closestButton = null;
-        let minDistance = Infinity;
-
-        buttons.forEach(button => {
-            if (!button.classList.contains('active')) {
-                let buttonRect = button.getBoundingClientRect();
-                let distance = Math.abs(buttonRect.left - activeRect.left);
-
-                if (distance < minDistance) {
-                    minDistance = distance;
-                    closestButton = button;
-                }
-            }
-        });
-
-        return closestButton;
-    }
 });
 
-document.querySelectorAll('.lang-btn').forEach(button => {
-    button.onclick = function () {
-        document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-        this.classList.add('active');
-    };
-});
 
-//----------------------------MODE SELECTION--------------------------- 
+window.toSlide = toSlide;
+window.caricaVocabolario = caricaVocabolario;
+
+//----------------------------SELEZIONE MODALITA'--------------------------- 
+
 document.addEventListener("DOMContentLoaded", () => {
     const container = document.getElementById("selModalita");
     const cards = document.querySelectorAll(".card");
@@ -579,8 +456,11 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentX = 0;
     let isDragging = false;
 
-    container.addEventListener("mousedown", startDrag);
-    container.addEventListener("touchstart", startDrag);
+    cards.forEach((card) => {
+        card.addEventListener("mousedown", startDrag);
+        card.addEventListener("touchstart", startDrag);
+        card.addEventListener("click", () => handleCardClick(card));
+    });
 
     function startDrag(event) {
         isDragging = true;
@@ -595,7 +475,9 @@ document.addEventListener("DOMContentLoaded", () => {
     function onDrag(event) {
         if (!isDragging) return;
         currentX = event.touches ? event.touches[0].clientX : event.clientX;
+
         const deltaX = currentX - startX;
+
         container.style.transform = `translateX(${deltaX}px)`;
     }
 
@@ -625,6 +507,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (closestCard && closestCard !== activeCard) {
             updateActiveCard(closestCard);
         }
+
+        container.style.transform = "translateX(0)";
     }
 
     function updateActiveCard(card) {
@@ -632,52 +516,37 @@ document.addEventListener("DOMContentLoaded", () => {
             activeCard.classList.remove("active");
             activeCard.classList.add("disactive");
         }
+
         card.classList.add("active");
         card.classList.remove("disactive");
         activeCard = card;
-
-        // **Usiamo un piccolo delay per garantire che lo stato sia aggiornato**
-        setTimeout(adjustContainerPosition, 50);
-
-        // **Abilita il click solo sulla card attiva**
-        cards.forEach((c) => {
-            c.onclick = null; // Rimuove tutti gli eventi onclick
-        });
-
-        if (card.id === "cardTraduttore") {
-            card.onclick = () => {
-                enableCam();
-                toSlide("traduzione");
-            };
-        } else if (card.id === "cardAllenamento") {
-            card.onclick = () => {
-                toSlide("selDifficolta");
-            };
-        }
     }
 
-    function adjustContainerPosition() {
-        if (!activeCard) return;
 
-        if (activeCard.id === "cardTraduttore") {
-            container.style.transform = "translateX(6rem)"; // Sposta a destra
-        } else if (activeCard.id === "cardAllenamento") {
-            container.style.transform = "translateX(-6rem)"; // Sposta a sinistra
-        }
-    }
-
-    setTimeout(adjustContainerPosition, 50); // Corregge il posizionamento iniziale
 });
 
 
+//----------------------------FOOTER---------------------------
+document.addEventListener("DOMContentLoaded", () => {
+    const navButtons = document.querySelectorAll("#nav button");
 
-/*------------------------------ ROTATE CONTACTS ARROW--------------*/
+    navButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            // Rimuovi la classe active da tutti i bottoni
+            navButtons.forEach(btn => btn.classList.remove("active"));
+            // Aggiungi la classe active al pulsante cliccato
+            button.classList.add("active");
+        });
+    });
+});
+
+/*------------------------------ RUOTA LA FRECCIA DEI CONTATTI--------------*/
 function toggleFrecciaRotation() {
     const freccia = document.getElementById('freccia');
     freccia.classList.toggle('rotated');
 }
 
-/*------------------------INITIAL PAGE LOAD-------------------------*/
+/*------------------------CARICAMENTO INIZIALE DELLA PAGINA-------------------------*/
 function fadeToHomePage() {
     toSlide('loadingIniziale');
     caricaVocabolario()
@@ -696,11 +565,11 @@ function fadeToHomePage() {
     }
 }
 
-/*------------DIFFICULTY SELECTION BUTTONS-------------*/
+/*------------BOTTONI SELEZIONE DIFFICOLTA-------------*/
 function selectDifficulty(selectedButton) {
     const mode = selectedButton.id;
 
-    // If the button is already active, call toSlide with the specific value
+    // Se il bottone è già attivo, chiama toSlide con il valore specifico
     if (selectedButton.classList.contains("active")) {
         if (mode === "modFacile") {
             toSlide("giocoFacile")

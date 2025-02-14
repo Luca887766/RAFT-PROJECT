@@ -55,7 +55,7 @@
     <!-- ---------------------------------- MODE SELECTION PAGE ----------------------------------------- -->
     <div id="selModalita" class="slide marginBottom">
         <div class="card-container">
-            <div class="card active" id="cardTraduttore" onclick="enableCam(); toSlide('traduzione')">
+            <div class="card active" id="cardTraduttore" onclick="enableCam('user'); toSlide('traduzione')">
                 <img class="card-img" src="img/traduzioneOff.png" alt="Translation">
             </div>
             <h3>Translator</h3>
@@ -83,7 +83,6 @@
 
     <!-- ---------------------------------- TRANSLATION PAGE ----------------------------------------- -->
     <div id="traduzione" class="slide" style="display: none;">
-        <select id="cameraSelect" style="position: absolute; top: 1rem; right: 1rem;"></select>
         <button class="backButton" id="diseableWebcamButton" onclick="disableCam(); toSlide('homePage'); clearOutput()">Go Back</button>
         <button class="clearButton" onclick="clearOutput()">Clear</button>
         <div class="videoContainer">

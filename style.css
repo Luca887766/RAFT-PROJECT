@@ -464,6 +464,8 @@ form {
     appearance: none;
     background-color: white;
     cursor: pointer;
+    width: 100%;
+    padding-right: 2rem; /* Spazio per l'icona */
 }
 
 .select-wrapper select:focus {
@@ -473,13 +475,15 @@ form {
 
 /* Icona freccia nella select */
 .select-wrapper::after {
-    content: "▼";
-    font-size: 1rem;
+    content: "";
     position: absolute;
-    right: 1rem;
-    top: 50%;
+    right: 1.5rem; 
+    top: 45%; 
     transform: translateY(-50%);
-    color: #333;
+    width: 20px; 
+    height: 20px;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-compact-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.553 6.776a.5.5 0 0 1 .67-.223L8 9.44l5.776-2.888a.5.5 0 1 1 .448.894l-6 3a.5.5 0 0 1-.448 0l-6-3a.5.5 0 0 1-.223-.67"/></svg>') no-repeat center;
+    background-size: contain;
     pointer-events: none;
 }
 
@@ -488,7 +492,6 @@ form {
     font-size: 0.8rem;
     color: #6e6e6e;
 } 
-
 
 /* -------------------------------------FONT DEL SITO---------------------------------- */
 @font-face {

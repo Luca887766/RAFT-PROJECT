@@ -153,55 +153,56 @@
     <div id="contatti" class="slide marginBottom">
         <!-- Intestazione -->
         <div id="contattiHeader">
-            <h1 class="contattiTitolo">Contatta il nostro team</h1>
-            <p class="contattiTesto">Inviaci un feedback o segnala un problema nella nostra applicazione</p>
+            <h1 class="contattiTitolo">Contact our team</h1>
+            <p class="contattiTesto">Send us feedback or report an issue with our application</p>
         </div>
-
+    
         <form action="https://formsubmit.co/raft.galileo@gmail.com" method="POST" class="formContainer">
             <!-- Nascondere CAPTCHA -->
             <input type="hidden" name="_captcha" value="false">
-
+    
             <!-- Nickname -->
             <label for="nickname">Nickname</label>
-            <input type="text" id="nickname" name="nickname" placeholder="Inserisci il tuo nickname" required>
-
+            <input type="text" id="nickname" name="nickname" placeholder="Enter your nickname" required>
+    
             <!-- Email -->
-            <label for="email">Email <span id="testoOpzionale">(Opzionale)</span></label>
-            <input type="email" id="email" name="email" placeholder="Inserisci la tua email">
-
+            <label for="email">Email <span id="testoOpzionale">(Optional)</span></label>
+            <input type="email" id="email" name="email" placeholder="Enter your email">
+    
             <!-- Motivo della richiesta -->
-            <label for="reason">Motivazione</label>
+            <label for="reason">Reason</label>
             <div class="select-wrapper">
                 <select id="reason" name="motivazione">
-                    <option value="" disabled selected>Seleziona una motivazione</option>
-                    <option value="malfunzionamento">Malfunzionamento</option>
+                    <option value="" disabled selected>Select a reason</option>
+                    <option value="malfunzionamento">Malfunction</option>
                     <option value="feedback">Feedback</option>
-                    <option value="erroreAlfabeto">Errore nell'alfabeto</option>
+                    <option value="erroreAlfabeto">Alphabet error</option>
                 </select>
             </div>
-
+    
             <!-- Dispositivo utilizzato -->
-            <label for="device">Dispositivo utilizzato</label>
-            <input type="text" id="device" name="dispositivo" placeholder="Es. iPhone 13, Samsung S22...">
-
+            <label for="device">Device used</label>
+            <input type="text" id="device" name="dispositivo" placeholder="E.g., iPhone 13, Samsung S22...">
+    
             <!-- Lingua -->
-            <label>Lingua</label>
+            <label>Language</label>
             <div class="checkbox-group">
                 <input type="radio" id="europe" name="lingua" value="Europe">
                 <label for="europe">Europe</label>
-
+    
                 <input type="radio" id="american" name="lingua" value="American">
                 <label for="american">American</label>
             </div>
-
+    
             <!-- Messaggio -->
-            <label for="message">Messaggio</label>
-            <textarea id="message" name="messaggio" placeholder="Scrivi il tuo messaggio..." required></textarea>
-
+            <label for="message">Message</label>
+            <textarea id="message" name="messaggio" placeholder="Write your message..." required></textarea>
+    
             <!-- Pulsante di invio -->
-            <button type="submit">Invia</button>
+            <button type="submit">Send</button>
         </form>
     </div>
+    
 
     <!-- ---------------------------------- FOOTER ----------------------------------------- -->
     <footer id="nav" class="slide">

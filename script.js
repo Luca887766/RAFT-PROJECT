@@ -688,28 +688,3 @@ function selectDifficulty(selectedButton) {
 
     selectedButton.classList.add("active");
 }
-
-/*---------------------------CONFERMA INVIO DELLA MAIL------------------*/
-document.getElementById("contactForm").addEventListener("submit", function(event) {
-    event.preventDefault(); // Previene il refresh della pagina
-    
-    let form = event.target;
-    let formData = new FormData(form);
-
-    fetch(form.action, {
-        method: form.method,
-        body: formData,
-    }).then(response => {
-        if (response.ok) {
-            document.getElementById("successPopup").style.display = "block";
-            setTimeout(() => {
-                document.getElementById("successPopup").style.display = "none";
-            }, 3000);
-            form.reset();
-        } else {
-            alert("There was an issue sending the email. Please try again.");
-        }
-    }).catch(error => {
-        alert("Error: " + error.message);
-    });
-});

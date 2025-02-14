@@ -76,7 +76,7 @@ const predictWebcam = async () => {
     }
 
     const nowInMs = Date.now();
-    if (video.currentTime !== lastVideoTime) {
+    if (video.currentTime !== lastVideoTime && video.videoWidth > 0 && video.videoHeight > 0) {
         lastVideoTime = video.currentTime;
         const results = await gestureRecognizer.recognizeForVideo(video, nowInMs);
 
@@ -104,8 +104,6 @@ const predictWebcam = async () => {
             if (score > 0.70 && categoryName !== ultimo_valore) {
                 appendi(categoryName); // Call the appendi function with the recognized gesture
             }
-        } else {
-            //gestureOutput.style.display = "none";
         }
     }
 
@@ -124,9 +122,6 @@ const appendi = (result_text) => {
         return;
     }
 
-    // if (result_text === ultimo_valore) {
-    //     // Do nothing if the same character is entered twice in a row
-    // } else 
     if (result_text === "del") {
         daStampare = daStampare.slice(0, -1); 
         gestureOutput.innerText = daStampare;
@@ -138,8 +133,8 @@ const appendi = (result_text) => {
         gestureOutput.innerText = daStampare;
         ultimo_valore = "space"; 
     } else {
-        if (currentTime - lastAppendTime < 300) { // Adjust the threshold as needed
-            daStampare = daStampare.slice(0, -1); // Remove the last character if too quick
+        if (currentTime - lastAppendTime < 300) { 
+            daStampare = daStampare.slice(0, -1); 
         }
         daStampare += result_text;
         ultimo_valore = result_text;
@@ -189,10 +184,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     const loadGestureRecognizer = async () => {
-        await createGestureRecognizer();
-        const enableWebcamButton = document.getElementById("enableWebcamButton");
-        if (enableWebcamButton) {
-            enableWebcamButton.disabled = false;
+        if (!gestureRecognizer) {
+            await createGestureRecognizer();
+            const enableWebcamButton = document.getElementById("enableWebcamButton");
+            if (enableWebcamButton) {
+                enableWebcamButton.disabled = false;
+            }
         }
     };
 
@@ -221,6 +218,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
     }
 
+    // Function to reinitialize gesture recognizer
+    const reinitializeGestureRecognizer = async () => {
+        if (gestureRecognizer) {
+            await gestureRecognizer.close();
+        }
+        await createGestureRecognizer();
+    };
+
     // Enable webcam and start predictions
     window.enableCam = async (deviceId) => {
         if (!gestureRecognizer) {
@@ -237,14 +242,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         };
         try {
             const stream = await navigator.mediaDevices.getUserMedia(constraints);
+            const video = document.getElementById("webcam");
             if (video) {
                 video.srcObject = stream;
-                video.addEventListener("loadeddata", () => {
+                video.addEventListener("loadeddata", async () => {
                     if (video.videoWidth > 0 && video.videoHeight > 0) {
                         document.getElementById("loadingIntelligenza").style.display = "none";
                         document.getElementById("traduzione").style.display = "block";
-                        predictWebcam();
-                        webcamRunning = true;
+                        if (!webcamRunning) {
+                            await reinitializeGestureRecognizer(); // Reinitialize gesture recognizer only if not running
+                            predictWebcam();
+                            webcamRunning = true;
+                        }
                     } else {
                         console.error("Video dimensions are not set correctly.");
                     }
@@ -283,7 +292,7 @@ function toSlide(dest) {
         document.getElementById("loadingIntelligenza").style.display = "flex";
         document.getElementById("traduzione").style.display = "none";
         enableCam();
-        return
+        return;
     } else {
         disableCam();
     }

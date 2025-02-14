@@ -150,36 +150,59 @@
     </div>
 
     <!-- ---------------------------------- CONTACT PAGE ----------------------------------------- -->
-    <div id="contatti" class="slide marginBottom" style="display: none;">
+    <div id="contatti" class="slide marginBottom">
+        <!-- Intestazione -->
+        <div id="contattiHeader">
+            <h1 class="contattiTitolo">Contact our team</h1>
+            <p class="contattiTesto">Send us feedback or report an issue with our application</p>
+        </div>
+    
         <form action="https://formsubmit.co/raft.galileo@gmail.com" method="POST" class="formContainer">
-            <!-- Nascondere CAPTCHA e risposta -->
+            <!-- Nascondere CAPTCHA -->
             <input type="hidden" name="_captcha" value="false">
     
+            <!-- Nickname -->
             <label for="nickname">Nickname</label>
-            <input type="text" id="nickname" name="nickname" placeholder="Nickname" required>
+            <input type="text" id="nickname" name="nickname" placeholder="Enter your nickname" required>
     
-            <label for="email">Email (Optional)</label>
-            <input type="email" id="email" name="email" placeholder="Email">
+            <!-- Email -->
+            <label for="email">Email <span id="testoOpzionale">(Optional)</span></label>
+            <input type="email" id="email" name="email" placeholder="Enter your email">
     
+            <!-- Motivo della richiesta -->
             <label for="reason">Reason</label>
-            <select id="reason" name="motivazione">
-                <option value="malfunzionamento">Malfunction</option>
-                <option value="feedback">Feedback</option>
-                <option value="erroreAlfabeto">Alphabet Error</option>
-            </select>
+            <div class="select-wrapper">
+                <select id="reason" name="motivazione">
+                    <option value="" disabled selected>Select a reason</option>
+                    <option value="malfunzionamento">Malfunction</option>
+                    <option value="feedback">Feedback</option>
+                    <option value="erroreAlfabeto">Alphabet error</option>
+                </select>
+            </div>
     
-            <label>Reference Language(s)</label>
-            <input type="checkbox" id="europe" name="linguaEuropeo" value="Europe">
-            <label for="europe">Europe</label>
-            <input type="checkbox" id="american" name="linguaAmericana" value="American">
-            <label for="american">American</label>
+            <!-- Dispositivo utilizzato -->
+            <label for="device">Device used</label>
+            <input type="text" id="device" name="dispositivo" placeholder="E.g., iPhone 13, Samsung S22...">
     
+            <!-- Lingua -->
+            <label>Language</label>
+            <div class="checkbox-group">
+                <input type="radio" id="europe" name="lingua" value="Europe">
+                <label for="europe">Europe</label>
+    
+                <input type="radio" id="american" name="lingua" value="American">
+                <label for="american">American</label>
+            </div>
+    
+            <!-- Messaggio -->
             <label for="message">Message</label>
             <textarea id="message" name="messaggio" placeholder="Write your message..." required></textarea>
     
+            <!-- Pulsante di invio -->
             <button type="submit">Send</button>
         </form>
     </div>
+    
 
     <!-- ---------------------------------- FOOTER ----------------------------------------- -->
     <footer id="nav" class="slide">

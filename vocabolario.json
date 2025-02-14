@@ -1,167 +1,172 @@
 [
     {
-        "img": "img/hands/SPACE.jpg",
-        "lettera": "SPACE",
-        "lingua": ["europe", "american"]
-    },
-    {
-        "img": "img/hands/DELETE.jpg",
-        "lettera": "DELETE",
-        "lingua": ["europe", "american"]
-    },
-    {
-        "img": "img/hands/A_ita.jpg",
+        "img": "img/A.jpg",
         "lettera": "A",
-        "lingua": ["europe", "american"]
+        "lingua": ["italiano", "inglese"]
     },
     {
-        "img": "img/hands/B_ita.jpg",
+        "img": "img/B.jpg",
         "lettera": "B",
-        "lingua": ["europe", "american"]
+        "lingua": ["italiano", "inglese"]
     },
     {
-        "img": "img/hands/C_ita.jpg",
+        "img": "img/C.jpg",
         "lettera": "C",
-        "lingua": ["europe", "american"]
+        "lingua": ["italiano", "inglese"]
     },
     {
-        "img": "img/hands/D_ita.jpg",
+        "img": "img/D.jpg",
         "lettera": "D",
-        "lingua": ["europe", "american"]
+        "lingua": ["italiano", "inglese"]
     },
     {
-        "img": "img/hands/E_ita.jpg",
+        "img": "img/E.jpg",
         "lettera": "E",
-        "lingua": ["europe", "american"]
+        "lingua": ["italiano", "inglese"]
     },
     {
-        "img": "img/hands/F_ita.jpg",
+        "img": "img/F.jpg",
         "lettera": "F",
-        "lingua": ["europe", "american"]
+        "lingua": ["italiano", "inglese"]
     },
     {
-        "img": "img/hands/G_ita.jpg",
+        "img": "img/G.jpg",
         "lettera": "G",
-        "lingua": ["europe", "american"]
+        "lingua": ["italiano", "inglese"]
     },
     {
-        "img": "img/hands/H_ita.jpg",
+        "img": "img/H.jpg",
         "lettera": "H",
-        "lingua": ["europe", "american"]
+        "lingua": ["italiano", "inglese"]
     },
     {
-        "img": "img/hands/I_ita.jpg",
+        "img": "img/I.jpg",
         "lettera": "I",
-        "lingua": ["europe", "american"]
+        "lingua": ["italiano", "inglese"]
     },
     {
-        "img": "img/hands/J_ita.jpg",
+        "img": "img/J.jpg",
         "lettera": "J",
-        "lingua": ["europe", "american"]
+        "lingua": ["italiano", "inglese"]
     },
     {
-        "img": "img/hands/K_ita.jpg",
+        "img": "img/K.jpg",
         "lettera": "K",
-        "lingua": ["europe", "american"]
+        "lingua": ["italiano"]
     },
     {
-        "img": "img/hands/L_ita.jpg",
+        "img": "img/K.jpg",
+        "lettera": "K",
+        "lingua": ["inglese"]
+    },
+    {
+        "img": "img/L.jpg",
         "lettera": "L",
-        "lingua": ["europe", "american"]
+        "lingua": ["italiano", "inglese"]
     },
     {
-        "img": "img/hands/M_ita.jpg",
+        "img": "img/M.jpg",
         "lettera": "M",
-        "lingua": ["europe"]
+        "lingua": ["italiano"]
     },
     {
-        "img": "img/hands/M_ing.jpg",
+        "img": "img/M.jpg",
         "lettera": "M",
-        "lingua": ["american"]
+        "lingua": ["inglese"]
     },
     {
-        "img": "img/hands/N_ita.jpg",
+        "img": "img/N.jpg",
         "lettera": "N",
-        "lingua": ["europe"]
+        "lingua": ["italiano"]
     },
     {
-        "img": "img/hands/N_ing.jpg",
+        "img": "img/N.jpg",
         "lettera": "N",
-        "lingua": ["american"]
+        "lingua": ["inglese"]
     },
     {
-        "img": "img/hands/O_ita.jpg",
+        "img": "img/O.jpg",
         "lettera": "O",
-        "lingua": ["europe", "american"]
+        "lingua": ["italiano", "inglese"]
     },
     {
-        "img": "img/hands/P_ita.jpg",
+        "img": "img/P.jpg",
         "lettera": "P",
-        "lingua": ["europe"]
+        "lingua": ["italiano"]
     },
     {
-        "img": "img/hands/P_ing.jpg",
+        "img": "img/P.jpg",
         "lettera": "P",
-        "lingua": ["american"]
+        "lingua": ["inglese"]
     },
     {
-        "img": "img/hands/Q_ita.jpg",
+        "img": "img/Q.jpg",
         "lettera": "Q",
-        "lingua": ["europe", "american"]
+        "lingua": ["italiano", "inglese"]
     },
     {
-        "img": "img/hands/R_ita.jpg",
+        "img": "img/R.jpg",
         "lettera": "R",
-        "lingua": ["europe", "american"]
+        "lingua": ["italiano", "inglese"]
     },
     {
-        "img": "img/hands/S_ita.jpg",
+        "img": "img/S.jpg",
         "lettera": "S",
-        "lingua": ["europe"]
+        "lingua": ["italiano"]
     },
     {
-        "img": "img/hands/S_ing.jpg",
+        "img": "img/S.jpg",
         "lettera": "S",
-        "lingua": ["american"]
+        "lingua": ["inglese"]
     },
     {
-        "img": "img/hands/T_ita.jpg",
+        "img": "img/T.jpg",
         "lettera": "T",
-        "lingua": ["europe"]
+        "lingua": ["italiano"]
     },
     {
-        "img": "img/hands/T_ing.jpg",
+        "img": "img/T.jpg",
         "lettera": "T",
-        "lingua": ["american"]
+        "lingua": ["inglese"]
     },
     {
-        "img": "img/hands/U_ita.jpg",
+        "img": "img/U.jpg",
         "lettera": "U",
-        "lingua": ["europe", "american"]
+        "lingua": ["italiano", "inglese"]
     },
     {
-        "img": "img/hands/V_ita.jpg",
+        "img": "img/V.jpg",
         "lettera": "V",
-        "lingua": ["europe", "american"]
+        "lingua": ["italiano", "inglese"]
     },
     {
-        "img": "img/hands/W_ita.jpg",
+        "img": "img/W.jpg",
         "lettera": "W",
-        "lingua": ["europe", "american"]
+        "lingua": ["italiano", "inglese"]
     },
     {
-        "img": "img/hands/X_ita.jpg",
+        "img": "img/X.jpg",
         "lettera": "X",
-        "lingua": ["europe", "american"]
+        "lingua": ["italiano", "inglese"]
     },
     {
-        "img": "img/hands/Y_ita.jpg",
+        "img": "img/Y.jpg",
         "lettera": "Y",
-        "lingua": ["europe", "american"]
+        "lingua": ["italiano", "inglese"]
     },
     {
-        "img": "img/hands/Z_ita.jpg",
+        "img": "img/Z.jpg",
         "lettera": "Z",
-        "lingua": ["europe", "american"]
+        "lingua": ["italiano", "inglese"]
+    },
+    {
+        "img": "img/0-SPACE.jpg",
+        "lettera": "SPACE",
+        "lingua": ["italiano", "inglese"]
+    },
+    {
+        "img": "img/0-DEL.jpg",
+        "lettera": "DELETE",
+        "lingua": ["italiano", "inglese"]
     }
 ]

@@ -128,15 +128,15 @@ const appendi = (result_text) => {
     //     // Do nothing if the same character is entered twice in a row
     // } else 
     if (result_text === "del") {
-        daStampare = daStampare.slice(0, -1); 
+        daStampare = daStampare.slice(0, -1);
         gestureOutput.innerText = daStampare;
         ultimo_valore = "del";
     } else if (result_text === "not" || result_text === "None") {
-        ultimo_valore = ""; 
+        ultimo_valore = "";
     } else if (result_text === "space") {
         daStampare += " ";
         gestureOutput.innerText = daStampare;
-        ultimo_valore = "space"; 
+        ultimo_valore = "space";
     } else {
         if (currentTime - lastAppendTime < 300) { // Adjust the threshold as needed
             daStampare = daStampare.slice(0, -1); // Remove the last character if too quick
@@ -333,6 +333,7 @@ function getElementsForSlide(dest) {
 
 // Variable to save vocabulary data and load it only once
 let vocabolario = null;
+let activeButtonContent = 'europe';
 
 // Function to load the vocabulary
 function caricaVocabolario() {
@@ -361,10 +362,10 @@ function caricaVocabolario() {
     xhr.send();
 }
 
-// Function to display letters
 function inizializzaEventi() {
     const inputRicerca = document.querySelector('#barraRicerca input');
     const imgContainer = document.querySelector('#imgVocabolario');
+    let linguaPrecedente = activeButtonContent; // Memorizza il valore iniziale
 
     function aggiornaVocabolario() {
         const testo = inputRicerca.value.toUpperCase(); // Convert text to uppercase
@@ -377,7 +378,8 @@ function inizializzaEventi() {
         }
 
         // Logic to get the selected language from the radio buttons
-        const linguaSelezionata = "italiano";
+        const linguaSelezionata = activeButtonContent;
+        console.log(activeButtonContent)
 
         imgContainer.innerHTML = "";
 
@@ -419,6 +421,14 @@ function inizializzaEventi() {
     aggiornaVocabolario();
 
     inputRicerca.addEventListener('input', aggiornaVocabolario);
+
+    // Controllo ogni 200ms se la lingua è cambiata
+    setInterval(() => {
+        if (activeButtonContent !== linguaPrecedente) {
+            linguaPrecedente = activeButtonContent;
+            aggiornaVocabolario();
+        }
+    }, 200);
 }
 
 /*----------------- LANGUAGE SELECTION FUNCTION ----------------------*/
@@ -451,6 +461,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const newOffset = buttonRect.left - container.getBoundingClientRect().left;
                 const translateX = EUROPE_OFFSET - newOffset + initialOffset;
                 container.style.transform = `translateX(${translateX}px)`;
+                activeButtonContent = button.textContent;
             }
         });
 
@@ -495,6 +506,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const newOffset = buttonRect.left - container.getBoundingClientRect().left;
             const translateX = EUROPE_OFFSET - newOffset + initialOffset;
             container.style.transform = `translateX(${translateX}px)`;
+            activeButtonContent = closestInactiveButton.textContent;
         }
     }
 
@@ -523,6 +535,7 @@ document.querySelectorAll('.lang-btn').forEach(button => {
     button.onclick = function () {
         document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
         this.classList.add('active');
+        activeButtonContent = this.textContent;
     };
 });
 
@@ -675,3 +688,28 @@ function selectDifficulty(selectedButton) {
 
     selectedButton.classList.add("active");
 }
+
+/*---------------------------CONFERMA INVIO DELLA MAIL------------------*/
+document.getElementById("contactForm").addEventListener("submit", function(event) {
+    event.preventDefault(); // Previene il refresh della pagina
+    
+    let form = event.target;
+    let formData = new FormData(form);
+
+    fetch(form.action, {
+        method: form.method,
+        body: formData,
+    }).then(response => {
+        if (response.ok) {
+            document.getElementById("successPopup").style.display = "block";
+            setTimeout(() => {
+                document.getElementById("successPopup").style.display = "none";
+            }, 3000);
+            form.reset();
+        } else {
+            alert("There was an issue sending the email. Please try again.");
+        }
+    }).catch(error => {
+        alert("Error: " + error.message);
+    });
+});

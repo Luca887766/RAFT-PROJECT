@@ -514,13 +514,13 @@ form {
     margin-top: calc(30vh - 40% - 1.5rem); /* Center vertically between footer and language selection */
     align-items: center;
     justify-content: center;
-    gap: 1rem;
+    gap: 2rem;
 }
 
 .card {
     border-radius: 1.25rem;
     box-shadow: 0 0.25rem 0.3rem rgba(0, 0, 0, 0.1);
-    width: 16rem;
+    width: 18rem;
     height: 22rem;
     display: flex;
     align-items: center;
@@ -536,26 +536,25 @@ form {
 }
 
 #cardTraduttore.active img {
-    content: url('img/traduzioneOn.png');
+    content: url('img/draw/traduzioneOn.png');
 }
 
 #cardAllenamento.active img {
-    content: url('img/allenamentoOn.png');
+    content: url('img/draw/allenamentoOn.png');
 }
 
 #cardTraduttore.disactive img {
-    content: url('img/traduzioneOff.png');
+    content: url('img/draw/traduzioneOff.png');
 }
 
 #cardAllenamento.disactive img {
-    content: url('img/allenamentoOff.png');
+    content: url('img/draw/allenamentoOff.png');
 }
 
 .card-container h3 {
     font-size: 1.5rem;
     color: #000;
     margin: 0;
-    margin-top: 0.5rem;
     margin-left: 0.5rem;
     max-width: 18rem;
 }
@@ -564,7 +563,6 @@ form {
     font-size: 1rem;
     color: #858585;
     margin: 0;
-    margin-top: 0.5rem;
     margin-left: 0.5rem;
     max-width: 18rem;
 }
@@ -630,7 +628,7 @@ form {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('img/pattern.png');
+    background-image: url('img/draw/pattern.png');
     background-repeat: repeat;
     background-size: 12rem;
     z-index: 1;

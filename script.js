@@ -215,11 +215,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                 video.srcObject = stream;
                 video.addEventListener("loadeddata", async () => {
                     if (video.videoWidth > 0 && video.videoHeight > 0) {
-                        await reinitializeGestureRecognizer(); // Reinitialize gesture recognizer
                         document.getElementById("loadingIntelligenza").style.display = "none";
                         document.getElementById("traduzione").style.display = "block";
-                        predictWebcam();
-                        webcamRunning = true;
+                        if (!webcamRunning) {
+                            await reinitializeGestureRecognizer(); // Reinitialize gesture recognizer only if not running
+                            predictWebcam();
+                            webcamRunning = true;
+                        }
                     } else {
                         console.error("Video dimensions are not set correctly.");
                     }
@@ -258,7 +260,7 @@ function toSlide(dest) {
         document.getElementById("loadingIntelligenza").style.display = "flex";
         document.getElementById("traduzione").style.display = "none";
         enableCam();
-        return
+        return;
     } else {
         disableCam();
     }

@@ -149,6 +149,25 @@ const appendi = (result_text) => {
     lastAppendTime = currentTime;
 };
 
+async function listCameras() {
+    const devices = await navigator.mediaDevices.enumerateDevices();
+    const cameraSelect = document.getElementById("cameraSelect");
+    if (!cameraSelect) return;
+    cameraSelect.innerHTML = "";
+    devices.forEach((device) => {
+        if (device.kind === "videoinput") {
+            const option = document.createElement("option");
+            option.value = device.deviceId;
+            option.text = device.label || `Camera ${cameraSelect.length + 1}`;
+            cameraSelect.appendChild(option);
+        }
+    });
+    if (cameraSelect.options.length > 0) {
+        cameraSelect.selectedIndex = 0;
+        enableCam(cameraSelect.value);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
     const visionLibUrl = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3";
     const { FilesetResolver, GestureRecognizer: ImportedGestureRecognizer, DrawingUtils: ImportedDrawingUtils } = await import(visionLibUrl);
@@ -179,6 +198,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Main logic when window loads
     await loadGestureRecognizer();
+    await listCameras(); // populate camera list
+
+    const cameraSelect = document.getElementById("cameraSelect");
+    if (cameraSelect) {
+        cameraSelect.addEventListener("change", () => {
+            disableCam();
+            enableCam(cameraSelect.value);
+        });
+    }
 
     const video = document.getElementById("webcam");
     const canvasElement = document.getElementById("output_canvas");
@@ -194,13 +222,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // Enable webcam and start predictions
-    window.enableCam = async () => {
+    window.enableCam = async (deviceId) => {
         if (!gestureRecognizer) {
             alert("Please wait for gestureRecognizer to load");
             return;
         }
 
-        const constraints = { video: { width: videoWidth, height: videoHeight } };
+        const constraints = {
+            video: {
+                width: videoWidth,
+                height: videoHeight,
+                deviceId: deviceId || undefined
+            }
+        };
         try {
             const stream = await navigator.mediaDevices.getUserMedia(constraints);
             if (video) {

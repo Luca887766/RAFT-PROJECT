@@ -150,34 +150,56 @@
     </div>
 
     <!-- ---------------------------------- CONTACT PAGE ----------------------------------------- -->
-    <div id="contatti" class="slide marginBottom" style="display: none;">
+    <div id="contatti" class="slide marginBottom">
+        <!-- Intestazione -->
+        <div id="contattiHeader">
+            <h1 class="contattiTitolo">Contatta il nostro team</h1>
+            <p class="contattiTesto">Inviaci un feedback o segnala un problema nella nostra applicazione</p>
+        </div>
+
         <form action="https://formsubmit.co/raft.galileo@gmail.com" method="POST" class="formContainer">
-            <!-- Nascondere CAPTCHA e risposta -->
+            <!-- Nascondere CAPTCHA -->
             <input type="hidden" name="_captcha" value="false">
-    
+
+            <!-- Nickname -->
             <label for="nickname">Nickname</label>
-            <input type="text" id="nickname" name="nickname" placeholder="Nickname" required>
-    
-            <label for="email">Email (Optional)</label>
-            <input type="email" id="email" name="email" placeholder="Email">
-    
-            <label for="reason">Reason</label>
-            <select id="reason" name="motivazione">
-                <option value="malfunzionamento">Malfunction</option>
-                <option value="feedback">Feedback</option>
-                <option value="erroreAlfabeto">Alphabet Error</option>
-            </select>
-    
-            <label>Reference Language(s)</label>
-            <input type="checkbox" id="europe" name="linguaEuropeo" value="Europe">
-            <label for="europe">Europe</label>
-            <input type="checkbox" id="american" name="linguaAmericana" value="American">
-            <label for="american">American</label>
-    
-            <label for="message">Message</label>
-            <textarea id="message" name="messaggio" placeholder="Write your message..." required></textarea>
-    
-            <button type="submit">Send</button>
+            <input type="text" id="nickname" name="nickname" placeholder="Inserisci il tuo nickname" required>
+
+            <!-- Email -->
+            <label for="email">Email <span id="testoOpzionale">(Opzionale)</span></label>
+            <input type="email" id="email" name="email" placeholder="Inserisci la tua email">
+
+            <!-- Motivo della richiesta -->
+            <label for="reason">Motivazione</label>
+            <div class="select-wrapper">
+                <select id="reason" name="motivazione">
+                    <option value="" disabled selected>Seleziona una motivazione</option>
+                    <option value="malfunzionamento">Malfunzionamento</option>
+                    <option value="feedback">Feedback</option>
+                    <option value="erroreAlfabeto">Errore nell'alfabeto</option>
+                </select>
+            </div>
+
+            <!-- Dispositivo utilizzato -->
+            <label for="device">Dispositivo utilizzato</label>
+            <input type="text" id="device" name="dispositivo" placeholder="Es. iPhone 13, Samsung S22...">
+
+            <!-- Lingua -->
+            <label>Lingua</label>
+            <div class="checkbox-group">
+                <input type="radio" id="europe" name="lingua" value="Europe">
+                <label for="europe">Europe</label>
+
+                <input type="radio" id="american" name="lingua" value="American">
+                <label for="american">American</label>
+            </div>
+
+            <!-- Messaggio -->
+            <label for="message">Messaggio</label>
+            <textarea id="message" name="messaggio" placeholder="Scrivi il tuo messaggio..." required></textarea>
+
+            <!-- Pulsante di invio -->
+            <button type="submit">Invia</button>
         </form>
     </div>
 

@@ -34,7 +34,6 @@ xhr.open("GET", "pwaversion.txt?t=" + Date.now());
 xhr.send();
 
 /*-------------------INTELLIGENCE------------------*/
-
 let webcamRunning = false;
 let gestureRecognizer;
 let runningMode = "IMAGE";
@@ -45,194 +44,229 @@ let GestureRecognizer;
 
 let ultimo_valore = "";
 let daStampare = "";
-
-// Disable webcam
-const disableCam = () => {
-    webcamRunning = false;
-    const video = document.getElementById("webcam");
-    if (video && video.srcObject) {
-        const stream = video.srcObject;
-        stream.getTracks().forEach((track) => track.stop());
-        video.srcObject = null;
-        video.removeEventListener("loadeddata", predictWebcam);
-    }
-};
-
-// Predict gestures from webcam
 let lastVideoTime = -1;
-const predictWebcam = async () => {
-    const video = document.getElementById("webcam");
-    const canvasElement = document.getElementById("output_canvas");
-    const canvasCtx = canvasElement ? canvasElement.getContext("2d") : null;
-    const gestureOutput = document.getElementById("gesture_output");
-    if (!gestureRecognizer || !canvasElement || !canvasCtx || !webcamRunning) return;
-
-    canvasElement.width = video.videoWidth;
-    canvasElement.height = video.videoHeight;
-
-    if (runningMode === "IMAGE") {
-        runningMode = "VIDEO";
-        await gestureRecognizer.setOptions({ runningMode: "VIDEO" });
-    }
-
-    const nowInMs = Date.now();
-    if (video.currentTime !== lastVideoTime) {
-        lastVideoTime = video.currentTime;
-        const results = await gestureRecognizer.recognizeForVideo(video, nowInMs);
-
-        canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-
-        if (results.landmarks) {
-            const drawingUtils = new DrawingUtils(canvasCtx);
-            for (const landmarks of results.landmarks) {
-                drawingUtils.drawConnectors(landmarks, GestureRecognizer.HAND_CONNECTIONS, {
-                    color: "#00FF00",
-                    lineWidth: 5,
-                });
-                drawingUtils.drawLandmarks(landmarks, {
-                    color: "#FF0000",
-                    lineWidth: 2,
-                });
-            }
-        }
-
-        if (results.gestures.length > 0) {
-            gestureOutput.style.display = "block";
-            const { categoryName, score } = results.gestures[0][0];
-            const handedness = results.handednesses[0][0].displayName;
-            //gestureOutput.innerText = `Gesture: ${categoryName}\nConfidence: ${(score * 100).toFixed(2)}%\nHandedness: ${handedness}`;
-            if (score > 0.70 && categoryName !== ultimo_valore) {
-                appendi(categoryName); // Call the appendi function with the recognized gesture
-            }
-        } else {
-            //gestureOutput.style.display = "none";
-        }
-    }
-
-    if (webcamRunning) {
-        window.requestAnimationFrame(predictWebcam);
-    }
-};
-
-// Function to handle appending text
 let lastAppendTime = 0;
-const appendi = (result_text) => {
-    const gestureOutput = document.getElementById("gesture_output");
-    const currentTime = Date.now();
 
-    if (!result_text) {
-        return;
-    }
-
-    // if (result_text === ultimo_valore) {
-    //     // Do nothing if the same character is entered twice in a row
-    // } else 
-    if (result_text === "del") {
-        daStampare = daStampare.slice(0, -1); 
-        gestureOutput.innerText = daStampare;
-        ultimo_valore = "del";
-    } else if (result_text === "not" || result_text === "None") {
-        ultimo_valore = ""; 
-    } else if (result_text === "space") {
-        daStampare += " ";
-        gestureOutput.innerText = daStampare;
-        ultimo_valore = "space"; 
-    } else {
-        if (currentTime - lastAppendTime < 300) { // Adjust the threshold as needed
-            daStampare = daStampare.slice(0, -1); // Remove the last character if too quick
-        }
-        daStampare += result_text;
-        ultimo_valore = result_text;
-        gestureOutput.innerText = daStampare;
-    }
-
-    lastAppendTime = currentTime;
+/**
+ * Disabilita il flusso della webcam e rimuove l'event listener
+ */
+const disableCam = () => {
+  webcamRunning = false;
+  const video = document.getElementById("webcam");
+  if (video && video.srcObject) {
+    const stream = video.srcObject;
+    stream.getTracks().forEach((track) => track.stop());
+    video.srcObject = null;
+    video.removeEventListener("loadeddata", predictWebcam);
+  }
 };
 
-document.addEventListener('DOMContentLoaded', async () => {
-    const visionLibUrl = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3";
-    const { FilesetResolver, GestureRecognizer: ImportedGestureRecognizer, DrawingUtils: ImportedDrawingUtils } = await import(visionLibUrl);
-    DrawingUtils = ImportedDrawingUtils;
-    GestureRecognizer = ImportedGestureRecognizer;
+/**
+ * Funzione principale per l'analisi del video e il riconoscimento dei gesti.
+ */
+const predictWebcam = async () => {
+  const video = document.getElementById("webcam");
+  const canvasElement = document.getElementById("output_canvas");
+  const canvasCtx = canvasElement ? canvasElement.getContext("2d") : null;
+  const gestureOutput = document.getElementById("gesture_output");
 
-    // Initialize Gesture Recognizer
-    const createGestureRecognizer = async () => {
-        const vision = await FilesetResolver.forVisionTasks(
-            `${visionLibUrl}/wasm`
-        );
-        gestureRecognizer = await GestureRecognizer.createFromOptions(vision, {
-            baseOptions: {
-                modelAssetPath: "gesture_recognizer.task",
-                delegate: "GPU",
-            },
-            runningMode: runningMode,
+  if (!gestureRecognizer || !canvasElement || !canvasCtx || !webcamRunning) return;
+
+  // Imposta le dimensioni della canvas in base a quelle del video
+  canvasElement.width = video.videoWidth;
+  canvasElement.height = video.videoHeight;
+
+  // Se siamo in modalità IMAGE, passiamo alla modalità VIDEO
+  if (runningMode === "IMAGE") {
+    runningMode = "VIDEO";
+    await gestureRecognizer.setOptions({ runningMode: "VIDEO" });
+  }
+
+  const nowInMs = Date.now();
+  if (video.currentTime !== lastVideoTime && video.videoWidth > 0 && video.videoHeight > 0) {
+    lastVideoTime = video.currentTime;
+    const results = await gestureRecognizer.recognizeForVideo(video, nowInMs);
+
+    // Pulisce la canvas
+    canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+
+    // Disegna i landmark se rilevati
+    if (results.landmarks) {
+      const drawingUtils = new DrawingUtils(canvasCtx);
+      for (const landmarks of results.landmarks) {
+        drawingUtils.drawConnectors(landmarks, GestureRecognizer.HAND_CONNECTIONS, {
+          color: "#00FF00",
+          lineWidth: 5,
         });
-    };
-
-    const loadGestureRecognizer = async () => {
-        await createGestureRecognizer();
-        const enableWebcamButton = document.getElementById("enableWebcamButton");
-        if (enableWebcamButton) {
-            enableWebcamButton.disabled = false;
-        }
-    };
-
-    // Main logic when window loads
-    await loadGestureRecognizer();
-
-    const video = document.getElementById("webcam");
-    const canvasElement = document.getElementById("output_canvas");
-    const canvasCtx = canvasElement ? canvasElement.getContext("2d") : null;
-    const gestureOutput = document.getElementById("gesture_output");
-
-    // Check for webcam support
-    const hasGetUserMedia = () => !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
-
-    if (!hasGetUserMedia()) {
-        console.warn("getUserMedia() is not supported by your browser");
-        return;
+        drawingUtils.drawLandmarks(landmarks, {
+          color: "#FF0000",
+          lineWidth: 2,
+        });
+      }
     }
 
-    // Enable webcam and start predictions
-    window.enableCam = async () => {
-        if (!gestureRecognizer) {
-            alert("Please wait for gestureRecognizer to load");
-            return;
-        }
+    // Gestione dei risultati del riconoscimento dei gesti
+    if (results.gestures && results.gestures.length > 0) {
+      gestureOutput.style.display = "block";
+      const { categoryName, score } = results.gestures[0][0];
+      const handedness = results.handednesses[0][0].displayName;
+      // Se la confidenza è alta e il gesto è diverso dall'ultimo rilevato, aggiorna l'output
+      if (score > 0.70 && categoryName !== ultimo_valore) {
+        appendi(categoryName);
+      }
+    }
+  }
 
-        const constraints = { video: { width: videoWidth, height: videoHeight } };
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia(constraints);
-            if (video) {
-                video.srcObject = stream;
-                video.addEventListener("loadeddata", () => {
-                    if (video.videoWidth > 0 && video.videoHeight > 0) {
-                        document.getElementById("loadingIntelligenza").style.display = "none";
-                        document.getElementById("traduzione").style.display = "block";
-                        predictWebcam();
-                        webcamRunning = true;
-                    } else {
-                        console.error("Video dimensions are not set correctly.");
-                    }
-                });
+  // Richiama la funzione per il prossimo frame se la webcam è attiva
+  if (webcamRunning) {
+    window.requestAnimationFrame(predictWebcam);
+  }
+};
+
+/**
+ * Gestisce l'aggiornamento del testo mostrato in base al gesto riconosciuto.
+ * @param {string} result_text - Il testo del gesto riconosciuto.
+ */
+const appendi = (result_text) => {
+  const gestureOutput = document.getElementById("gesture_output");
+  const currentTime = Date.now();
+
+  if (!result_text) return;
+
+  if (result_text === "del") {
+    daStampare = daStampare.slice(0, -1);
+    gestureOutput.innerText = daStampare;
+    ultimo_valore = "del";
+  } else if (result_text === "not" || result_text === "None") {
+    ultimo_valore = "";
+  } else if (result_text === "space") {
+    daStampare += " ";
+    gestureOutput.innerText = daStampare;
+    ultimo_valore = "space";
+  } else {
+    // Se il riconoscimento avviene troppo rapidamente, sostituisce l'ultimo carattere
+    if (currentTime - lastAppendTime < 300) {
+      daStampare = daStampare.slice(0, -1);
+    }
+    daStampare += result_text;
+    ultimo_valore = result_text;
+    gestureOutput.innerText = daStampare;
+  }
+  lastAppendTime = currentTime;
+};
+
+document.addEventListener("DOMContentLoaded", async () => {
+  // Importa la libreria MediaPipe per la visione
+  const visionLibUrl = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3";
+  const {
+    FilesetResolver,
+    GestureRecognizer: ImportedGestureRecognizer,
+    DrawingUtils: ImportedDrawingUtils,
+  } = await import(visionLibUrl);
+  DrawingUtils = ImportedDrawingUtils;
+  GestureRecognizer = ImportedGestureRecognizer;
+
+  /**
+   * Crea il gesture recognizer.
+   */
+  const createGestureRecognizer = async () => {
+    const vision = await FilesetResolver.forVisionTasks(`${visionLibUrl}/wasm`);
+    gestureRecognizer = await GestureRecognizer.createFromOptions(vision, {
+      baseOptions: {
+        modelAssetPath: "gesture_recognizer.task",
+        delegate: "GPU",
+      },
+      runningMode: runningMode,
+    });
+  };
+
+  /**
+   * Carica il gesture recognizer se non è già stato inizializzato.
+   */
+  const loadGestureRecognizer = async () => {
+    if (!gestureRecognizer) {
+      await createGestureRecognizer();
+      const enableWebcamButton = document.getElementById("enableWebcamButton");
+      if (enableWebcamButton) {
+        enableWebcamButton.disabled = false;
+      }
+    }
+  };
+
+  await loadGestureRecognizer();
+
+  const video = document.getElementById("webcam");
+  const canvasElement = document.getElementById("output_canvas");
+  const canvasCtx = canvasElement ? canvasElement.getContext("2d") : null;
+  const gestureOutput = document.getElementById("gesture_output");
+
+  // Verifica il supporto di getUserMedia
+  const hasGetUserMedia = () => !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+  if (!hasGetUserMedia()) {
+    console.warn("getUserMedia() non è supportato dal tuo browser");
+    return;
+  }
+
+  /**
+   * Reinizializza il gesture recognizer.
+   */
+  const reinitializeGestureRecognizer = async () => {
+    if (gestureRecognizer) {
+      await gestureRecognizer.close();
+    }
+    await createGestureRecognizer();
+  };
+
+  /**
+   * Abilita la webcam e avvia il riconoscimento dei gesti.
+   */
+  window.enableCam = async () => {
+    if (!gestureRecognizer) {
+      alert("Attendere il caricamento del gesture recognizer");
+      return;
+    }
+
+    const constraints = { video: { width: videoWidth, height: videoHeight } };
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      const video = document.getElementById("webcam");
+      if (video) {
+        video.srcObject = stream;
+        video.addEventListener("loadeddata", async () => {
+          if (video.videoWidth > 0 && video.videoHeight > 0) {
+            document.getElementById("loadingIntelligenza").style.display = "none";
+            document.getElementById("traduzione").style.display = "block";
+            if (!webcamRunning) {
+              await reinitializeGestureRecognizer();
+              webcamRunning = true;
+              predictWebcam();
             }
-        } catch (err) {
-            console.error("Error accessing the webcam: ", err);
-        }
-    };
+          } else {
+            console.error("Le dimensioni del video non sono corrette.");
+          }
+        });
+      }
+    } catch (err) {
+      console.error("Errore nell'accesso alla webcam: ", err);
+    }
+  };
 
-    // Clear gesture output
-    window.clearOutput = () => {
-        gestureOutput.innerText = "";
-        gestureOutput.style.display = "none";
-        daStampare = "";
-        ultimo_valore = "";
-        document.getElementById("gesture_output").innerText = "";
-    };
+  /**
+   * Pulisce l'output dei gesti.
+   */
+  window.clearOutput = () => {
+    if (gestureOutput) {
+      gestureOutput.innerText = "";
+      gestureOutput.style.display = "none";
+    }
+    daStampare = "";
+    ultimo_valore = "";
+  };
 
-    // Export global functions
-    window.disableCam = disableCam;
+  // Esporta la funzione per disabilitare la webcam
+  window.disableCam = disableCam;
 });
+
 
 //--------------------------------- SLIDE MANAGEMENT -----------------------------------*/
 function toSlide(dest) {
@@ -248,8 +282,8 @@ function toSlide(dest) {
         nav.style.display = "none";
         document.getElementById("loadingIntelligenza").style.display = "flex";
         document.getElementById("traduzione").style.display = "none";
-        enableCam();
-        return
+        // enableCam();
+        return;
     } else {
         disableCam();
     }

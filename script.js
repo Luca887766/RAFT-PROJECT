@@ -362,11 +362,11 @@ function getElementsForSlide(dest) {
     }
     return elements;
 }
-
 /* ------------------------ VOCABULARY ----------------------*/
 
 // Variable to save vocabulary data and load it only once
 let vocabolario = null;
+let activeButtonContent = 'europe';
 
 // Function to load the vocabulary
 function caricaVocabolario() {
@@ -395,10 +395,10 @@ function caricaVocabolario() {
     xhr.send();
 }
 
-// Function to display letters
 function inizializzaEventi() {
     const inputRicerca = document.querySelector('#barraRicerca input');
     const imgContainer = document.querySelector('#imgVocabolario');
+    let linguaPrecedente = activeButtonContent; // Memorizza il valore iniziale
 
     function aggiornaVocabolario() {
         const testo = inputRicerca.value.toUpperCase(); // Convert text to uppercase
@@ -411,16 +411,16 @@ function inizializzaEventi() {
         }
 
         // Logic to get the selected language from the radio buttons
-        const linguaSelezionata = "italiano";
+        const linguaSelezionata = activeButtonContent;
+        const linguaCorretta = linguaSelezionata.trim().toLowerCase();
 
         imgContainer.innerHTML = "";
 
         // If the field is empty, show all letters
         const lettereDaMostrare = testo.length > 0 ? testo.split('') : vocabolario
-            .filter(item => item.lingua.includes(linguaSelezionata))
+            .filter(item => item.lingua.includes(linguaCorretta))
             .map(item => item.lettera);
 
-        console.log(lettereDaMostrare);
 
         // Create letters
         lettereDaMostrare.forEach(char => {
@@ -429,9 +429,12 @@ function inizializzaEventi() {
 
             const lettera = char === " " ? "SPACE" : char;
 
+            //la ligua passata dai bottoni viene messa nel formato corretto
+            const linguaCorretta = linguaSelezionata.trim().toLowerCase();
+
             // Search the JSON for the corresponding image
             const elemento = vocabolario.find(item =>
-                item.lettera === lettera && item.lingua.includes(linguaSelezionata)
+                item.lettera === lettera && item.lingua.includes(linguaCorretta)
             );
 
             if (elemento) {
@@ -453,6 +456,14 @@ function inizializzaEventi() {
     aggiornaVocabolario();
 
     inputRicerca.addEventListener('input', aggiornaVocabolario);
+
+    // Controllo ogni 200ms se la lingua è cambiata
+    setInterval(() => {
+        if (activeButtonContent !== linguaPrecedente) {
+            linguaPrecedente = activeButtonContent;
+            aggiornaVocabolario();
+        }
+    }, 200);
 }
 
 /*----------------- LANGUAGE SELECTION FUNCTION ----------------------*/
@@ -485,6 +496,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const newOffset = buttonRect.left - container.getBoundingClientRect().left;
                 const translateX = EUROPE_OFFSET - newOffset + initialOffset;
                 container.style.transform = `translateX(${translateX}px)`;
+                activeButtonContent = button.textContent;
             }
         });
 
@@ -529,6 +541,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const newOffset = buttonRect.left - container.getBoundingClientRect().left;
             const translateX = EUROPE_OFFSET - newOffset + initialOffset;
             container.style.transform = `translateX(${translateX}px)`;
+            activeButtonContent = closestInactiveButton.textContent;
         }
     }
 
@@ -557,6 +570,7 @@ document.querySelectorAll('.lang-btn').forEach(button => {
     button.onclick = function () {
         document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
         this.classList.add('active');
+        activeButtonContent = this.textContent;
     };
 });
 

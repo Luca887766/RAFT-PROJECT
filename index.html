@@ -25,7 +25,7 @@
     <!-- ---------------------------------- LOADING PAGE ----------------------------------------- -->
     <div id="loadingIniziale" class="slide loading">
         <div class="logoNome">
-            <img src="img/logoRaft.png" alt="Raft Logo">
+            <img src="img/draw/logoRaft.png" alt="Raft Logo">
             <h1>RAFT</h1>
             <p>Real Time Automated Fingerspelling Translator</p>
         </div>
@@ -37,10 +37,10 @@
         <div id="nomeApp">RAFT</div>
         <div id="imgLoghi">
             <a href="https://www.galileicrema.edu.it/" target="_blank">
-                <img src="img/logoGalilei.png" alt="Galilei Logo">
+                <img src="img/draw/logoGalilei.png" alt="Galilei Logo">
             </a>
             <a href="https://www.asdoverlimits.com/" target="_blank">
-                <img src="img/logoOverlimits.png" alt="Overlimits Logo">
+                <img src="img/draw/logoOverlimits.png" alt="Overlimits Logo">
             </a>
         </div>
     </header>
@@ -56,7 +56,7 @@
     <div id="selModalita" class="slide marginBottom">
         <div class="card-container">
             <div class="card active" id="cardTraduttore" onclick="enableCam(); toSlide('traduzione')">
-                <img class="card-img" src="img/traduzioneOff.png" alt="Translation">
+                <img class="card-img" src="img/draw/traduzioneOff.png" alt="Translation">
             </div>
             <h3>Translator</h3>
             <p>Instantly translate the fingerspelling alphabet</p>
@@ -64,7 +64,7 @@
 
         <div class="card-container">
             <div class="card disactive" id="cardAllenamento" onclick="toSlide('selDifficolta')">
-                <img class="card-img" src="img/allenamentoOff.png" alt="Training">
+                <img class="card-img" src="img/draw/allenamentoOff.png" alt="Training">
             </div>
             <h3>Training</h3>
             <p>Have fun training</p>
@@ -74,7 +74,7 @@
     <!-- ---------------------------------- INTELLIGENCE LOADING PAGE ----------------------------------------- -->
     <div id="loadingIntelligenza" class="slide loading" style="display: none;">
         <div class="logoNome">
-            <img src="img/logoRaft.png" alt="Raft Logo">
+            <img src="img/draw/logoRaft.png" alt="Raft Logo">
             <h1>RAFT</h1>
             <p>Loading...</p>
         </div>
@@ -83,7 +83,8 @@
 
     <!-- ---------------------------------- TRANSLATION PAGE ----------------------------------------- -->
     <div id="traduzione" class="slide" style="display: none;">
-        <button class="backButton" id="diseableWebcamButton" onclick="disableCam(); toSlide('homePage'); clearOutput()">Go Back</button>
+        <button class="backButton" id="diseableWebcamButton"
+            onclick="disableCam(); toSlide('homePage'); clearOutput()">Go Back</button>
         <button class="clearButton" onclick="clearOutput()">Clear</button>
         <div class="videoContainer">
             <video id="webcam" autoplay playsinline></video>
@@ -98,28 +99,22 @@
     <div id="selDifficolta" class="slide marginBottom" style="display: none;">
         <button id="modFacile" onclick="selectDifficulty(this)">
             <span>Easy</span>
-            <span class="description">This is the easy mode...</span>
+            <span class="description">Reproduce the letter displayed</span>
         </button>
         <button id="modMedia" onclick="selectDifficulty(this)">
             <span>Medium</span>
-            <span class="description">Advanced mode</span>
+            <span class="description">Remember the letters</span>
         </button>
         <button id="modDifficile" onclick="selectDifficulty(this)">
             <span>Hard</span>
-            <span class="description">Only for experts!</span>
+            <span class="description">Compose sentences</span>
         </button>
     </div>
 
     <!-- ---------------------------------- EASY GAME PAGE ----------------------------------------- -->
-    <div id="giocoFacile" class="slide" style="display: none;">
-        <button class="backButton" id="diseableWebcamButton" onclick="disableCam(); toSlide('homePage')">Go Back</button>
-        <div class="videoContainer">
-            <video id="webcam" autoplay playsinline></video>
-            <canvas class="output_canvas" id="output_canvas" width="1280" height="720"></canvas>
-            <div id="gesture_output_container">
-                <p id='gesture_output' class="output"></p>
-            </div>
-        </div>
+    <div id="giocoFacile" class="slide marginBottom giocoSviluppo" style="display: none;">
+        <p>Easy game mode still in development</p>
+        <button onclick="toSlide('selDifficolta')"> Go Back </button>
     </div>
 
     <!-- ---------------------------------- MEDIUM GAME PAGE ----------------------------------------- -->
@@ -150,35 +145,64 @@
     </div>
 
     <!-- ---------------------------------- CONTACT PAGE ----------------------------------------- -->
-    <div id="contatti" class="slide marginBottom" style="display: none;">
-        <form action="https://formsubmit.co/raft.galileo@gmail.com" method="POST" class="formContainer">
+    <div id="contatti" class="slide marginBottom">
+        <!-- Intestazione -->
+        <div id="contattiHeader">
+            <h1 class="contattiTitolo">Contact our team</h1>
+            <p class="contattiTesto">Send us feedback or report an issue with our application</p>
+        </div>
+        <form id="contactForm" action="https://formsubmit.co/raft.galileo@gmail.com" method="POST"
+            class="formContainer">
             <!-- Nascondere CAPTCHA e risposta -->
             <input type="hidden" name="_captcha" value="false">
-    
+            <input type="hidden" name="_next" value="javascript:void(0);">
+
+            <!-- Nickname -->
             <label for="nickname">Nickname</label>
             <input type="text" id="nickname" name="nickname" placeholder="Nickname" required>
-    
+
+            <!-- Email -->
             <label for="email">Email (Optional)</label>
             <input type="email" id="email" name="email" placeholder="Email">
-    
+
+            <!-- Motivo della richiesta -->
             <label for="reason">Reason</label>
-            <select id="reason" name="motivazione">
-                <option value="malfunzionamento">Malfunction</option>
-                <option value="feedback">Feedback</option>
-                <option value="erroreAlfabeto">Alphabet Error</option>
-            </select>
-    
-            <label>Reference Language(s)</label>
-            <input type="checkbox" id="europe" name="linguaEuropeo" value="Europe">
-            <label for="europe">Europe</label>
-            <input type="checkbox" id="american" name="linguaAmericana" value="American">
-            <label for="american">American</label>
-    
+            <div class="select-wrapper">
+                <select id="reason" name="motivazione">
+                    <option value="" disabled selected>Select a reason</option>
+                    <option value="malfunzionamento">Malfunction</option>
+                    <option value="feedback">Feedback</option>
+                    <option value="erroreAlfabeto">Alphabet error</option>
+                </select>
+            </div>
+
+            <!-- Dispositivo utilizzato -->
+            <label for="device">Device used</label>
+            <input type="text" id="device" name="dispositivo" placeholder="E.g., iPhone 13, Samsung S22...">
+
+            <!-- Lingua -->
+            <label>Language</label>
+            <div class="checkbox-group">
+                <input type="radio" id="europe" name="lingua" value="Europe">
+                <label for="europe">Europe</label>
+
+                <input type="radio" id="american" name="lingua" value="American">
+                <label for="american">American</label>
+            </div>
+
+            <!-- Messaggio -->
             <label for="message">Message</label>
             <textarea id="message" name="messaggio" placeholder="Write your message..." required></textarea>
-    
+
+            <!-- Pulsante di invio -->
             <button type="submit">Send</button>
         </form>
+    </div>
+
+    <!-- Pop-up di conferma -->
+    <div id="successPopup"
+        style="display: none; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #4CAF50; color: white; padding: 10px 20px; border-radius: 5px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);">
+        Email sent successfully!
     </div>
 
     <!-- ---------------------------------- FOOTER ----------------------------------------- -->
@@ -222,6 +246,31 @@
                 // Add the active class to the clicked button
                 button.classList.add("active");
             });
+        });
+    });
+
+    /*---------------------------CONFERMA INVIO DELLA MAIL------------------*/
+    document.getElementById("contactForm").addEventListener("submit", function (event) {
+        event.preventDefault(); // Previene il refresh della pagina
+
+        let form = event.target;
+        let formData = new FormData(form);
+
+        fetch(form.action, {
+            method: form.method,
+            body: formData,
+        }).then(response => {
+            if (response.ok) {
+                document.getElementById("successPopup").style.display = "block";
+                setTimeout(() => {
+                    document.getElementById("successPopup").style.display = "none";
+                }, 3000);
+                form.reset();
+            } else {
+                alert("There was an issue sending the email. Please try again.");
+            }
+        }).catch(error => {
+            alert("Error: " + error.message);
         });
     });
 </script>

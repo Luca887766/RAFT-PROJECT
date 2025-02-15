@@ -403,33 +403,30 @@ video {
     text-align: left;
 }
 
-.check label {
-    font-size: 0.25rem;
-}
-
-input[type="text"],
-select,
+/* Input e Select */
+input[type="text"], 
+input[type="email"], 
+select, 
 textarea {
     width: 100%;
     padding: 0.8rem;
-    border: 0.05rem solid #ccc;
+    border: 1px solid #ccc;
     border-radius: 0.5rem;
     margin-bottom: 1rem;
-    box-shadow: 0 0.3rem 0.6rem rgba(0, 0, 0, 0.07);
-}
-
-select {
-    appearance: none;
+    box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.05);
+    font-size: 1rem;
 }
 
 textarea {
     min-height: 6.25rem;
+    resize: none;
 }
 
 form {
     margin-bottom: 1rem;
 }
 
+/* Checkbox e Radio */
 .checkbox-group {
     display: flex;
     gap: 1rem;
@@ -441,6 +438,7 @@ form {
     align-items: center;
 }
 
+/* Bottone di invio */
 .formContainer button {
     width: 100%;
     padding: 0.8rem;
@@ -456,22 +454,18 @@ form {
     background-color: #3238ab;
 }
 
-#selMessaggio {
-    resize: none;
-}
-
-.label-svg-container {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin: 0.5rem 0;
-}
-
-/*freccia inutile*/
+/* Stile per la select con freccia */
 .select-wrapper {
     position: relative;
-    display: inline-block;
     width: 100%;
+}
+
+.select-wrapper select {
+    appearance: none;
+    background-color: white;
+    cursor: pointer;
+    width: 100%;
+    padding-right: 2rem; /* Spazio per l'icona */
 }
 
 .select-wrapper select:focus {
@@ -479,34 +473,25 @@ form {
     border-color: #007bff;
 }
 
-#freccia {
+/* Icona freccia nella select */
+.select-wrapper::after {
+    content: "";
     position: absolute;
-    right: 1rem;
-    top: 40%;
+    right: 1.5rem; 
+    top: 45%; 
     transform: translateY(-50%);
+    width: 20px; 
+    height: 20px;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-compact-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.553 6.776a.5.5 0 0 1 .67-.223L8 9.44l5.776-2.888a.5.5 0 1 1 .448.894l-6 3a.5.5 0 0 1-.448 0l-6-3a.5.5 0 0 1-.223-.67"/></svg>') no-repeat center;
+    background-size: contain;
     pointer-events: none;
 }
 
-#freccia.rotated {
-    position: absolute;
-    right: 1rem;
-    top: 40%;
-    transform: translateY(-50%) rotate(180deg);
-    pointer-events: none;
-}
-
-/*additional information per computer*/
+/* Testo opzionale */
 #testoOpzionale {
     font-size: 0.8rem;
     color: #6e6e6e;
-}
-
-.label-svg-container {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    position: relative;
-}
+} 
 
 /* -------------------------------------FONT DEL SITO---------------------------------- */
 @font-face {
@@ -551,19 +536,19 @@ form {
 }
 
 #cardTraduttore.active img {
-    content: url('img/traduzioneOn.png');
+    content: url('img/draw/traduzioneOn.png');
 }
 
 #cardAllenamento.active img {
-    content: url('img/allenamentoOn.png');
+    content: url('img/draw/allenamentoOn.png');
 }
 
 #cardTraduttore.disactive img {
-    content: url('img/traduzioneOff.png');
+    content: url('img/draw/traduzioneOff.png');
 }
 
 #cardAllenamento.disactive img {
-    content: url('img/allenamentoOff.png');
+    content: url('img/draw/allenamentoOff.png');
 }
 
 .card-container h3 {
@@ -645,7 +630,7 @@ form {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('img/pattern.png');
+    background-image: url('img/draw/pattern.png');
     background-repeat: repeat;
     background-size: 12rem;
     z-index: 1;

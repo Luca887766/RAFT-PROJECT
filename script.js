@@ -267,7 +267,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   window.disableCam = disableCam;
 });
 
-
 //--------------------------------- SLIDE MANAGEMENT -----------------------------------*/
 function toSlide(dest) {
     const slides = document.querySelectorAll(".slide");

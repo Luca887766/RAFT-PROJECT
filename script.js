@@ -674,3 +674,4 @@ function selectDifficulty(selectedButton) {
     buttons.forEach(button => button.classList.remove("active"));
 
     selectedButton.classList.add("active");
+}

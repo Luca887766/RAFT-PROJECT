@@ -9,9 +9,9 @@ if ('serviceWorker' in navigator) {
 }
 
 // Redirect HTTP to HTTPS
-if (location.protocol === "http:") {
+/*if (location.protocol === "http:") {
     location.href = "https" + location.href.substring(4);
-}
+}*/
 
 // Check for updates
 const xhr = new XMLHttpRequest();

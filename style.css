@@ -787,8 +787,8 @@ form {
 }
 
 #targetLetterImage {
-    max-width: 10rem;
-    max-height: 10rem;
+    max-width: 13rem;
+    max-height: 13rem;
     height: auto;
     border: 2px solid #ccc;
     border-radius: 0.3rem;

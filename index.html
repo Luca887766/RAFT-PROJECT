@@ -113,26 +113,42 @@
 
     <!-- ---------------------------------- EASY GAME PAGE ----------------------------------------- -->
     <div id="giocoFacile" class="slide" style="display: none;">
-        <button class="backButton" onclick="stopTraining(); toSlide('selDifficolta')">Go Back</button>
-        <!-- Container principale per video e output lettera -->
         <div id="trainingContainer">
-            <!-- Contenitore Video/Canvas -->
-            <div id="trainingVideoContainer" class="videoContainer">
+            <div id="trainingVideoContainer">
                 <video id="trainingWebcam" autoplay playsinline></video>
-                <canvas class="output_canvas" id="training_output_canvas" width="1280" height="720"></canvas>
+                <canvas class="output_canvas" id="training_output_canvas"></canvas>
             </div>
-            <!-- Contenitore Lettera Target (spostato qui) -->
             <div id="targetLetterContainer">
-                <img id="targetLetterImage" src="" alt="Target Letter">
-                <p id="targetLetterText"></p>
+                <img id="targetLetterImage" src="" alt="Target Letter Image">
+                <p id="targetLetterText">A</p>
             </div>
+            <button class="backButton" onclick="stopTraining(); toSlide('selDifficolta');">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
+                    <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
+                  </svg>
+                INDIETRO
+            </button>
         </div>
     </div>
 
     <!-- ---------------------------------- MEDIUM GAME PAGE ----------------------------------------- -->
-    <div id="giocoMedio" class="slide marginBottom giocoSviluppo" style="display: none;">
-        <p>Medium game mode still in development</p>
-        <button onclick="toSlide('selDifficolta')"> Go Back </button>
+    <div id="giocoMedio" class="slide" style="display: none;">
+         <div id="trainingContainer">
+            <div id="trainingVideoContainer">
+                <video id="trainingWebcam" autoplay playsinline></video>
+                <canvas class="output_canvas" id="training_output_canvas"></canvas>
+            </div>
+            <div id="targetLetterContainer">
+                <img id="targetLetterImage" src="" alt="Target Letter Image">
+                <p id="targetLetterText">A</p>
+            </div>
+            <button class="backButton" onclick="stopTraining(); toSlide('selDifficolta');">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
+                    <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
+                  </svg>
+                INDIETRO
+            </button>
+        </div>
     </div>
 
     <!-- ---------------------------------- HARD GAME PAGE ----------------------------------------- -->

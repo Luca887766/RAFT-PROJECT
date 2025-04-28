@@ -808,8 +808,8 @@ const predictTraining = async () => {
     if (results && results.landmarks) {
         const drawingUtils = new DrawingUtils(canvasCtx);
         for (const landmarks of results.landmarks) {
-            drawingUtils.drawConnectors(landmarks, GestureRecognizer.HAND_CONNECTIONS, { color: "#00FF00", lineWidth: 5 });
-            drawingUtils.drawLandmarks(landmarks, { color: "#FF0000", lineWidth: 2 });
+            drawingUtils.drawConnectors(landmarks, GestureRecognizer.HAND_CONNECTIONS, { color: "#00FF00", lineWidth: 3 });
+            drawingUtils.drawLandmarks(landmarks, { color: "#FF0000", lineWidth: 1 });
         }
     }
 
@@ -852,7 +852,7 @@ const enableTrainingCam = async () => {
         return;
     }
 
-    const constraints = { video: { width: 640, height: 480 } };
+    const constraints = { video: { width: 1280, height: 720 } };
     try {
         const stream = await navigator.mediaDevices.getUserMedia(constraints);
         const video = document.getElementById("trainingWebcam");
@@ -1028,8 +1028,8 @@ const predictMediumTraining = async () => {
     if (results && results.landmarks) {
         const drawingUtils = new DrawingUtils(canvasCtx);
         for (const landmarks of results.landmarks) {
-            drawingUtils.drawConnectors(landmarks, GestureRecognizer.HAND_CONNECTIONS, { color: "#00FF00", lineWidth: 5 });
-            drawingUtils.drawLandmarks(landmarks, { color: "#FF0000", lineWidth: 2 });
+            drawingUtils.drawConnectors(landmarks, GestureRecognizer.HAND_CONNECTIONS, { color: "#00FF00", lineWidth: 3 });
+            drawingUtils.drawLandmarks(landmarks, { color: "#FF0000", lineWidth: 1 });
         }
     }
 
@@ -1079,7 +1079,7 @@ const enableMediumCam = async () => {
         return;
     }
 
-    const constraints = { video: { width: 640, height: 480 } };
+    const constraints = { video: { width: 1280, height: 720 } };
     try {
         const stream = await navigator.mediaDevices.getUserMedia(constraints);
         const video = document.getElementById("mediumWebcam");
@@ -1274,8 +1274,8 @@ const predictHardTraining = async () => {
     if (results && results.landmarks) {
         const drawingUtils = new DrawingUtils(canvasCtx);
         for (const landmarks of results.landmarks) {
-            drawingUtils.drawConnectors(landmarks, GestureRecognizer.HAND_CONNECTIONS, { color: "#00FF00", lineWidth: 5 });
-            drawingUtils.drawLandmarks(landmarks, { color: "#FF0000", lineWidth: 2 });
+            drawingUtils.drawConnectors(landmarks, GestureRecognizer.HAND_CONNECTIONS, { color: "#00FF00", lineWidth: 3 });
+            drawingUtils.drawLandmarks(landmarks, { color: "#FF0000", lineWidth: 1 });
         }
     }
 
@@ -1330,7 +1330,7 @@ const enableHardCam = async () => {
         return;
     }
 
-    const constraints = { video: { width: 640, height: 480 } };
+    const constraints = { video: { width: 1280, height: 720 } };
     try {
         const stream = await navigator.mediaDevices.getUserMedia(constraints);
         const video = document.getElementById("hardWebcam");
@@ -1361,53 +1361,85 @@ const enableHardCam = async () => {
 };
 
 window.startEasyTraining = async () => {
-    if (!vocabolario) {
-        try {
+    // Show loading screen
+    const loadingScreen = document.getElementById("loadingTrainingMode");
+    const trainingContainer = document.getElementById("trainingContainer");
+    
+    if (loadingScreen) loadingScreen.style.display = "flex";
+    if (trainingContainer) trainingContainer.style.display = "none";
+    
+    try {
+        if (!vocabolario) {
             await caricaVocabolario();
-        } catch (error) {
-            alert("Errore nel caricamento del vocabolario. Impossibile avviare l'allenamento.");
-            toSlide('selDifficolta');
-            return;
         }
+        showNewTrainingLetter();
+        await enableTrainingCam();
+        
+        // Hide loading screen when everything is ready
+        if (loadingScreen) loadingScreen.style.display = "none";
+        if (trainingContainer) trainingContainer.style.display = "block";
+    } catch (error) {
+        console.error("Error starting easy training:", error);
+        alert("Errore nel caricamento dell'allenamento.");
+        toSlide('selDifficolta');
     }
-    showNewTrainingLetter();
-    await enableTrainingCam();
 };
 
 window.startMediumTraining = async () => {
-    if (!vocabolario) {
-        try {
+    // Show loading screen
+    const loadingScreen = document.getElementById("loadingMediumMode");
+    const mediumTrainingContainer = document.getElementById("mediumTrainingContainer");
+    
+    if (loadingScreen) loadingScreen.style.display = "flex";
+    if (mediumTrainingContainer) mediumTrainingContainer.style.display = "none";
+    
+    try {
+        if (!vocabolario) {
             await caricaVocabolario();
-        } catch (error) {
-            alert("Errore nel caricamento del vocabolario. Impossibile avviare l'allenamento medio.");
-            toSlide('selDifficolta');
-            return;
         }
+        showNewMediumLetter();
+        await enableMediumCam();
+        
+        // Hide loading screen when everything is ready
+        if (loadingScreen) loadingScreen.style.display = "none";
+        if (mediumTrainingContainer) mediumTrainingContainer.style.display = "block";
+    } catch (error) {
+        console.error("Error starting medium training:", error);
+        alert("Errore nel caricamento dell'allenamento medio.");
+        toSlide('selDifficolta');
     }
-    showNewMediumLetter();
-    await enableMediumCam();
 };
 
 window.startHardTraining = async () => {
-    if (!vocabolario) {
-        try {
-            await caricaVocabolario();
-        } catch (error) {
-            alert("Errore nel caricamento del vocabolario. Impossibile avviare l'allenamento.");
-            toSlide('selDifficolta');
-            return;
-        }
-    }
+    // Show loading screen
+    const loadingScreen = document.getElementById("loadingHardMode");
+    const hardTrainingContainer = document.getElementById("hardTrainingContainer");
+    
+    if (loadingScreen) loadingScreen.style.display = "flex";
+    if (hardTrainingContainer) hardTrainingContainer.style.display = "none";
+    
     try {
-        await loadParole();
-    } catch (error) {
-        console.error("Failed to load words for hard mode:", error);
-        toSlide('selDifficolta');
-        return;
-    }
+        if (!vocabolario) {
+            await caricaVocabolario();
+        }
+        try {
+            await loadParole();
+        } catch (error) {
+            console.error("Failed to load words for hard mode:", error);
+            throw error;
+        }
 
-    showNewHardWord();
-    await enableHardCam();
+        showNewHardWord();
+        await enableHardCam();
+        
+        // Hide loading screen when everything is ready
+        if (loadingScreen) loadingScreen.style.display = "none";
+        if (hardTrainingContainer) hardTrainingContainer.style.display = "block";
+    } catch (error) {
+        console.error("Error starting hard training:", error);
+        alert("Errore nel caricamento dell'allenamento difficile.");
+        toSlide('selDifficolta');
+    }
 };
 
 /*------------DIFFICULTY SELECTION BUTTONS-------------*/

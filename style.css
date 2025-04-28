@@ -601,70 +601,6 @@ form {
     }
 }
 
-/*-------------- SCHERMATA DI CARICAMENTO-------------*/
-.loading {
-    position: relative;
-    height: 100vh;
-    width: 100%;
-    background-color: #10145C;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    cursor: progress;
-}
-
-.pattern {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url('img/draw/pattern.png');
-    background-repeat: repeat;
-    background-size: 12rem;
-    z-index: 1;
-}
-
-.logoNome {
-    z-index: 2;
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    bottom: 15%;
-}
-
-.loading img {
-    max-width: 14rem;
-    width: 100%;
-    height: auto;
-    z-index: 2;
-}
-
-.loading h1 {
-    font-family: 'logoTitolo';
-    font-size: 3em;
-    -webkit-text-stroke: 0.1rem #007bff;
-    color: white;
-    text-shadow: 0.2rem 0.2rem 0.3rem rgba(145, 186, 230, 0.8);
-}
-
-.loading p {
-    font-family: 'logoTitolo';
-    font-size: 1.2rem;
-    color: #ffffff;
-    margin-top: 0.3rem;
-    letter-spacing: 0.01rem;
-    text-shadow: 0.05rem 0.05rem 0.1rem rgba(145, 186, 230, 0.9);
-}
-
-.loading img {
-    width: 12.5rem;
-    height: auto;
-}
-
 /*--------------SCELTA DIFFICOLTA'-------------------*/
 #selDifficolta {
     display: flex;
@@ -885,7 +821,7 @@ form {
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 3;
-    display: none; 
+    display: none;
     background-color: rgba(255, 255, 255, 0.8);
     border-radius: 1rem;
     padding: 1rem;
@@ -900,10 +836,25 @@ form {
 }
 
 @keyframes fadeInOut {
-    0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
-    20% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-    80% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-    100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+
+    20% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    80% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
 }
 
 #mediumLetterContainer.correct-gesture {
@@ -999,7 +950,7 @@ form {
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 4;
-    display: none; 
+    display: none;
     background-color: rgba(255, 255, 255, 0.9);
     border-radius: 1rem;
     padding: 2rem 3rem;
@@ -1014,14 +965,3 @@ form {
     margin: 0;
     text-transform: uppercase;
 }
-
-.correct-letter {
-    color: green;
-    font-weight: bold;
-  }
-  
-  .current-letter {
-    color: blue;
-    text-decoration: underline;
-    font-weight: bold;
-  }

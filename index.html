@@ -7,6 +7,84 @@
     <meta name="theme-color" content="#10145C" />
     <title>RAFT</title>
 
+    <!-- Loading styles inline for immediate rendering -->
+    <style>
+        @font-face {
+            font-family: "logoTitolo";
+            src: url(fonts/Subway-Black.ttf);
+        }
+
+        .loading {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            background-color: #10145C;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            cursor: progress;
+        }
+
+        .gameLoading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10;
+        }
+
+        .pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('img/draw/pattern.png');
+            background-repeat: repeat;
+            background-size: 12rem;
+            z-index: 1;
+        }
+
+        .logoNome {
+            z-index: 2;
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            bottom: 15%;
+        }
+
+        .loading img {
+            max-width: 14rem;
+            width: 100%;
+            height: auto;
+            z-index: 2;
+        }
+
+        .loading h1 {
+            font-family: 'logoTitolo';
+            font-size: 3em;
+            -webkit-text-stroke: 0.1rem #007bff;
+            color: white;
+            text-shadow: 0.2rem 0.2rem 0.3rem rgba(145, 186, 230, 0.8);
+        }
+
+        .loading p {
+            font-family: 'logoTitolo';
+            font-size: 1.2rem;
+            color: #ffffff;
+            margin-top: 0.3rem;
+            letter-spacing: 0.01rem;
+            text-shadow: 0.05rem 0.05rem 0.1rem rgba(145, 186, 230, 0.9);
+        }
+
+        .loading img {
+            width: 12.5rem;
+            height: auto;
+        }
+    </style>
+
     <!-- CSS -->
     <link rel="stylesheet" type="text/css" href="style.css" />
 
@@ -124,6 +202,17 @@
     <!-- ---------------------------------- EASY GAME PAGE ----------------------------------------- -->
     <div id="giocoFacile" class="slide" style="display: none;">
         <button class="backButton" onclick="stopTraining(); toSlide('selDifficolta')">Go Back</button>
+        
+        <!-- Loading Screen for Easy Mode -->
+        <div id="loadingTrainingMode" class="loading gameLoading">
+            <div class="logoNome">
+                <img src="img/draw/logoRaft.png" alt="Raft Logo">
+                <h1>RAFT</h1>
+                <p>Loading...</p>
+            </div>
+            <div class="pattern"></div>
+        </div>
+        
         <div id="trainingContainer">
             <div id="trainingVideoContainer" class="videoContainer">
                 <video id="trainingWebcam" autoplay playsinline></video>
@@ -139,6 +228,17 @@
     <!-- ---------------------------------- MEDIUM GAME PAGE ----------------------------------------- -->
     <div id="giocoMedio" class="slide" style="display: none;">
         <button class="backButton" onclick="stopMediumTraining(); toSlide('selDifficolta')">Go Back</button>
+        
+        <!-- Loading Screen for Medium Mode -->
+        <div id="loadingMediumMode" class="loading gameLoading">
+            <div class="logoNome">
+                <img src="img/draw/logoRaft.png" alt="Raft Logo">
+                <h1>RAFT</h1>
+                <p>Loading...</p>
+            </div>
+            <div class="pattern"></div>
+        </div>
+        
         <div id="mediumTrainingContainer">
             <div id="mediumVideoContainer" class="videoContainer">
                 <video id="mediumWebcam" autoplay playsinline></video>
@@ -156,6 +256,17 @@
     <!-- ---------------------------------- HARD GAME PAGE ----------------------------------------- -->
     <div id="giocoDifficile" class="slide" style="display: none;">
         <button class="backButton" onclick="stopHardTraining(); toSlide('selDifficolta')">Go Back</button>
+        
+        <!-- Loading Screen for Hard Mode -->
+        <div id="loadingHardMode" class="loading gameLoading">
+            <div class="logoNome">
+                <img src="img/draw/logoRaft.png" alt="Raft Logo">
+                <h1>RAFT</h1>
+                <p>Loading...</p>
+            </div>
+            <div class="pattern"></div>
+        </div>
+        
         <div id="hardTrainingContainer">
             <div id="hardVideoContainer" class="videoContainer">
                 <video id="hardWebcam" autoplay playsinline></video>

@@ -114,14 +114,17 @@
     <!-- ---------------------------------- EASY GAME PAGE ----------------------------------------- -->
     <div id="giocoFacile" class="slide" style="display: none;">
         <button class="backButton" onclick="stopTraining(); toSlide('selDifficolta')">Go Back</button>
+        <!-- Container principale per video e output lettera -->
         <div id="trainingContainer">
-            <div id="targetLetterContainer">
-                <img id="targetLetterImage" src="" alt="Target Letter">
-                <p id="targetLetterText"></p>
-            </div>
+            <!-- Contenitore Video/Canvas -->
             <div id="trainingVideoContainer" class="videoContainer">
                 <video id="trainingWebcam" autoplay playsinline></video>
                 <canvas class="output_canvas" id="training_output_canvas" width="1280" height="720"></canvas>
+            </div>
+            <!-- Contenitore Lettera Target (spostato qui) -->
+            <div id="targetLetterContainer">
+                <img id="targetLetterImage" src="" alt="Target Letter">
+                <p id="targetLetterText"></p>
             </div>
         </div>
     </div>

@@ -46,8 +46,6 @@ let ultimo_valore = "";
 let daStampare = "";
 let lastVideoTime = -1;
 let lastAppendTime = 0;
-let lastTrainingVideoTime = -1; // Added for training prediction loop
-let currentDifficulty = null; // Added to track current training difficulty
 
 /**
  * Disabilita il flusso della webcam e rimuove l'event listener
@@ -280,21 +278,15 @@ function toSlide(dest) {
 
     // Stop relevant webcams/modes when navigating away
     const currentEasySlide = document.getElementById('giocoFacile');
-    const currentMediumSlide = document.getElementById('giocoMedio'); // Added
     const currentTranslationSlide = document.getElementById('traduzione');
 
     if (currentEasySlide && currentEasySlide.style.display !== 'none' && dest !== 'giocoFacile') {
         console.log("Navigating away from Easy Training, stopping...");
-        stopTraining();
-    }
-    // Added check for medium slide
-    if (currentMediumSlide && currentMediumSlide.style.display !== 'none' && dest !== 'giocoMedio') {
-        console.log("Navigating away from Medium Training, stopping...");
-        stopTraining();
+        stopTraining(); // Stop easy training mode
     }
     if (currentTranslationSlide && currentTranslationSlide.style.display !== 'none' && dest !== 'traduzione') {
         console.log("Navigating away from Translation, stopping...");
-        disableCam();
+        disableCam(); // Stop translation webcam
     }
 
     // Handle navigation TO specific slides
@@ -309,15 +301,13 @@ function toSlide(dest) {
         const nav = document.getElementById("nav");
         if (nav) nav.style.display = "none";
         // startEasyTraining will be called by selectDifficulty after the second click
-    } else if (dest === "giocoMedio") { // Added case for medium
-        const nav = document.getElementById("nav");
-        if (nav) nav.style.display = "none";
-        // startMediumTraining will be called by selectDifficulty after the second click
     } else {
-        // Ensure training webcam is off if not in easy or medium training mode
-        if (dest !== 'giocoFacile' && dest !== 'giocoMedio' && trainingRunning) {
-             console.log("Navigating to non-Training slide, ensuring training is stopped.");
-             stopTraining();
+        // Ensure general webcam is off if not in translation mode
+        // disableCam(); // Already handled above
+        // Ensure training webcam is off if not in easy training mode
+        if (dest !== 'giocoFacile' && trainingRunning) {
+             console.log("Navigating to non-Easy Training slide, ensuring training is stopped.");
+             stopTraining(); // Use stopTraining which includes disableTrainingCam
         }
     }
 
@@ -340,7 +330,7 @@ function toSlide(dest) {
         if ([ "homePage", "vocabolario", "contatti", "selDifficolta"].includes(dest)) {
             nav.style.display = "flex";
         } else {
-            // Hide nav on other pages (like training, translation, giocoMedio)
+            // Hide nav on other pages (like training, translation)
             nav.style.display = "none";
         }
     }
@@ -399,7 +389,7 @@ function getElementsForSlide(dest) {
         case "giocoFacile":
             elements.push(document.getElementById("giocoFacile"));
             break;
-        case "giocoMedio": // Added case
+        case "giocoMedio":
             elements.push(document.getElementById("giocoMedio"));
             break;
         case "giocoDifficile":
@@ -764,22 +754,22 @@ function selectDifficulty(selectedButton) {
     if (alreadyActive) {
         if (mode === "modFacile") {
             toSlide("giocoFacile");
+            // Start training only when navigating TO the slide
             startEasyTraining();
         } else if (mode === "modMedia") {
-            toSlide("giocoMedio"); // Navigate to medium slide
-            startMediumTraining(); // Start medium training
+            toSlide("giocoMedio");
+            // Add startMediumTraining() here when implemented
         } else if (mode === "modDifficile") {
             toSlide("giocoDifficile");
+            // Add startHardTraining() here when implemented
         }
     } else {
       // First click: Just highlight the button. User needs to click again to navigate.
       // Stop any ongoing training if a *different* difficulty is selected on the first click
-      if (trainingRunning) {
-          if ((currentDifficulty === 'easy' && mode !== 'modFacile') ||
-              (currentDifficulty === 'medium' && mode !== 'modMedia')) {
-              stopTraining();
-          }
+      if (trainingRunning && mode !== "modFacile") { // Check if easy training is running and a different button is clicked
+          stopTraining();
       }
+      // Add similar checks for medium/hard modes when implemented
     }
 }
 
@@ -815,34 +805,28 @@ const disableTrainingCam = () => {
  * Ferma la modalità allenamento.
  */
 window.stopTraining = () => {
-    console.log("Stopping training...");
+    console.log("Stopping easy training..."); // Add log
     trainingRunning = false;
     disableTrainingCam();
     currentTrainingLetter = null;
     correctGestureStartTime = null;
-    currentDifficulty = null; // Reset difficulty
 };
 
 /**
- * Mostra una nuova lettera casuale per l'allenamento.
- * @param {boolean} showImage - Indica se mostrare l'immagine associata.
+ * Mostra una nuova lettera casuale per l'allenamento usando il vocabolario.
  */
-const showNewTrainingLetter = (showImage) => {
+const showNewTrainingLetter = () => {
     if (!vocabolario) {
         console.error("Vocabolario non caricato per l'allenamento.");
+        // Optionally display an error message to the user
         return;
     }
 
-    // Assume IDs are reused in the active slide (giocoFacile or giocoMedio)
     const targetImage = document.getElementById("targetLetterImage");
     const targetText = document.getElementById("targetLetterText");
     const container = document.getElementById("targetLetterContainer");
 
-    if (!targetImage || !targetText || !container) {
-        console.error("Elementi UI per l'allenamento non trovati!");
-        return;
-    }
-
+    // Reset visual feedback
     if (container) container.classList.remove("correct-gesture");
     correctGestureStartTime = null;
 
@@ -867,20 +851,15 @@ const showNewTrainingLetter = (showImage) => {
 
     // Display the letter using data from the vocabulary object
     targetText.innerText = currentTrainingLetter.lettera;
-
-    if (showImage) {
-        targetImage.src = currentTrainingLetter.img; // Use the image path from vocabolario
-        targetImage.alt = `Target Letter: ${currentTrainingLetter.lettera}`;
-        targetImage.style.display = "block"; // Ensure the image is visible
-    } else {
-        targetImage.src = ""; // Clear src
-        targetImage.alt = ""; // Clear alt
-        targetImage.style.display = "none"; // Hide image
-    }
-
-    console.log(`New training letter (${currentDifficulty}):`, currentTrainingLetter.lettera, "Show image:", showImage);
+    targetImage.src = currentTrainingLetter.img; // Use the image path from vocabolario
+    targetImage.alt = `Target Letter: ${currentTrainingLetter.lettera}`;
+    targetImage.style.display = "block"; // Ensure the image is visible
+    console.log("New training letter:", currentTrainingLetter.lettera); // Log the new letter
 };
 
+/**
+ * Funzione di predizione per la modalità allenamento.
+ */
 const predictTraining = async () => {
     const video = document.getElementById("trainingWebcam");
     const canvasElement = document.getElementById("training_output_canvas");
@@ -948,13 +927,7 @@ const predictTraining = async () => {
         }
 
         if (nowInMs - correctGestureStartTime >= CORRECT_GESTURE_DURATION) {
-            // Show next letter based on current difficulty
-            if (currentDifficulty === 'easy') {
-                showNewTrainingLetter(true);
-            } else if (currentDifficulty === 'medium') {
-                showNewTrainingLetter(false);
-            }
-            // Add case for 'hard' when implemented
+            showNewTrainingLetter(); // Show the next letter
         }
     } else {
         // If gesture is incorrect or confidence is low, reset timer and border
@@ -1036,27 +1009,6 @@ window.startEasyTraining = async () => {
         console.log("Vocabolario caricato.");
     }
     console.log("Starting easy training...");
-    currentDifficulty = 'easy'; // Set difficulty
-    showNewTrainingLetter(true); // Show the first letter with image
-    await enableTrainingCam(); // Enable webcam and start predictions
-};
-
-/**
- * Inizia la modalità di allenamento media.
- */
-window.startMediumTraining = async () => {
-    if (!vocabolario) {
-        console.log("Vocabolario non caricato, caricamento in corso...");
-        await caricaVocabolario(); // Wait for vocabulary to load
-        if (!vocabolario) {
-            alert("Errore nel caricamento del vocabolario. Impossibile avviare l'allenamento.");
-            toSlide('selDifficolta'); // Go back if loading failed
-            return;
-        }
-        console.log("Vocabolario caricato.");
-    }
-    console.log("Starting medium training...");
-    currentDifficulty = 'medium'; // Set difficulty
-    showNewTrainingLetter(false); // Show the first letter without image
+    showNewTrainingLetter(); // Show the first letter
     await enableTrainingCam(); // Enable webcam and start predictions
 };

@@ -587,6 +587,13 @@ form {
     max-width: 15rem;
 }
 
+/* Media queries for different devices */
+@media (min-height: 36rem) { 
+    #selModalita {
+        margin-top:30rem;
+    }
+}
+
 
 
 /*-------------- SCHERMATA DI CARICAMENTO-------------*/

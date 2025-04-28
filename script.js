@@ -44,6 +44,9 @@ let daStampare = "";
 let lastVideoTime = -1;
 let lastAppendTime = 0;
 
+let usedTrainingLetters = [];
+let usedMediumLetters = [];
+
 const disableCam = () => {
   webcamRunning = false;
   const video = document.getElementById("webcam");
@@ -732,11 +735,13 @@ const showNewTrainingLetter = () => {
     correctGestureStartTime = null;
 
     const currentLanguage = activeButtonContent.trim().toLowerCase();
-    const possibleLetters = vocabolario.filter(item =>
-        item.lingua.includes(currentLanguage) && item.lettera !== "SPACE" && item.lettera !== "DEL"
+    const allPossibleLetters = vocabolario.filter(item =>
+        item.lingua.includes(currentLanguage) && 
+        item.lettera !== "SPACE" && 
+        item.lettera !== "DEL"
     );
-
-    if (possibleLetters.length === 0) {
+    
+    if (allPossibleLetters.length === 0) {
         console.error("Nessuna lettera disponibile per l'allenamento nella lingua corrente.");
         targetText.innerText = "Error";
         targetImage.src = "";
@@ -744,9 +749,23 @@ const showNewTrainingLetter = () => {
         targetImage.style.display = "none";
         return;
     }
-
-    const randomIndex = Math.floor(Math.random() * possibleLetters.length);
-    currentTrainingLetter = possibleLetters[randomIndex];
+    
+    // Filter out letters that have already been used
+    let availableLetters = allPossibleLetters.filter(letter => 
+        !usedTrainingLetters.includes(letter.lettera)
+    );
+    
+    // If all letters have been used, reset the tracking
+    if (availableLetters.length === 0) {
+        usedTrainingLetters = [];
+        availableLetters = allPossibleLetters;
+    }
+    
+    const randomIndex = Math.floor(Math.random() * availableLetters.length);
+    currentTrainingLetter = availableLetters[randomIndex];
+    
+    // Add to used letters
+    usedTrainingLetters.push(currentTrainingLetter.lettera);
 
     targetText.innerText = currentTrainingLetter.lettera;
     targetImage.src = currentTrainingLetter.img;
@@ -925,20 +944,34 @@ const showNewMediumLetter = () => {
 
     const currentLanguage = activeButtonContent.trim().toLowerCase();
 
-    let possibleLetters = vocabolario.filter(item =>
+    const allPossibleLetters = vocabolario.filter(item =>
         item.lingua.includes(currentLanguage) &&
         item.lettera !== "SPACE" &&
         item.lettera !== "DEL"
     );
 
-    if (possibleLetters.length === 0) {
+    if (allPossibleLetters.length === 0) {
         console.error("Nessuna lettera disponibile per l'allenamento nella lingua corrente.");
         targetText.innerText = "Error";
         return;
     }
-
-    const randomIndex = Math.floor(Math.random() * possibleLetters.length);
-    currentMediumLetter = possibleLetters[randomIndex];
+    
+    // Filter out letters that have already been used
+    let availableLetters = allPossibleLetters.filter(letter => 
+        !usedMediumLetters.includes(letter.lettera)
+    );
+    
+    // If all letters have been used, reset the tracking
+    if (availableLetters.length === 0) {
+        usedMediumLetters = [];
+        availableLetters = allPossibleLetters;
+    }
+    
+    const randomIndex = Math.floor(Math.random() * availableLetters.length);
+    currentMediumLetter = availableLetters[randomIndex];
+    
+    // Add to used letters
+    usedMediumLetters.push(currentMediumLetter.lettera);
 
     targetText.innerText = currentMediumLetter.lettera;
 

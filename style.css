@@ -11,7 +11,7 @@ body {
     padding: 0;
     display: flex;
     flex-direction: column;
-    background-color: #820c0c;
+    background-color: #ffffff;
     overflow-x: hidden;
     transition: opacity 0.5s ease-in-out;
 }
@@ -587,30 +587,7 @@ form {
     max-width: 15rem;
 }
 
-/* Media queries for different devices */
-@media (min-width: 36rem) { /* Small devices */
-    #selModalita {
-        margin-top: calc(30vh - 50% - 1.5rem);
-    }
-}
 
-@media (min-width: 48rem) { /* Medium devices */
-    #selModalita {
-        margin-top: calc(60vh - 50% - 1.5rem);
-    }
-}
-
-@media (min-width: 75rem) { /* Extra large devices */
-    #selModalita {
-        margin-top: calc(70vh - 50% - 1.5rem);
-    }
-}
-
-@media (min-width: 187.5rem) { /* Ultra large devices */
-    #selModalita {
-        margin-top: calc(70vh - 50% - 1.5rem);
-    }
-}
 
 /*-------------- SCHERMATA DI CARICAMENTO-------------*/
 .loading {

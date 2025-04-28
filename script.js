@@ -906,42 +906,25 @@ const predictTraining = async () => {
     }
 
     let recognizedLetter = "None";
-    let recognitionScore = 0;
     if (results && results.gestures && results.gestures.length > 0) {
         const { categoryName, score } = results.gestures[0][0];
-        recognitionScore = score; // Store score
         // Use a confidence threshold
         if (score > 0.70) {
             recognizedLetter = categoryName;
         }
     }
 
-    // --- DEBUG LOGGING START ---
-    if (recognizedLetter !== "None") {
-        console.log(`Recognized: ${recognizedLetter}, Score: ${recognitionScore.toFixed(2)}, Target: ${currentTrainingLetter ? currentTrainingLetter.lettera : 'N/A'}`);
-    }
-    // --- DEBUG LOGGING END ---
-
     // Check against the 'lettera' property of the currentTrainingLetter object
     if (currentTrainingLetter && recognizedLetter.toUpperCase() === currentTrainingLetter.lettera.toUpperCase()) {
         if (correctGestureStartTime === null) {
             correctGestureStartTime = nowInMs;
-            // --- DEBUG LOGGING START ---
-            console.log(`Correct gesture (${recognizedLetter}) detected. Starting timer.`);
-            // --- DEBUG LOGGING END ---
         }
 
         if (container && !container.classList.contains("correct-gesture")) {
              container.classList.add("correct-gesture");
-             // --- DEBUG LOGGING START ---
-             console.log("Added correct-gesture class.");
-             // --- DEBUG LOGGING END ---
         }
 
         if (nowInMs - correctGestureStartTime >= CORRECT_GESTURE_DURATION) {
-            // --- DEBUG LOGGING START ---
-            console.log(`Correct gesture held for ${CORRECT_GESTURE_DURATION}ms. Showing next letter.`);
-            // --- DEBUG LOGGING END ---
             showNewTrainingLetter(); // Show the next letter
         }
     } else {
@@ -949,9 +932,6 @@ const predictTraining = async () => {
         correctGestureStartTime = null;
         if (container && container.classList.contains("correct-gesture")) {
             container.classList.remove("correct-gesture");
-            // --- DEBUG LOGGING START ---
-            console.log("Removed correct-gesture class.");
-            // --- DEBUG LOGGING END ---
         }
     }
 

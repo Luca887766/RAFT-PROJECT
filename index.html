@@ -146,9 +146,28 @@
     </div>
 
     <!-- ---------------------------------- HARD GAME PAGE ----------------------------------------- -->
-    <div id="giocoDifficile" class="slide marginBottom giocoSviluppo" style="display: none;">
-        <p>Hard game mode still in development</p>
-        <button onclick="toSlide('selDifficolta')"> Go Back </button>
+    <div id="giocoDifficile" class="slide" style="display: none;">
+        <button class="backButton" onclick="stopHardTraining(); toSlide('selDifficolta')">Go Back</button>
+        <!-- Container principale per video e output parola -->
+        <div id="hardTrainingContainer">
+            <!-- Contenitore Video/Canvas -->
+            <div id="hardVideoContainer" class="videoContainer">
+                <video id="hardWebcam" autoplay playsinline></video>
+                <canvas class="output_canvas" id="hard_output_canvas" width="1280" height="720"></canvas>
+            </div>
+            <!-- Contenitore per la parola da indovinare -->
+            <div id="hardWordContainer">
+                <p id="hardTargetWord"></p>
+            </div>
+            <!-- Contenitore per il progresso delle lettere indovinate -->
+            <div id="hardProgressContainer">
+                <div id="hardProgress"></div>
+            </div>
+            <!-- Container per l'immagine che appare al centro quando la parola è completata -->
+            <div id="hardCorrectContainer">
+                <p id="hardCorrectWord"></p>
+            </div>
+        </div>
     </div>
 
     <!-- ---------------------------------- VOCABULARY PAGE ----------------------------------------- -->

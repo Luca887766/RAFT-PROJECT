@@ -278,11 +278,21 @@ function toSlide(dest) {
 
     // Stop relevant webcams/modes when navigating away
     const currentEasySlide = document.getElementById('giocoFacile');
+    const currentMediumSlide = document.getElementById('giocoMedio'); // Added medium slide check
+    const currentHardSlide = document.getElementById('giocoDifficile'); // Added hard slide check
     const currentTranslationSlide = document.getElementById('traduzione');
 
     if (currentEasySlide && currentEasySlide.style.display !== 'none' && dest !== 'giocoFacile') {
         console.log("Navigating away from Easy Training, stopping...");
         stopTraining(); // Stop easy training mode
+    }
+    if (currentMediumSlide && currentMediumSlide.style.display !== 'none' && dest !== 'giocoMedio') {
+        console.log("Navigating away from Medium Training, stopping...");
+        stopMediumTraining(); // Stop medium training mode
+    }
+    if (currentHardSlide && currentHardSlide.style.display !== 'none' && dest !== 'giocoDifficile') {
+        console.log("Navigating away from Hard Training, stopping...");
+        stopHardTraining(); // Stop hard training mode
     }
     if (currentTranslationSlide && currentTranslationSlide.style.display !== 'none' && dest !== 'traduzione') {
         console.log("Navigating away from Translation, stopping...");
@@ -297,17 +307,23 @@ function toSlide(dest) {
         document.getElementById("traduzione").style.display = "none";
         enableCam(); // Start webcam for translation
         return; // Return early as enableCam handles showing the slide
-    } else if (dest === "giocoFacile") {
+    } else if (dest === "giocoFacile" || dest === "giocoMedio" || dest === "giocoDifficile") {
         const nav = document.getElementById("nav");
         if (nav) nav.style.display = "none";
-        // startEasyTraining will be called by selectDifficulty after the second click
+        // Start functions will be called by selectDifficulty after the second click
     } else {
-        // Ensure general webcam is off if not in translation mode
-        // disableCam(); // Already handled above
-        // Ensure training webcam is off if not in easy training mode
+        // Ensure training webcams are off if not in a training mode
         if (dest !== 'giocoFacile' && trainingRunning) {
              console.log("Navigating to non-Easy Training slide, ensuring training is stopped.");
              stopTraining(); // Use stopTraining which includes disableTrainingCam
+        }
+        if (dest !== 'giocoMedio' && mediumTrainingRunning) {
+             console.log("Navigating to non-Medium Training slide, ensuring training is stopped.");
+             stopMediumTraining(); // Use stopMediumTraining which includes disableMediumCam
+        }
+        if (dest !== 'giocoDifficile' && hardTrainingRunning) {
+             console.log("Navigating to non-Hard Training slide, ensuring training is stopped.");
+             stopHardTraining(); // Use stopHardTraining which includes disableHardCam
         }
     }
 
@@ -1222,43 +1238,305 @@ const enableMediumCam = async () => {
     }
 };
 
-/*------------DIFFICULTY SELECTION BUTTONS-------------*/
-function selectDifficulty(selectedButton) {
-    const mode = selectedButton.id;
-    const alreadyActive = selectedButton.classList.contains("active");
+/*-------------------HARD TRAINING MODE------------------*/
+let hardTrainingRunning = false;
+let paroleList = null; // To store the list of words
+let currentHardWord = null;
+let currentHardLetterIndex = 0;
+let hardCorrectGestureStartTime = null;
+const HARD_CORRECT_GESTURE_DURATION = 600; // 0.8 seconds in milliseconds
+let hardTimeoutId = null;
+let lastHardVideoTime = -1;
+let showingHardCorrectWord = false;
+let hardCorrectWordTimeout = null;
 
-    // Deactivate all buttons first
-    const buttons = document.querySelectorAll("#selDifficolta button");
-    buttons.forEach(button => button.classList.remove("active"));
+/**
+ * Carica l'elenco delle parole da parole.json
+ */
+const loadParole = async () => {
+    if (paroleList) {
+        return Promise.resolve(); // Already loaded
+    }
+    return new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+            try {
+                const data = JSON.parse(xhr.responseText);
+                paroleList = data.parole; // Assuming the JSON structure is { "parole": [...] }
+                console.log("Lista parole caricata:", paroleList.length, "parole");
+                resolve();
+            } catch (e) {
+                console.error("Errore nel parsing del file parole.json: ", e);
+                alert("Errore nel caricamento delle parole per la modalità difficile.");
+                reject(e);
+            }
+        };
+        xhr.onerror = function () {
+            console.error("Errore di comunicazione nel caricamento di parole.json.");
+            alert("Errore di comunicazione nel caricamento delle parole.");
+            reject(new Error("Communication error"));
+        };
+        xhr.open("GET", "parole.json?t=" + Date.now()); // Add timestamp to prevent caching issues
+        xhr.send();
+    });
+};
 
-    // Activate the selected one
-    selectedButton.classList.add("active");
+/**
+ * Disabilita la webcam dell'allenamento modalità difficile.
+ */
+const disableHardCam = () => {
+    const video = document.getElementById("hardWebcam");
+    if (video && video.srcObject) {
+        const stream = video.srcObject;
+        stream.getTracks().forEach((track) => track.stop());
+        video.srcObject = null;
+        video.removeEventListener("loadeddata", predictHardTraining);
+    }
+    if (hardTimeoutId) {
+        clearTimeout(hardTimeoutId);
+        hardTimeoutId = null;
+    }
+    if (hardCorrectWordTimeout) {
+        clearTimeout(hardCorrectWordTimeout);
+        hardCorrectWordTimeout = null;
+    }
+    // Hide the correct word container
+    const correctContainer = document.getElementById("hardCorrectContainer");
+    if (correctContainer) {
+        correctContainer.style.display = "none";
+    }
+};
 
-    // If it was already active (second click), navigate to the corresponding game slide
-    if (alreadyActive) {
-        if (mode === "modFacile") {
-            toSlide("giocoFacile");
-            // Start training only when navigating TO the slide
-            startEasyTraining();
-        } else if (mode === "modMedia") {
-            toSlide("giocoMedio");
-            startMediumTraining(); // Start medium training when navigating to the slide
-        } else if (mode === "modDifficile") {
-            toSlide("giocoDifficile");
-            // Add startHardTraining() here when implemented
+/**
+ * Ferma la modalità allenamento difficile.
+ */
+window.stopHardTraining = () => {
+    console.log("Stopping hard training...");
+    hardTrainingRunning = false;
+    disableHardCam();
+    currentHardWord = null;
+    currentHardLetterIndex = 0;
+    hardCorrectGestureStartTime = null;
+    showingHardCorrectWord = false;
+};
+
+/**
+ * Aggiorna la visualizzazione della parola target evidenziando la lettera corrente.
+ */
+const updateHardWordDisplay = () => {
+    const targetWordElement = document.getElementById("hardTargetWord");
+    if (!currentHardWord || !targetWordElement) return;
+
+    let highlightedWord = "";
+    for (let i = 0; i < currentHardWord.length; i++) {
+        if (i === currentHardLetterIndex) {
+            highlightedWord += `<span class="current-letter">${currentHardWord[i]}</span>`;
+        } else {
+            highlightedWord += currentHardWord[i];
+        }
+    }
+    targetWordElement.innerHTML = highlightedWord.toUpperCase();
+};
+
+/**
+ * Aggiorna la barra di progresso.
+ */
+const updateHardProgress = () => {
+    const progressBar = document.getElementById("hardProgress");
+    if (!currentHardWord || !progressBar) return;
+
+    const progressPercentage = (currentHardLetterIndex / currentHardWord.length) * 100;
+    progressBar.style.width = `${progressPercentage}%`;
+};
+
+/**
+ * Mostra una nuova parola casuale per l'allenamento modalità difficile.
+ */
+const showNewHardWord = () => {
+    if (!paroleList || paroleList.length === 0) {
+        console.error("Lista parole non caricata o vuota per l'allenamento difficile.");
+        // Optionally display an error message
+        return;
+    }
+
+    const correctContainer = document.getElementById("hardCorrectContainer");
+
+    // Reset visual feedback
+    if (correctContainer) correctContainer.style.display = "none";
+    hardCorrectGestureStartTime = null;
+    showingHardCorrectWord = false;
+
+    // Select a random word
+    const randomIndex = Math.floor(Math.random() * paroleList.length);
+    currentHardWord = paroleList[randomIndex];
+    currentHardLetterIndex = 0;
+
+    console.log("New hard training word:", currentHardWord);
+
+    // Display the word and highlight the first letter
+    updateHardWordDisplay();
+    // Reset progress bar
+    updateHardProgress();
+};
+
+/**
+ * Mostra brevemente la parola completata.
+ */
+const showHardCorrectWord = () => {
+    if (showingHardCorrectWord) return; // Prevent multiple showings
+
+    showingHardCorrectWord = true;
+    const correctContainer = document.getElementById("hardCorrectContainer");
+    const correctWordElement = document.getElementById("hardCorrectWord");
+
+    correctWordElement.innerText = currentHardWord.toUpperCase();
+    correctContainer.style.display = "block";
+
+    // Hide the word after 3 seconds and show a new word
+    hardCorrectWordTimeout = setTimeout(() => {
+        correctContainer.style.display = "none";
+        showingHardCorrectWord = false;
+        showNewHardWord();
+    }, 3000); // Show for 3 seconds
+};
+
+/**
+ * Funzione di predizione per la modalità allenamento difficile.
+ */
+const predictHardTraining = async () => {
+    const video = document.getElementById("hardWebcam");
+    const canvasElement = document.getElementById("hard_output_canvas");
+    const canvasCtx = canvasElement ? canvasElement.getContext("2d") : null;
+
+    // Add check for video dimensions before proceeding
+    if (!gestureRecognizer || !canvasElement || !canvasCtx || !hardTrainingRunning || !video || video.videoWidth === 0 || video.videoHeight === 0) {
+        if (hardTrainingRunning) {
+            hardTimeoutId = window.requestAnimationFrame(predictHardTraining);
+        }
+        return;
+    }
+
+    // Ensure canvas dimensions match video dimensions
+    if (canvasElement.width !== video.videoWidth || canvasElement.height !== video.videoHeight) {
+        canvasElement.width = video.videoWidth;
+        canvasElement.height = video.videoHeight;
+    }
+
+    const nowInMs = Date.now();
+    let results;
+    if (video.currentTime !== lastHardVideoTime) {
+        lastHardVideoTime = video.currentTime;
+        results = await gestureRecognizer.recognizeForVideo(video, nowInMs);
+    } else {
+        if (hardTrainingRunning) {
+            hardTimeoutId = window.requestAnimationFrame(predictHardTraining);
+        }
+        return;
+    }
+
+    canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+
+    if (results && results.landmarks) {
+        const drawingUtils = new DrawingUtils(canvasCtx);
+        for (const landmarks of results.landmarks) {
+            drawingUtils.drawConnectors(landmarks, GestureRecognizer.HAND_CONNECTIONS, { color: "#00FF00", lineWidth: 5 });
+            drawingUtils.drawLandmarks(landmarks, { color: "#FF0000", lineWidth: 2 });
+        }
+    }
+
+    // Don't process gestures if we're already showing the correct word confirmation
+    if (showingHardCorrectWord) {
+        if (hardTrainingRunning) {
+            hardTimeoutId = window.requestAnimationFrame(predictHardTraining);
+        }
+        return;
+    }
+
+    let recognizedLetter = "None";
+    if (results && results.gestures && results.gestures.length > 0) {
+        const { categoryName, score } = results.gestures[0][0];
+        if (score > 0.70) { // Confidence threshold
+            recognizedLetter = categoryName;
+        }
+    }
+
+    // Check if the recognized letter matches the current target letter in the word
+    const targetLetter = currentHardWord ? currentHardWord[currentHardLetterIndex] : null;
+
+    if (targetLetter && recognizedLetter.toUpperCase() === targetLetter.toUpperCase()) {
+        if (hardCorrectGestureStartTime === null) {
+            hardCorrectGestureStartTime = nowInMs;
+        }
+
+        // Check if the gesture has been held long enough
+        if (nowInMs - hardCorrectGestureStartTime >= HARD_CORRECT_GESTURE_DURATION) {
+            currentHardLetterIndex++;
+            updateHardProgress(); // Update progress bar
+            hardCorrectGestureStartTime = null; // Reset timer for the next letter
+
+            if (currentHardLetterIndex >= currentHardWord.length) {
+                // Word completed
+                showHardCorrectWord();
+            } else {
+                // Move to the next letter
+                updateHardWordDisplay();
+            }
         }
     } else {
-      // First click: Just highlight the button. User needs to click again to navigate.
-      // Stop any ongoing training if a *different* difficulty is selected on the first click
-      if (trainingRunning && mode !== "modFacile") { // Check if easy training is running and a different button is clicked
-          stopTraining();
-      }
-      if (mediumTrainingRunning && mode !== "modMedia") { // Check if medium training is running and a different button is clicked
-          stopMediumTraining(); 
-      }
-      // Add similar checks for hard mode when implemented
+        // If gesture is incorrect or confidence is low, reset timer
+        hardCorrectGestureStartTime = null;
     }
-}
+
+    // Continue the loop only if training is still running
+    if (hardTrainingRunning) {
+        hardTimeoutId = window.requestAnimationFrame(predictHardTraining);
+    }
+};
+
+/**
+ * Abilita la webcam per l'allenamento modalità difficile.
+ */
+const enableHardCam = async () => {
+    if (!gestureRecognizer) {
+        alert("Attendere il caricamento del gesture recognizer");
+        return;
+    }
+    if (hardTrainingRunning && document.getElementById("hardWebcam").srcObject) {
+        console.log("Hard training webcam already enabled.");
+        return;
+    }
+
+    const constraints = { video: { width: 640, height: 480 } };
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        const video = document.getElementById("hardWebcam");
+        if (video) {
+            video.srcObject = stream;
+            await new Promise((resolve) => {
+                video.onloadeddata = () => {
+                    console.log("Hard training webcam video loaded.");
+                    resolve();
+                };
+            });
+            if (video.videoWidth > 0 && video.videoHeight > 0) {
+                 video.style.display = "block";
+                 hardTrainingRunning = true;
+                 lastHardVideoTime = -1;
+                 predictHardTraining();
+                 console.log("Hard training prediction loop started.");
+            } else {
+                 console.error("Hard training webcam video dimensions not available.");
+                 stream.getTracks().forEach((track) => track.stop());
+                 video.srcObject = null;
+                 alert("Failed to initialize hard training webcam.");
+            }
+        }
+    } catch (err) {
+        console.error("Error accessing hard training webcam: ", err);
+        alert("Could not access webcam for hard training. Please check permissions.");
+        hardTrainingRunning = false;
+    }
+};
 
 /**
  * Inizia la modalità di allenamento facile.
@@ -1299,3 +1577,71 @@ window.startMediumTraining = async () => {
     showNewMediumLetter(); // Show the first letter
     await enableMediumCam(); // Enable webcam and start predictions
 };
+
+/**
+ * Inizia la modalità di allenamento difficile.
+ */
+window.startHardTraining = async () => {
+    // Ensure vocabulary is loaded (needed for gesture recognizer)
+    if (!vocabolario) {
+        console.log("Vocabolario non caricato, caricamento in corso...");
+        await caricaVocabolario();
+        if (!vocabolario) {
+            alert("Errore nel caricamento del vocabolario. Impossibile avviare l'allenamento.");
+            toSlide('selDifficolta');
+            return;
+        }
+        console.log("Vocabolario caricato.");
+    }
+    // Ensure word list is loaded
+    try {
+        await loadParole();
+    } catch (error) {
+        console.error("Failed to load words for hard mode:", error);
+        toSlide('selDifficolta'); // Go back if loading failed
+        return;
+    }
+
+    console.log("Starting hard training...");
+    showNewHardWord(); // Show the first word
+    await enableHardCam(); // Enable webcam and start predictions
+};
+
+/*------------DIFFICULTY SELECTION BUTTONS-------------*/
+function selectDifficulty(selectedButton) {
+    const mode = selectedButton.id;
+    const alreadyActive = selectedButton.classList.contains("active");
+
+    // Deactivate all buttons first
+    const buttons = document.querySelectorAll("#selDifficolta button");
+    buttons.forEach(button => button.classList.remove("active"));
+
+    // Activate the selected one
+    selectedButton.classList.add("active");
+
+    // If it was already active (second click), navigate to the corresponding game slide
+    if (alreadyActive) {
+        if (mode === "modFacile") {
+            toSlide("giocoFacile");
+            startEasyTraining();
+        } else if (mode === "modMedia") {
+            toSlide("giocoMedio");
+            startMediumTraining();
+        } else if (mode === "modDifficile") {
+            toSlide("giocoDifficile");
+            startHardTraining(); // Start hard training when navigating to the slide
+        }
+    } else {
+      // First click: Just highlight the button. User needs to click again to navigate.
+      // Stop any ongoing training if a *different* difficulty is selected on the first click
+      if (trainingRunning && mode !== "modFacile") {
+          stopTraining();
+      }
+      if (mediumTrainingRunning && mode !== "modMedia") {
+          stopMediumTraining();
+      }
+      if (hardTrainingRunning && mode !== "modDifficile") { // Check if hard training is running
+          stopHardTraining();
+      }
+    }
+}

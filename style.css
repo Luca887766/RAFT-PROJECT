@@ -793,40 +793,36 @@ form {
 
 #targetLetterContainer {
     position: absolute;
-    bottom: 1rem; /* Position at the bottom */
+    bottom: 1rem;
     left: 1rem;
     right: 1rem;
-    /* display: flex; */ /* Keep flex for internal alignment */
-    /* align-items: center; */
-    /* gap: 1rem; */
-    /* margin-bottom: 1rem; */ /* Remove margin */
-    background: radial-gradient(80.97% 1714.77% at 58.68% -1061.36%, #21279B 0%, #10145C 100%); /* Match translation output style */
-    padding: 1rem; /* Adjust padding */
-    border-radius: 1rem; /* Match translation output style */
-    z-index: 3; /* Ensure it's above video/canvas */
-    display: flex; /* Use flex to center content */
-    justify-content: center; /* Center content horizontally */
-    align-items: center; /* Center content vertically */
-    gap: 1.5rem; /* Space between image and text */
-    border: 3px solid #FFFFFF; /* Match translation output style */
-    min-height: 6rem; /* Ensure minimum height */
+    background: radial-gradient(80.97% 1714.77% at 58.68% -1061.36%, #21279B 0%, #10145C 100%);
+    padding: 1rem;
+    border-radius: 1rem;
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    border: 3px solid #FFFFFF;
+    min-height: 6rem;
 }
 
 #targetLetterImage {
-    max-width: 4rem; /* Adjust size */
-    max-height: 4rem; /* Adjust size */
+    max-width: 10rem;
+    max-height: 10rem;
     height: auto;
     border: 2px solid #ccc;
     border-radius: 0.3rem;
-    background-color: #fff; /* Add background for visibility */
+    background-color: #fff; 
     padding: 0.2rem;
 }
 
 #targetLetterText {
-    font-size: 2.5rem; /* Increase size */
+    font-size: 2.5rem; 
     font-weight: bold;
-    color: #FFFFFF; /* Change color for contrast */
-    margin: 0; /* Remove default margins */
+    color: #FFFFFF; 
+    margin: 0; 
 }
 
 /* Style for correct gesture indication */

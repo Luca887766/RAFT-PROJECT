@@ -587,13 +587,54 @@ form {
     max-width: 15rem;
 }
 
-/* Media queries for different devices */
-@media (min-height: 36rem) { 
+/* Telefoni molto piccoli (es. iPhone SE) */
+@media (min-width: 20rem) and (max-height: 35rem) {
     #selModalita {
-        margin-top:30rem;
+        margin-top: calc(20vh - 50% - 1.5rem);
     }
 }
 
+/* Telefoni normali (es. iPhone 12, Galaxy S22) */
+@media (min-width: 22rem) and (min-height: 36rem) {
+    #selModalita {
+        margin-top: calc(30vh - 50% - 1.5rem);
+    }
+}
+
+/* Tablet piccoli (es. iPad Mini, 8") */
+@media (min-width: 48rem) and (min-height: 40rem) {
+    #selModalita {
+        margin-top: calc(50vh - 50% - 1.5rem);
+    }
+}
+
+/* Tablet grandi o piccoli laptop (es. iPad Pro, MacBook Air 13") */
+@media (min-width: 64rem) and (min-height: 48rem) {
+    #selModalita {
+        margin-top: calc(60vh - 50% - 1.5rem);
+    }
+}
+
+/* Laptop grandi (es. 15" o superiori) */
+@media (min-width: 75rem) and (min-height: 50rem) {
+    #selModalita {
+        margin-top: calc(65vh - 50% - 1.5rem);
+    }
+}
+
+/* Desktop molto grandi o 4K */
+@media (min-width: 120rem) and (min-height: 80rem) {
+    #selModalita {
+        margin-top: calc(70vh - 50% - 1.5rem);
+    }
+}
+
+/* Monitor UltraWide o TV 8K */
+@media (min-width: 187.5rem) and (min-height: 105rem) {
+    #selModalita {
+        margin-top: calc(75vh - 50% - 1.5rem);
+    }
+}
 
 
 /*-------------- SCHERMATA DI CARICAMENTO-------------*/

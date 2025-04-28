@@ -1021,7 +1021,6 @@ const showNewMediumLetter = () => {
     }
 
     const targetText = document.getElementById("mediumTargetText");
-    const targetImage = document.getElementById("mediumTargetLetterImage");
     const container = document.getElementById("mediumLetterContainer");
     const correctImage = document.getElementById("mediumCorrectImage");
     const correctContainer = document.getElementById("mediumCorrectContainer");
@@ -1045,19 +1044,12 @@ const showNewMediumLetter = () => {
     if (possibleLetters.length === 0) {
         console.error("Nessuna lettera disponibile per l'allenamento nella lingua corrente.");
         targetText.innerText = "Error";
-        targetImage.style.display = "none";
         return;
     }
 
     // Select a random letter object from the filtered list
     const randomIndex = Math.floor(Math.random() * possibleLetters.length);
     currentMediumLetter = possibleLetters[randomIndex]; // Store the whole object
-
-    // Display the letter using data from the vocabulary object
-    targetText.innerText = currentMediumLetter.lettera;
-    targetImage.src = currentMediumLetter.img;
-    targetImage.alt = `Target Letter: ${currentMediumLetter.lettera}`;
-    targetImage.style.display = "block"; // Ensure the image is visible
 
     // Prepare the correct image that will be shown when the gesture is correct
     correctImage.src = currentMediumLetter.img;

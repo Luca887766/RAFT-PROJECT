@@ -1034,7 +1034,7 @@ const showNewMediumLetter = () => {
     // Filter letters for the current language, explicitly excluding SPACE and DEL
     const currentLanguage = activeButtonContent.trim().toLowerCase();
     
-    // First attempt to get a valid letter
+    // Get valid letters
     let possibleLetters = vocabolario.filter(item => 
         item.lingua.includes(currentLanguage) && 
         item.lettera !== "SPACE" && 
@@ -1051,6 +1051,9 @@ const showNewMediumLetter = () => {
     const randomIndex = Math.floor(Math.random() * possibleLetters.length);
     currentMediumLetter = possibleLetters[randomIndex]; // Store the whole object
 
+    // Display only the letter text
+    targetText.innerText = currentMediumLetter.lettera;
+    
     // Prepare the correct image that will be shown when the gesture is correct
     correctImage.src = currentMediumLetter.img;
     correctImage.alt = `Letter: ${currentMediumLetter.lettera}`;

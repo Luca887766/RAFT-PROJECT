@@ -777,7 +777,7 @@ function selectDifficulty(selectedButton) {
 let trainingRunning = false; // Flag for training mode
 let currentTrainingLetter = null;
 let correctGestureStartTime = null;
-const CORRECT_GESTURE_DURATION = 2000; // 2 seconds in milliseconds
+const CORRECT_GESTURE_DURATION = 1000; // 2 seconds in milliseconds
 let trainingTimeoutId = null;
 
 /**
@@ -791,7 +791,7 @@ const disableTrainingCam = () => {
         video.srcObject = null;
         video.removeEventListener("loadeddata", predictTraining);
     }
-    const container = document.getElementById("trainingVideoContainer");
+    const container = document.getElementById("targetLetterContainer");
     if (container) {
         container.classList.remove("correct-gesture");
     }
@@ -824,7 +824,7 @@ const showNewTrainingLetter = () => {
 
     const targetImage = document.getElementById("targetLetterImage");
     const targetText = document.getElementById("targetLetterText");
-    const container = document.getElementById("trainingVideoContainer");
+    const container = document.getElementById("targetLetterContainer");
 
     // Reset visual feedback
     if (container) container.classList.remove("correct-gesture");
@@ -864,7 +864,8 @@ const predictTraining = async () => {
     const video = document.getElementById("trainingWebcam");
     const canvasElement = document.getElementById("training_output_canvas");
     const canvasCtx = canvasElement ? canvasElement.getContext("2d") : null;
-    const container = document.getElementById("trainingVideoContainer");
+    // Change the container to target the letter display box for feedback
+    const container = document.getElementById("targetLetterContainer");
 
     // Add check for video dimensions before proceeding
     if (!gestureRecognizer || !canvasElement || !canvasCtx || !trainingRunning || !video || video.videoWidth === 0 || video.videoHeight === 0) {
@@ -920,6 +921,7 @@ const predictTraining = async () => {
             correctGestureStartTime = nowInMs;
         }
 
+        // Apply the class to the targetLetterContainer
         if (container && !container.classList.contains("correct-gesture")) {
              container.classList.add("correct-gesture");
         }
@@ -930,6 +932,7 @@ const predictTraining = async () => {
     } else {
         // If gesture is incorrect or confidence is low, reset timer and border
         correctGestureStartTime = null;
+        // Remove the class from the targetLetterContainer
         if (container && container.classList.contains("correct-gesture")) {
             container.classList.remove("correct-gesture");
         }

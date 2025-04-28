@@ -73,7 +73,6 @@ body {
     border-top-left-radius: 1.25rem;
     border-top-right-radius: 1.25rem;
     border-bottom: 0.3rem solid #21279b;
-    ;
     box-shadow: 0rem 0.25rem 0.3rem rgba(0, 0, 0, 0.1);
 }
 
@@ -82,7 +81,6 @@ body {
     font-size: 2rem;
     font-weight: bold;
     color: #21279b;
-    ;
     letter-spacing: 0.1rem;
 }
 
@@ -102,7 +100,6 @@ body {
 
 #traduzione {
     flex: 1;
-    /* Ensure the translation slide takes full height */
     display: flex;
     flex-direction: column;
 }
@@ -114,7 +111,6 @@ body {
     overflow: hidden;
     background-color: #ffffff;
     display: block;
-    /* Ensure the container is displayed as a block element */
 }
 
 video {
@@ -403,10 +399,9 @@ video {
     text-align: left;
 }
 
-/* Input e Select */
-input[type="text"], 
-input[type="email"], 
-select, 
+input[type="text"],
+input[type="email"],
+select,
 textarea {
     width: 100%;
     padding: 0.8rem;
@@ -426,7 +421,6 @@ form {
     margin-bottom: 1rem;
 }
 
-/* Checkbox e Radio */
 .checkbox-group {
     display: flex;
     gap: 1rem;
@@ -438,7 +432,6 @@ form {
     align-items: center;
 }
 
-/* Bottone di invio */
 .formContainer button {
     width: 100%;
     padding: 0.8rem;
@@ -454,7 +447,6 @@ form {
     background-color: #3238ab;
 }
 
-/* Stile per la select con freccia */
 .select-wrapper {
     position: relative;
     width: 100%;
@@ -465,7 +457,7 @@ form {
     background-color: white;
     cursor: pointer;
     width: 100%;
-    padding-right: 2rem; /* Spazio per l'icona */
+    padding-right: 2rem;
 }
 
 .select-wrapper select:focus {
@@ -473,25 +465,23 @@ form {
     border-color: #007bff;
 }
 
-/* Icona freccia nella select */
 .select-wrapper::after {
     content: "";
     position: absolute;
-    right: 1.5rem; 
-    top: 45%; 
+    right: 1.5rem;
+    top: 45%;
     transform: translateY(-50%);
-    width: 20px; 
+    width: 20px;
     height: 20px;
     background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-compact-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.553 6.776a.5.5 0 0 1 .67-.223L8 9.44l5.776-2.888a.5.5 0 1 1 .448.894l-6 3a.5.5 0 0 1-.448 0l-6-3a.5.5 0 0 1-.223-.67"/></svg>') no-repeat center;
     background-size: contain;
     pointer-events: none;
 }
 
-/* Testo opzionale */
 #testoOpzionale {
     font-size: 0.8rem;
     color: #6e6e6e;
-} 
+}
 
 /* -------------------------------------FONT DEL SITO---------------------------------- */
 @font-face {
@@ -511,7 +501,7 @@ form {
 
 /*------------------------------------SELEZIONE MODALITà--------------------------------*/
 #selModalita {
-    margin-top: calc(30vh - 40% - 1.5rem); /* Center vertically between footer and language selection */
+    margin-top: calc(30vh - 40% - 1.5rem);
     align-items: center;
     justify-content: center;
     gap: 1rem;
@@ -587,26 +577,25 @@ form {
     max-width: 15rem;
 }
 
-/* Media queries for different devices */
-@media (min-width: 36rem) { /* Small devices */
+@media (min-width: 36rem) {
     #selModalita {
         margin-top: calc(30vh - 50% - 1.5rem);
     }
 }
 
-@media (min-width: 48rem) { /* Medium devices */
+@media (min-width: 48rem) {
     #selModalita {
         margin-top: calc(60vh - 50% - 1.5rem);
     }
 }
 
-@media (min-width: 75rem) { /* Extra large devices */
+@media (min-width: 75rem) {
     #selModalita {
         margin-top: calc(70vh - 50% - 1.5rem);
     }
 }
 
-@media (min-width: 187.5rem) { /* Ultra large devices */
+@media (min-width: 187.5rem) {
     #selModalita {
         margin-top: calc(70vh - 50% - 1.5rem);
     }
@@ -698,10 +687,8 @@ form {
     box-shadow: 0.3rem 0.3rem 1rem rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease-in-out;
     position: relative;
-
     width: 22rem;
     height: 7.5rem;
-
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -746,30 +733,20 @@ form {
 
 /*----------------------------- EASY GAME PAGE STYLES -----------------------*/
 #trainingContainer {
-    /* display: flex; */ /* Remove flex for block layout */
-    /* flex-direction: column; */
-    /* align-items: center; */
-    /* justify-content: center; */
-    height: 100vh; /* Full viewport height */
+    height: 100vh;
     width: 100%;
-    position: relative; /* Needed for absolute positioning of children */
-    /* padding-top: 4rem; */ /* Remove top padding */
+    position: relative;
 }
 
 #trainingVideoContainer {
-    position: absolute; /* Take full space */
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%; /* Occupy full container height */
-    /* max-width: 600px; */ /* Remove max-width */
-    /* height: 60vh; */
-    /* max-height: 450px; */ /* Remove max-height */
-    border-radius: 0; /* Remove border-radius */
+    height: 100%;
+    border-radius: 0;
     overflow: hidden;
-    border: 5px solid transparent; /* Keep border for feedback */
-    transition: border-color 0.3s ease;
-    z-index: 1; /* Ensure video is behind the letter display */
+    z-index: 1;
 }
 
 #trainingWebcam {
@@ -787,7 +764,7 @@ form {
     height: 100%;
     object-fit: cover;
     display: block;
-    z-index: 2; /* Canvas above video */
+    z-index: 2;
     transform: scaleX(-1);
 }
 
@@ -806,6 +783,7 @@ form {
     gap: 1.5rem;
     border: 3px solid #FFFFFF;
     min-height: 6rem;
+    transition: background 0.3s ease;
 }
 
 #targetLetterImage {
@@ -814,18 +792,56 @@ form {
     height: auto;
     border: 2px solid #ccc;
     border-radius: 0.3rem;
-    background-color: #fff; 
+    background-color: #fff;
     padding: 0.2rem;
 }
 
 #targetLetterText {
-    font-size: 2.5rem; 
+    font-size: 2.5rem;
     font-weight: bold;
-    color: #FFFFFF; 
-    margin: 0; 
+    color: #FFFFFF;
+    margin: 0;
 }
 
-/* Style for correct gesture indication */
-#trainingVideoContainer.correct-gesture {
-    border-color: #00FF00;
+#targetLetterContainer.correct-gesture {
+    background: #008000;
+}
+
+/*----------------------------- MEDIUM/HARD GAME PAGE STYLES -----------------------*/
+.giocoSviluppo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: calc(100vh - 10rem);
+    text-align: center;
+    padding: 2rem;
+}
+
+.giocoSviluppo p {
+    font-size: 1.5rem;
+    color: #555;
+    margin-bottom: 2rem;
+}
+
+.giocoSviluppo button {
+    background: #10145C;
+    color: #FFFFFF;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 0.8rem 1.6rem;
+    border: 2px solid #FFFFFF;
+    border-radius: 2rem;
+    cursor: pointer;
+    transition: all 0.25s ease-in-out;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+.giocoSviluppo button:hover {
+    background: #21279B;
+}
+
+.giocoSviluppo button:active {
+    transform: scale(0.95);
+    box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.5);
 }

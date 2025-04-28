@@ -744,34 +744,71 @@ form {
     opacity: 1;
 }
 
-/*----------------------------- SCHERMATE DI GIOCO ANCORA IN SVILUPPO -----------------------*/
-.giocoSviluppo {
-    text-align: center;
-    padding: 1.25rem;
-    background-color: #f8f8f8;
-    border: 0.05rem dashed #bbb;
+/*----------------------------- EASY GAME PAGE STYLES -----------------------*/
+#trainingContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: calc(100vh - 5rem);
+    padding-top: 4rem;
+}
+
+#targetLetterContainer {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    background-color: #f0f0f0;
+    padding: 1rem;
     border-radius: 0.5rem;
-    width: 80%;
-    max-width: 25rem;
+}
 
+#targetLetterImage {
+    max-width: 5rem;
+    height: auto;
+    border: 2px solid #ccc;
+    border-radius: 0.3rem;
+}
+
+#targetLetterText {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #10145C;
+}
+
+#trainingVideoContainer {
+    position: relative;
+    width: 80vw;
+    max-width: 600px;
+    height: 60vh;
+    max-height: 450px;
+    border-radius: 1rem;
+    overflow: hidden;
+    border: 5px solid transparent;
+    transition: border-color 0.3s ease;
+}
+
+#trainingWebcam {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scaleX(-1);
+}
+
+#training_output_canvas {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    z-index: 1;
+    transform: scaleX(-1);
 }
 
-.giocoSviluppo p {
-    font-size: 1rem;
-    color: #888;
-}
-
-.giocoSviluppo button {
-    background-color: #ddd;
-    color: #666;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
-    cursor: not-allowed;
-    font-size: 1rem;
-    opacity: 0.6;
+/* Style for correct gesture indication */
+#trainingVideoContainer.correct-gesture {
+    border-color: #00FF00;
 }

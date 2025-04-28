@@ -673,8 +673,6 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(adjustContainerPosition, 50); // Corregge il posizionamento iniziale
 });
 
-
-
 /*------------------------------ ROTATE CONTACTS ARROW--------------*/
 function toggleFrecciaRotation() {
     const freccia = document.getElementById('freccia');
@@ -722,3 +720,147 @@ function selectDifficulty(selectedButton) {
 
     selectedButton.classList.add("active");
 }
+
+/*-------------------EASY TRAINING MODE------------------*/
+let trainingRunning = false; // Flag for training mode
+let currentTrainingLetter = null;
+let correctGestureStartTime = null;
+const CORRECT_GESTURE_DURATION = 2000; // 2 seconds in milliseconds
+let trainingTimeoutId = null;
+
+/**
+ * Disabilita la webcam dell'allenamento.
+ */
+const disableTrainingCam = () => {
+    const video = document.getElementById("trainingWebcam");
+    if (video && video.srcObject) {
+        const stream = video.srcObject;
+        stream.getTracks().forEach((track) => track.stop());
+        video.srcObject = null;
+        video.removeEventListener("loadeddata", predictTraining);
+    }
+    const container = document.getElementById("trainingVideoContainer");
+    if (container) {
+        container.classList.remove("correct-gesture");
+    }
+    if (trainingTimeoutId) {
+        clearTimeout(trainingTimeoutId);
+        trainingTimeoutId = null;
+    }
+};
+
+/**
+ * Ferma la modalità allenamento.
+ */
+window.stopTraining = () => {
+    trainingRunning = false;
+    disableTrainingCam();
+    currentTrainingLetter = null;
+    correctGestureStartTime = null;
+};
+
+/**
+ * Mostra una nuova lettera casuale per l'allenamento.
+ */
+const showNewTrainingLetter = () => {
+    const targetImage = document.getElementById("targetLetterImage");
+    const targetText = document.getElementById("targetLetterText");
+    const container = document.getElementById("trainingVideoContainer");
+
+    // Reset visual feedback
+    if (container) container.classList.remove("correct-gesture");
+    correctGestureStartTime = null;
+
+    // Select a random letter (example letters, replace with actual data)
+    const letters = ["A", "B", "C", "D", "E"];
+    const randomIndex = Math.floor(Math.random() * letters.length);
+    currentTrainingLetter = letters[randomIndex];
+
+    // Display the letter
+    targetText.innerText = currentTrainingLetter;
+    targetImage.src = `img/letters/${currentTrainingLetter}.png`; // Example path
+    targetImage.alt = `Target Letter: ${currentTrainingLetter}`;
+};
+
+/**
+ * Funzione di predizione per la modalità allenamento.
+ */
+const predictTraining = async () => {
+    const video = document.getElementById("trainingWebcam");
+    const canvasElement = document.getElementById("training_output_canvas");
+    const canvasCtx = canvasElement ? canvasElement.getContext("2d") : null;
+    const container = document.getElementById("trainingVideoContainer");
+
+    if (!gestureRecognizer || !canvasElement || !canvasCtx || !trainingRunning) return;
+
+    canvasElement.width = video.videoWidth;
+    canvasElement.height = video.videoHeight;
+
+    const nowInMs = Date.now();
+    const results = await gestureRecognizer.recognizeForVideo(video, nowInMs);
+
+    canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+
+    if (results.landmarks) {
+        const drawingUtils = new DrawingUtils(canvasCtx);
+        for (const landmarks of results.landmarks) {
+            drawingUtils.drawConnectors(landmarks, GestureRecognizer.HAND_CONNECTIONS, { color: "#00FF00", lineWidth: 5 });
+            drawingUtils.drawLandmarks(landmarks, { color: "#FF0000", lineWidth: 2 });
+        }
+    }
+
+    let recognizedLetter = "None";
+    if (results.gestures && results.gestures.length > 0) {
+        const { categoryName, score } = results.gestures[0][0];
+        if (score > 0.70) {
+            recognizedLetter = categoryName;
+        }
+    }
+
+    if (currentTrainingLetter && recognizedLetter.toUpperCase() === currentTrainingLetter.toUpperCase()) {
+        if (correctGestureStartTime === null) {
+            correctGestureStartTime = nowInMs;
+        }
+
+        if (container) container.classList.add("correct-gesture");
+
+        if (nowInMs - correctGestureStartTime >= CORRECT_GESTURE_DURATION) {
+            showNewTrainingLetter();
+        }
+    } else {
+        correctGestureStartTime = null;
+        if (container) container.classList.remove("correct-gesture");
+    }
+
+    if (trainingRunning) {
+        trainingTimeoutId = window.requestAnimationFrame(predictTraining);
+    }
+};
+
+/**
+ * Abilita la webcam per l'allenamento.
+ */
+const enableTrainingCam = async () => {
+    const constraints = { video: { width: 1280, height: 720 } };
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        const video = document.getElementById("trainingWebcam");
+        if (video) {
+            video.srcObject = stream;
+            video.addEventListener("loadeddata", () => {
+                trainingRunning = true;
+                predictTraining();
+            });
+        }
+    } catch (err) {
+        console.error("Error accessing webcam: ", err);
+    }
+};
+
+/**
+ * Inizia la modalità di allenamento facile.
+ */
+window.startEasyTraining = () => {
+    showNewTrainingLetter();
+    enableTrainingCam();
+};

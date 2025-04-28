@@ -738,7 +738,7 @@ const showNewTrainingLetter = () => {
     const allPossibleLetters = vocabolario.filter(item =>
         item.lingua.includes(currentLanguage) && 
         item.lettera !== "SPACE" && 
-        item.lettera !== "DEL"
+        item.lettera !== "DELETE"
     );
     
     if (allPossibleLetters.length === 0) {

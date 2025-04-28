@@ -129,9 +129,7 @@
     <!-- ---------------------------------- MEDIUM GAME PAGE ----------------------------------------- -->
     <div id="giocoMedio" class="slide" style="display: none;">
         <button class="backButton" onclick="stopMediumTraining(); toSlide('selDifficolta')">Go Back</button>
-        <!-- Container principale per video e output lettera -->
         <div id="mediumTrainingContainer">
-            <!-- Contenitore Video/Canvas -->
             <div id="mediumVideoContainer" class="videoContainer">
                 <video id="mediumWebcam" autoplay playsinline></video>
                 <canvas class="output_canvas" id="medium_output_canvas" width="1280" height="720"></canvas>
@@ -148,22 +146,17 @@
     <!-- ---------------------------------- HARD GAME PAGE ----------------------------------------- -->
     <div id="giocoDifficile" class="slide" style="display: none;">
         <button class="backButton" onclick="stopHardTraining(); toSlide('selDifficolta')">Go Back</button>
-        <!-- Container principale per video e output parola -->
         <div id="hardTrainingContainer">
-            <!-- Contenitore Video/Canvas -->
             <div id="hardVideoContainer" class="videoContainer">
                 <video id="hardWebcam" autoplay playsinline></video>
                 <canvas class="output_canvas" id="hard_output_canvas" width="1280" height="720"></canvas>
             </div>
-            <!-- Contenitore per la parola da indovinare -->
             <div id="hardWordContainer">
                 <p id="hardTargetWord"></p>
             </div>
-            <!-- Contenitore per il progresso delle lettere indovinate -->
             <div id="hardProgressContainer">
                 <div id="hardProgress"></div>
             </div>
-            <!-- Container per l'immagine che appare al centro quando la parola è completata -->
             <div id="hardCorrectContainer">
                 <p id="hardCorrectWord"></p>
             </div>
@@ -187,26 +180,21 @@
 
     <!-- ---------------------------------- CONTACT PAGE ----------------------------------------- -->
     <div id="contatti" class="slide marginBottom">
-        <!-- Intestazione -->
         <div id="contattiHeader">
             <h1 class="contattiTitolo">Contact our team</h1>
             <p class="contattiTesto">Send us feedback or report an issue with our application</p>
         </div>
         <form id="contactForm" action="https://formsubmit.co/raft.galileo@gmail.com" method="POST"
             class="formContainer">
-            <!-- Nascondere CAPTCHA e risposta -->
             <input type="hidden" name="_captcha" value="false">
             <input type="hidden" name="_next" value="javascript:void(0);">
 
-            <!-- Nickname -->
             <label for="nickname">Nickname</label>
             <input type="text" id="nickname" name="nickname" placeholder="Nickname" required>
 
-            <!-- Email -->
             <label for="email">Email (Optional)</label>
             <input type="email" id="email" name="email" placeholder="Email">
 
-            <!-- Motivo della richiesta -->
             <label for="reason">Reason</label>
             <div class="select-wrapper">
                 <select id="reason" name="motivazione">
@@ -217,11 +205,9 @@
                 </select>
             </div>
 
-            <!-- Dispositivo utilizzato -->
             <label for="device">Device used</label>
             <input type="text" id="device" name="dispositivo" placeholder="E.g., iPhone 13, Samsung S22...">
 
-            <!-- Lingua -->
             <label>Language</label>
             <div class="checkbox-group">
                 <input type="radio" id="europe" name="lingua" value="Europe">
@@ -231,16 +217,13 @@
                 <label for="american">American</label>
             </div>
 
-            <!-- Messaggio -->
             <label for="message">Message</label>
             <textarea id="message" name="messaggio" placeholder="Write your message..." required></textarea>
 
-            <!-- Pulsante di invio -->
             <button type="submit">Send</button>
         </form>
     </div>
 
-    <!-- Pop-up di conferma -->
     <div id="successPopup"
         style="display: none; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #4CAF50; color: white; padding: 10px 20px; border-radius: 5px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);">
         Email sent successfully!

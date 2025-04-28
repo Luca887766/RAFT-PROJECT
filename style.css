@@ -885,7 +885,7 @@ form {
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 3;
-    display: none; /* Hidden by default */
+    display: none; 
     background-color: rgba(255, 255, 255, 0.8);
     border-radius: 1rem;
     padding: 1rem;
@@ -906,7 +906,6 @@ form {
     100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
 }
 
-/* Correct answer feedback for medium mode */
 #mediumLetterContainer.correct-gesture {
     background: #008000;
 }
@@ -1000,7 +999,7 @@ form {
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 4;
-    display: none; /* Hidden by default */
+    display: none; 
     background-color: rgba(255, 255, 255, 0.9);
     border-radius: 1rem;
     padding: 2rem 3rem;
@@ -1016,7 +1015,6 @@ form {
     text-transform: uppercase;
 }
 
-/* Current letter highlight style */
 .current-letter {
     color: #FCB200;
     text-decoration: underline;

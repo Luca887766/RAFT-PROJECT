@@ -162,6 +162,7 @@ video {
 
 .backButton,
 .spaceButton,
+.undoButton,
 .clearButton {
     background: #10145C;
     color: #FFFFFF;
@@ -195,7 +196,12 @@ video {
 
 .spaceButton {
     bottom: 17rem;
-    right: 8rem;
+    right: 9rem;
+}
+
+.undoButton {
+    bottom: 17rem;
+    right: 17rem;
 }
 
 .backButton:active,

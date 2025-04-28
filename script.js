@@ -269,6 +269,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   };
 
+  //cancella un carattere manualmente
+  window.undoOutput = () => {
+    if (gestureOutput) {
+        daStampare = daStampare.slice(0, -1);
+        gestureOutput.innerText = daStampare;
+    }
+  };
+
   // Esporta la funzione per disabilitare la webcam
   window.disableCam = disableCam;
 });

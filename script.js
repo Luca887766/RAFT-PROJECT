@@ -1082,7 +1082,7 @@ let paroleList = null;
 let currentHardWord = null;
 let currentHardLetterIndex = 0;
 let hardCorrectGestureStartTime = null;
-const HARD_CORRECT_GESTURE_DURATION = 800;
+const HARD_CORRECT_GESTURE_DURATION = 400;
 let hardTimeoutId = null;
 let lastHardVideoTime = -1;
 let showingHardCorrectWord = false;
@@ -1151,15 +1151,17 @@ const updateHardWordDisplay = () => {
     const targetWordElement = document.getElementById("hardTargetWord");
     if (!currentHardWord || !targetWordElement) return;
 
-    let highlightedWord = "";
+    let styledWordHTML = "";
     for (let i = 0; i < currentHardWord.length; i++) {
-        if (i === currentHardLetterIndex) {
-            highlightedWord += `<span class="current-letter">${currentHardWord[i]}</span>`;
+        if (i < currentHardLetterIndex) {
+            styledWordHTML += `<span class="correct-letter">${currentHardWord[i]}</span>`;
+        } else if (i === currentHardLetterIndex) {
+            styledWordHTML += `<span class="current-letter">${currentHardWord[i]}</span>`;
         } else {
-            highlightedWord += currentHardWord[i];
+            styledWordHTML += currentHardWord[i];
         }
     }
-    targetWordElement.innerHTML = highlightedWord.toUpperCase();
+    targetWordElement.innerHTML = styledWordHTML.toUpperCase();
 };
 
 const updateHardProgress = () => {

@@ -1015,7 +1015,13 @@ form {
     text-transform: uppercase;
 }
 
-.current-letter {
-    color: #FCB200;
+.correct-letter {
+    color: green;
+    font-weight: bold;
+  }
+  
+  .current-letter {
+    color: blue;
     text-decoration: underline;
-}
+    font-weight: bold;
+  }

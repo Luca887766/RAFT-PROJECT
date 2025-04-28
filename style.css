@@ -807,7 +807,111 @@ form {
     background: #008000;
 }
 
-/*----------------------------- MEDIUM/HARD GAME PAGE STYLES -----------------------*/
+/*----------------------------- MEDIUM GAME PAGE STYLES -----------------------*/
+#mediumTrainingContainer {
+    height: 100vh;
+    width: 100%;
+    position: relative;
+}
+
+#mediumVideoContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    overflow: hidden;
+    z-index: 1;
+}
+
+#mediumWebcam {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scaleX(-1);
+}
+
+#medium_output_canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    z-index: 2;
+    transform: scaleX(-1);
+}
+
+#mediumLetterContainer {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    right: 1rem;
+    background: radial-gradient(80.97% 1714.77% at 58.68% -1061.36%, #21279B 0%, #10145C 100%);
+    padding: 1rem;
+    border-radius: 1rem;
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    border: 3px solid #FFFFFF;
+    min-height: 6rem;
+    transition: background 0.3s ease;
+}
+
+#mediumTargetLetterImage {
+    max-width: 10rem;
+    max-height: 10rem;
+    height: auto;
+    border: 2px solid #ccc;
+    border-radius: 0.3rem;
+    background-color: #fff;
+    padding: 0.2rem;
+}
+
+#mediumTargetText {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #FFFFFF;
+    margin: 0;
+}
+
+#mediumCorrectContainer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    display: none; /* Hidden by default */
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 1rem;
+    padding: 1rem;
+    box-shadow: 0 0 2rem rgba(0, 0, 0, 0.5);
+    animation: fadeInOut 2s ease-in-out;
+}
+
+#mediumCorrectImage {
+    max-width: 15rem;
+    max-height: 15rem;
+    object-fit: contain;
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+    20% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    80% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+}
+
+/* Correct answer feedback for medium mode */
+#mediumLetterContainer.correct-gesture {
+    background: #008000;
+}
+
+/*----------------------------- HARD GAME PAGE STYLES -----------------------*/
 .giocoSviluppo {
     display: flex;
     flex-direction: column;

@@ -738,41 +738,6 @@ function fadeToHomePage() {
     }
 }
 
-/*------------DIFFICULTY SELECTION BUTTONS-------------*/
-function selectDifficulty(selectedButton) {
-    const mode = selectedButton.id;
-    const alreadyActive = selectedButton.classList.contains("active");
-
-    // Deactivate all buttons first
-    const buttons = document.querySelectorAll("#selDifficolta button");
-    buttons.forEach(button => button.classList.remove("active"));
-
-    // Activate the selected one
-    selectedButton.classList.add("active");
-
-    // If it was already active (second click), navigate to the corresponding game slide
-    if (alreadyActive) {
-        if (mode === "modFacile") {
-            toSlide("giocoFacile");
-            // Start training only when navigating TO the slide
-            startEasyTraining();
-        } else if (mode === "modMedia") {
-            toSlide("giocoMedio");
-            // Add startMediumTraining() here when implemented
-        } else if (mode === "modDifficile") {
-            toSlide("giocoDifficile");
-            // Add startHardTraining() here when implemented
-        }
-    } else {
-      // First click: Just highlight the button. User needs to click again to navigate.
-      // Stop any ongoing training if a *different* difficulty is selected on the first click
-      if (trainingRunning && mode !== "modFacile") { // Check if easy training is running and a different button is clicked
-          stopTraining();
-      }
-      // Add similar checks for medium/hard modes when implemented
-    }
-}
-
 /*-------------------EASY TRAINING MODE------------------*/
 let trainingRunning = false; // Flag for training mode
 let currentTrainingLetter = null;
@@ -993,6 +958,313 @@ const enableTrainingCam = async () => {
     }
 };
 
+/*-------------------MEDIUM TRAINING MODE------------------*/
+let mediumTrainingRunning = false;
+let currentMediumLetter = null;
+let correctMediumGestureStartTime = null;
+const MEDIUM_CORRECT_GESTURE_DURATION = 1000; // 1 second in milliseconds
+let mediumTimeoutId = null;
+let lastMediumVideoTime = -1;
+let showingCorrectImage = false;
+let correctImageTimeout = null;
+
+/**
+ * Disabilita la webcam dell'allenamento modalità media.
+ */
+const disableMediumCam = () => {
+    const video = document.getElementById("mediumWebcam");
+    if (video && video.srcObject) {
+        const stream = video.srcObject;
+        stream.getTracks().forEach((track) => track.stop());
+        video.srcObject = null;
+        video.removeEventListener("loadeddata", predictMediumTraining);
+    }
+    const container = document.getElementById("mediumLetterContainer");
+    if (container) {
+        container.classList.remove("correct-gesture");
+    }
+    if (mediumTimeoutId) {
+        clearTimeout(mediumTimeoutId);
+        mediumTimeoutId = null;
+    }
+    if (correctImageTimeout) {
+        clearTimeout(correctImageTimeout);
+        correctImageTimeout = null;
+    }
+    // Hide the correct image container
+    const correctContainer = document.getElementById("mediumCorrectContainer");
+    if (correctContainer) {
+        correctContainer.style.display = "none";
+    }
+};
+
+/**
+ * Ferma la modalità allenamento media.
+ */
+window.stopMediumTraining = () => {
+    console.log("Stopping medium training...");
+    mediumTrainingRunning = false;
+    disableMediumCam();
+    currentMediumLetter = null;
+    correctMediumGestureStartTime = null;
+    showingCorrectImage = false;
+};
+
+/**
+ * Mostra una nuova lettera casuale per l'allenamento modalità media.
+ * Escludendo esplicitamente SPACE e DEL.
+ */
+const showNewMediumLetter = () => {
+    if (!vocabolario) {
+        console.error("Vocabolario non caricato per l'allenamento medio.");
+        return;
+    }
+
+    const targetText = document.getElementById("mediumTargetText");
+    const targetImage = document.getElementById("mediumTargetLetterImage");
+    const container = document.getElementById("mediumLetterContainer");
+    const correctImage = document.getElementById("mediumCorrectImage");
+    const correctContainer = document.getElementById("mediumCorrectContainer");
+
+    // Reset visual feedback
+    if (container) container.classList.remove("correct-gesture");
+    if (correctContainer) correctContainer.style.display = "none";
+    correctMediumGestureStartTime = null;
+    showingCorrectImage = false;
+
+    // Filter letters for the current language, explicitly excluding SPACE and DEL
+    const currentLanguage = activeButtonContent.trim().toLowerCase();
+    
+    // First attempt to get a valid letter
+    let possibleLetters = vocabolario.filter(item => 
+        item.lingua.includes(currentLanguage) && 
+        item.lettera !== "SPACE" && 
+        item.lettera !== "DEL"
+    );
+
+    if (possibleLetters.length === 0) {
+        console.error("Nessuna lettera disponibile per l'allenamento nella lingua corrente.");
+        targetText.innerText = "Error";
+        targetImage.style.display = "none";
+        return;
+    }
+
+    // Select a random letter object from the filtered list
+    const randomIndex = Math.floor(Math.random() * possibleLetters.length);
+    currentMediumLetter = possibleLetters[randomIndex]; // Store the whole object
+
+    // Display the letter using data from the vocabulary object
+    targetText.innerText = currentMediumLetter.lettera;
+    targetImage.src = currentMediumLetter.img;
+    targetImage.alt = `Target Letter: ${currentMediumLetter.lettera}`;
+    targetImage.style.display = "block"; // Ensure the image is visible
+
+    // Prepare the correct image that will be shown when the gesture is correct
+    correctImage.src = currentMediumLetter.img;
+    correctImage.alt = `Letter: ${currentMediumLetter.lettera}`;
+    
+    console.log("New medium training letter:", currentMediumLetter.lettera);
+};
+
+/**
+ * Mostra brevemente l'immagine corretta quando indovinata
+ */
+const showCorrectImage = () => {
+    if (showingCorrectImage) return; // Prevent multiple showings
+    
+    showingCorrectImage = true;
+    const correctContainer = document.getElementById("mediumCorrectContainer");
+    correctContainer.style.display = "block";
+    
+    // Hide the image after 2 seconds and show a new letter
+    correctImageTimeout = setTimeout(() => {
+        correctContainer.style.display = "none";
+        showingCorrectImage = false;
+        showNewMediumLetter();
+    }, 2000);
+};
+
+/**
+ * Funzione di predizione per la modalità allenamento media.
+ */
+const predictMediumTraining = async () => {
+    const video = document.getElementById("mediumWebcam");
+    const canvasElement = document.getElementById("medium_output_canvas");
+    const canvasCtx = canvasElement ? canvasElement.getContext("2d") : null;
+    const container = document.getElementById("mediumLetterContainer");
+
+    // Add check for video dimensions before proceeding
+    if (!gestureRecognizer || !canvasElement || !canvasCtx || !mediumTrainingRunning || !video || video.videoWidth === 0 || video.videoHeight === 0) {
+        // If video dimensions are zero, wait and retry
+        if (mediumTrainingRunning) {
+            mediumTimeoutId = window.requestAnimationFrame(predictMediumTraining);
+        }
+        return;
+    }
+
+    // Ensure canvas dimensions match video dimensions
+    if (canvasElement.width !== video.videoWidth || canvasElement.height !== video.videoHeight) {
+        canvasElement.width = video.videoWidth;
+        canvasElement.height = video.videoHeight;
+    }
+
+    const nowInMs = Date.now();
+    // Use lastMediumVideoTime to avoid processing the same frame multiple times
+    let results;
+    if (video.currentTime !== lastMediumVideoTime) {
+        lastMediumVideoTime = video.currentTime;
+        results = await gestureRecognizer.recognizeForVideo(video, nowInMs);
+    } else {
+        // If time hasn't changed, just request the next frame
+        if (mediumTrainingRunning) {
+            mediumTimeoutId = window.requestAnimationFrame(predictMediumTraining);
+        }
+        return;
+    }
+
+    canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+
+    if (results && results.landmarks) {
+        const drawingUtils = new DrawingUtils(canvasCtx);
+        for (const landmarks of results.landmarks) {
+            drawingUtils.drawConnectors(landmarks, GestureRecognizer.HAND_CONNECTIONS, { color: "#00FF00", lineWidth: 5 });
+            drawingUtils.drawLandmarks(landmarks, { color: "#FF0000", lineWidth: 2 });
+        }
+    }
+
+    // Don't process gestures if we're already showing the correct image
+    if (showingCorrectImage) {
+        if (mediumTrainingRunning) {
+            mediumTimeoutId = window.requestAnimationFrame(predictMediumTraining);
+        }
+        return;
+    }
+
+    let recognizedLetter = "None";
+    if (results && results.gestures && results.gestures.length > 0) {
+        const { categoryName, score } = results.gestures[0][0];
+        // Use a confidence threshold
+        if (score > 0.70) {
+            recognizedLetter = categoryName;
+        }
+    }
+
+    // Check against the 'lettera' property of the currentMediumLetter object
+    if (currentMediumLetter && recognizedLetter.toUpperCase() === currentMediumLetter.lettera.toUpperCase()) {
+        if (correctMediumGestureStartTime === null) {
+            correctMediumGestureStartTime = nowInMs;
+        }
+
+        // Apply the class to the mediumLetterContainer
+        if (container && !container.classList.contains("correct-gesture")) {
+             container.classList.add("correct-gesture");
+        }
+
+        if (nowInMs - correctMediumGestureStartTime >= MEDIUM_CORRECT_GESTURE_DURATION) {
+            showCorrectImage(); // Show the correct image briefly
+        }
+    } else {
+        // If gesture is incorrect or confidence is low, reset timer and border
+        correctMediumGestureStartTime = null;
+        // Remove the class from the mediumLetterContainer
+        if (container && container.classList.contains("correct-gesture")) {
+            container.classList.remove("correct-gesture");
+        }
+    }
+
+    // Continue the loop only if training is still running
+    if (mediumTrainingRunning) {
+        mediumTimeoutId = window.requestAnimationFrame(predictMediumTraining);
+    }
+};
+
+/**
+ * Abilita la webcam per l'allenamento modalità media.
+ */
+const enableMediumCam = async () => {
+    if (!gestureRecognizer) {
+        alert("Attendere il caricamento del gesture recognizer");
+        return;
+    }
+    // Check if already running to prevent multiple streams
+    if (mediumTrainingRunning && document.getElementById("mediumWebcam").srcObject) {
+        console.log("Medium training webcam already enabled.");
+        return;
+    }
+
+    const constraints = { video: { width: 640, height: 480 } };
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        const video = document.getElementById("mediumWebcam");
+        if (video) {
+            video.srcObject = stream;
+            // Use a promise to wait for loadeddata
+            await new Promise((resolve) => {
+                video.onloadeddata = () => {
+                    console.log("Medium training webcam video loaded.");
+                    resolve();
+                };
+            });
+            // Ensure video dimensions are available before starting prediction
+            if (video.videoWidth > 0 && video.videoHeight > 0) {
+                 video.style.display = "block"; // Ensure the video is visible
+                 mediumTrainingRunning = true; // Set flag before starting loop
+                 lastMediumVideoTime = -1; // Reset video time tracking
+                 predictMediumTraining(); // Start the prediction loop
+                 console.log("Medium training prediction loop started.");
+            } else {
+                 console.error("Medium training webcam video dimensions not available after loadeddata.");
+                 // Handle error, maybe stop stream and show message
+                 stream.getTracks().forEach((track) => track.stop());
+                 video.srcObject = null;
+                 alert("Failed to initialize medium training webcam.");
+            }
+        }
+    } catch (err) {
+        console.error("Error accessing medium training webcam: ", err);
+        alert("Could not access webcam for medium training. Please check permissions.");
+        mediumTrainingRunning = false; // Ensure flag is false on error
+    }
+};
+
+/*------------DIFFICULTY SELECTION BUTTONS-------------*/
+function selectDifficulty(selectedButton) {
+    const mode = selectedButton.id;
+    const alreadyActive = selectedButton.classList.contains("active");
+
+    // Deactivate all buttons first
+    const buttons = document.querySelectorAll("#selDifficolta button");
+    buttons.forEach(button => button.classList.remove("active"));
+
+    // Activate the selected one
+    selectedButton.classList.add("active");
+
+    // If it was already active (second click), navigate to the corresponding game slide
+    if (alreadyActive) {
+        if (mode === "modFacile") {
+            toSlide("giocoFacile");
+            // Start training only when navigating TO the slide
+            startEasyTraining();
+        } else if (mode === "modMedia") {
+            toSlide("giocoMedio");
+            startMediumTraining(); // Start medium training when navigating to the slide
+        } else if (mode === "modDifficile") {
+            toSlide("giocoDifficile");
+            // Add startHardTraining() here when implemented
+        }
+    } else {
+      // First click: Just highlight the button. User needs to click again to navigate.
+      // Stop any ongoing training if a *different* difficulty is selected on the first click
+      if (trainingRunning && mode !== "modFacile") { // Check if easy training is running and a different button is clicked
+          stopTraining();
+      }
+      if (mediumTrainingRunning && mode !== "modMedia") { // Check if medium training is running and a different button is clicked
+          stopMediumTraining(); 
+      }
+      // Add similar checks for hard mode when implemented
+    }
+}
+
 /**
  * Inizia la modalità di allenamento facile.
  */
@@ -1011,4 +1283,24 @@ window.startEasyTraining = async () => {
     console.log("Starting easy training...");
     showNewTrainingLetter(); // Show the first letter
     await enableTrainingCam(); // Enable webcam and start predictions
+};
+
+/**
+ * Inizia la modalità di allenamento media.
+ */
+window.startMediumTraining = async () => {
+    // Ensure vocabulary is loaded before starting
+    if (!vocabolario) {
+        console.log("Vocabolario non caricato, caricamento in corso...");
+        await caricaVocabolario(); // Wait for vocabulary to load
+        if (!vocabolario) {
+            alert("Errore nel caricamento del vocabolario. Impossibile avviare l'allenamento medio.");
+            toSlide('selDifficolta'); // Go back if loading failed
+            return;
+        }
+        console.log("Vocabolario caricato.");
+    }
+    console.log("Starting medium training...");
+    showNewMediumLetter(); // Show the first letter
+    await enableMediumCam(); // Enable webcam and start predictions
 };

@@ -114,14 +114,11 @@
     <!-- ---------------------------------- EASY GAME PAGE ----------------------------------------- -->
     <div id="giocoFacile" class="slide" style="display: none;">
         <button class="backButton" onclick="stopTraining(); toSlide('selDifficolta')">Go Back</button>
-        <!-- Container principale per video e output lettera -->
         <div id="trainingContainer">
-            <!-- Contenitore Video/Canvas -->
             <div id="trainingVideoContainer" class="videoContainer">
                 <video id="trainingWebcam" autoplay playsinline></video>
                 <canvas class="output_canvas" id="training_output_canvas" width="1280" height="720"></canvas>
             </div>
-            <!-- Contenitore Lettera Target (spostato qui) -->
             <div id="targetLetterContainer">
                 <img id="targetLetterImage" src="" alt="Target Letter">
                 <p id="targetLetterText"></p>
@@ -130,9 +127,23 @@
     </div>
 
     <!-- ---------------------------------- MEDIUM GAME PAGE ----------------------------------------- -->
-    <div id="giocoMedio" class="slide marginBottom giocoSviluppo" style="display: none;">
-        <p>Medium game mode still in development</p>
-        <button onclick="toSlide('selDifficolta')"> Go Back </button>
+    <div id="giocoMedio" class="slide" style="display: none;">
+        <button class="backButton" onclick="stopMediumTraining(); toSlide('selDifficolta')">Go Back</button>
+        <!-- Container principale per video e output lettera -->
+        <div id="mediumTrainingContainer">
+            <!-- Contenitore Video/Canvas -->
+            <div id="mediumVideoContainer" class="videoContainer">
+                <video id="mediumWebcam" autoplay playsinline></video>
+                <canvas class="output_canvas" id="medium_output_canvas" width="1280" height="720"></canvas>
+            </div>
+            <div id="mediumLetterContainer">
+                <img id="mediumTargetLetterImage" src="" alt="Target Letter">
+                <p id="mediumTargetText"></p>
+            </div>
+            <div id="mediumCorrectContainer">
+                <img id="mediumCorrectImage" src="" alt="Correct Letter">
+            </div>
+        </div>
     </div>
 
     <!-- ---------------------------------- HARD GAME PAGE ----------------------------------------- -->

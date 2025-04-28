@@ -11,7 +11,7 @@ body {
     padding: 0;
     display: flex;
     flex-direction: column;
-    background-color: #a22424;
+    background-color: #ffffff;
     overflow-x: hidden;
     transition: opacity 0.5s ease-in-out;
 }
@@ -587,49 +587,30 @@ form {
     max-width: 15rem;
 }
 
-/* Schermi molto bassi (tipo telefoni piccoli) */
-@media (max-height: 25rem) {
+/* Media queries for different devices */
+@media (min-width: 36rem) { /* Small devices */
     #selModalita {
-        margin-top: calc(15vh - 50% - 1.5rem);
+        margin-top: calc(30vh - 50% - 1.5rem);
     }
 }
 
-/* Telefoni medi (altezza medio-bassa) */
-@media (min-height: 26rem) and (max-height: 35rem) {
-    #selModalita {
-        margin-top: calc(25vh - 50% - 1.5rem);
-    }
-}
-
-/* Telefoni grandi o piccoli tablet */
-@media (min-height: 36rem) and (max-height: 47rem) {
-    #selModalita {
-        margin-top: calc(35vh - 50% - 1.5rem);
-    }
-}
-
-/* Tablet normali o piccoli laptop */
-@media (min-height: 48rem) and (max-height: 63rem) {
-    #selModalita {
-        margin-top: calc(50vh - 50% - 1.5rem);
-    }
-}
-
-/* Laptop grandi */
-@media (min-height: 64rem) and (max-height: 79rem) {
+@media (min-width: 48rem) { /* Medium devices */
     #selModalita {
         margin-top: calc(60vh - 50% - 1.5rem);
     }
 }
 
-/* Desktop */
-@media (min-height: 80rem) {
+@media (min-width: 75rem) { /* Extra large devices */
     #selModalita {
         margin-top: calc(70vh - 50% - 1.5rem);
     }
 }
 
-
+@media (min-width: 187.5rem) { /* Ultra large devices */
+    #selModalita {
+        margin-top: calc(70vh - 50% - 1.5rem);
+    }
+}
 
 /*-------------- SCHERMATA DI CARICAMENTO-------------*/
 .loading {

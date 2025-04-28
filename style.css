@@ -161,6 +161,7 @@ video {
 }
 
 .backButton,
+.spaceButton,
 .clearButton {
     background: #10145C;
     color: #FFFFFF;
@@ -192,7 +193,13 @@ video {
     right: 1rem;
 }
 
+.spaceButton {
+    bottom: 17rem;
+    right: 8rem;
+}
+
 .backButton:active,
+.spaceButton:active,
 .clearButton:active {
     transform: scale(0.95);
     box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.5);

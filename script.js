@@ -272,29 +272,68 @@ function toSlide(dest) {
     const slides = document.querySelectorAll(".slide");
     slides.forEach((slide) => (slide.style.display = "none"));
 
-    // Disattiva tutti i bottoni della selezione difficoltà
-    const buttons = document.querySelectorAll("#selDifficolta button");
-    buttons.forEach(button => button.classList.remove("active"));
+    // Deactivate difficulty buttons if that slide is visible
+    const diffButtons = document.querySelectorAll("#selDifficolta button");
+    diffButtons.forEach(button => button.classList.remove("active"));
 
-    if (dest === "traduzione") {
-        const nav = document.getElementById("nav");
-        nav.style.display = "none";
-        document.getElementById("loadingIntelligenza").style.display = "flex";
-        document.getElementById("traduzione").style.display = "none";
-        // enableCam();
-        return;
-    } else {
-        disableCam();
+    // Stop relevant webcams/modes when navigating away
+    const currentEasySlide = document.getElementById('giocoFacile');
+    const currentTranslationSlide = document.getElementById('traduzione');
+
+    if (currentEasySlide && currentEasySlide.style.display !== 'none' && dest !== 'giocoFacile') {
+        console.log("Navigating away from Easy Training, stopping...");
+        stopTraining(); // Stop easy training mode
+    }
+    if (currentTranslationSlide && currentTranslationSlide.style.display !== 'none' && dest !== 'traduzione') {
+        console.log("Navigating away from Translation, stopping...");
+        disableCam(); // Stop translation webcam
     }
 
+    // Handle navigation TO specific slides
+    if (dest === "traduzione") {
+        const nav = document.getElementById("nav");
+        if (nav) nav.style.display = "none";
+        document.getElementById("loadingIntelligenza").style.display = "flex";
+        document.getElementById("traduzione").style.display = "none";
+        enableCam(); // Start webcam for translation
+        return; // Return early as enableCam handles showing the slide
+    } else if (dest === "giocoFacile") {
+        const nav = document.getElementById("nav");
+        if (nav) nav.style.display = "none";
+        // startEasyTraining will be called by selectDifficulty after the second click
+    } else {
+        // Ensure general webcam is off if not in translation mode
+        // disableCam(); // Already handled above
+        // Ensure training webcam is off if not in easy training mode
+        if (dest !== 'giocoFacile' && trainingRunning) {
+             console.log("Navigating to non-Easy Training slide, ensuring training is stopped.");
+             stopTraining(); // Use stopTraining which includes disableTrainingCam
+        }
+    }
+
+    // Show the elements for the destination slide
     const elementsToShow = getElementsForSlide(dest);
     elementsToShow.forEach((element) => {
-        if (element.id === "nav" || element.id === "barraLogo" || element.id === "selezioneLinguaBarra" || element.id === "selModalita" || element.id === "loadingIntelligenza" || element.id === "loadingIniziale" || element.id === "selDifficolta") {
+        if (!element) return; // Skip if element not found
+        // Use flex for specific layout containers, block for others
+        if ([ "nav", "barraLogo", "selezioneLinguaBarra", "selModalita", "loadingIntelligenza", "loadingIniziale", "selDifficolta"].includes(element.id)) {
             element.style.display = "flex";
         } else {
             element.style.display = "block";
         }
     });
+
+    // Special handling for nav visibility based on destination
+    const nav = document.getElementById("nav");
+    if (nav) {
+        // Show nav on these pages
+        if ([ "homePage", "vocabolario", "contatti", "selDifficolta"].includes(dest)) {
+            nav.style.display = "flex";
+        } else {
+            // Hide nav on other pages (like training, translation)
+            nav.style.display = "none";
+        }
+    }
 }
 
 function getElementsForSlide(dest) {
@@ -361,6 +400,7 @@ function getElementsForSlide(dest) {
     }
     return elements;
 }
+
 /* ------------------------ VOCABULARY ----------------------*/
 
 // Variable to save vocabulary data and load it only once
@@ -701,24 +741,36 @@ function fadeToHomePage() {
 /*------------DIFFICULTY SELECTION BUTTONS-------------*/
 function selectDifficulty(selectedButton) {
     const mode = selectedButton.id;
+    const alreadyActive = selectedButton.classList.contains("active");
 
-    // If the button is already active, call toSlide with the specific value
-    if (selectedButton.classList.contains("active")) {
-        if (mode === "modFacile") {
-            toSlide("giocoFacile")
-        } else if (mode === "modMedia") {
-            toSlide("giocoMedio")
-        } else if (mode === "modDifficile") {
-            toSlide("giocoDifficile")
-        }
-        return;
-    }
-
+    // Deactivate all buttons first
     const buttons = document.querySelectorAll("#selDifficolta button");
-
     buttons.forEach(button => button.classList.remove("active"));
 
+    // Activate the selected one
     selectedButton.classList.add("active");
+
+    // If it was already active (second click), navigate to the corresponding game slide
+    if (alreadyActive) {
+        if (mode === "modFacile") {
+            toSlide("giocoFacile");
+            // Start training only when navigating TO the slide
+            startEasyTraining();
+        } else if (mode === "modMedia") {
+            toSlide("giocoMedio");
+            // Add startMediumTraining() here when implemented
+        } else if (mode === "modDifficile") {
+            toSlide("giocoDifficile");
+            // Add startHardTraining() here when implemented
+        }
+    } else {
+      // First click: Just highlight the button. User needs to click again to navigate.
+      // Stop any ongoing training if a *different* difficulty is selected on the first click
+      if (trainingRunning && mode !== "modFacile") { // Check if easy training is running and a different button is clicked
+          stopTraining();
+      }
+      // Add similar checks for medium/hard modes when implemented
+    }
 }
 
 /*-------------------EASY TRAINING MODE------------------*/
@@ -753,6 +805,7 @@ const disableTrainingCam = () => {
  * Ferma la modalità allenamento.
  */
 window.stopTraining = () => {
+    console.log("Stopping easy training..."); // Add log
     trainingRunning = false;
     disableTrainingCam();
     currentTrainingLetter = null;
@@ -760,9 +813,15 @@ window.stopTraining = () => {
 };
 
 /**
- * Mostra una nuova lettera casuale per l'allenamento.
+ * Mostra una nuova lettera casuale per l'allenamento usando il vocabolario.
  */
 const showNewTrainingLetter = () => {
+    if (!vocabolario) {
+        console.error("Vocabolario non caricato per l'allenamento.");
+        // Optionally display an error message to the user
+        return;
+    }
+
     const targetImage = document.getElementById("targetLetterImage");
     const targetText = document.getElementById("targetLetterText");
     const container = document.getElementById("trainingVideoContainer");
@@ -771,15 +830,31 @@ const showNewTrainingLetter = () => {
     if (container) container.classList.remove("correct-gesture");
     correctGestureStartTime = null;
 
-    // Select a random letter (example letters, replace with actual data)
-    const letters = ["A", "B", "C", "D", "E"];
-    const randomIndex = Math.floor(Math.random() * letters.length);
-    currentTrainingLetter = letters[randomIndex];
+    // Filter letters for the current language, excluding SPACE and DEL
+    const currentLanguage = activeButtonContent.trim().toLowerCase();
+    const possibleLetters = vocabolario.filter(item =>
+        item.lingua.includes(currentLanguage) && item.lettera !== "SPACE" && item.lettera !== "DEL"
+    );
 
-    // Display the letter
-    targetText.innerText = currentTrainingLetter;
-    targetImage.src = `img/letters/${currentTrainingLetter}.png`; // Example path
-    targetImage.alt = `Target Letter: ${currentTrainingLetter}`;
+    if (possibleLetters.length === 0) {
+        console.error("Nessuna lettera disponibile per l'allenamento nella lingua corrente.");
+        targetText.innerText = "Error";
+        targetImage.src = "";
+        targetImage.alt = "Error loading letters";
+        targetImage.style.display = "none";
+        return;
+    }
+
+    // Select a random letter object from the filtered list
+    const randomIndex = Math.floor(Math.random() * possibleLetters.length);
+    currentTrainingLetter = possibleLetters[randomIndex]; // Store the whole object
+
+    // Display the letter using data from the vocabulary object
+    targetText.innerText = currentTrainingLetter.lettera;
+    targetImage.src = currentTrainingLetter.img; // Use the image path from vocabolario
+    targetImage.alt = `Target Letter: ${currentTrainingLetter.lettera}`;
+    targetImage.style.display = "block"; // Ensure the image is visible
+    console.log("New training letter:", currentTrainingLetter.lettera); // Log the new letter
 };
 
 /**
@@ -791,17 +866,38 @@ const predictTraining = async () => {
     const canvasCtx = canvasElement ? canvasElement.getContext("2d") : null;
     const container = document.getElementById("trainingVideoContainer");
 
-    if (!gestureRecognizer || !canvasElement || !canvasCtx || !trainingRunning) return;
+    // Add check for video dimensions before proceeding
+    if (!gestureRecognizer || !canvasElement || !canvasCtx || !trainingRunning || !video || video.videoWidth === 0 || video.videoHeight === 0) {
+        // If video dimensions are zero, wait and retry
+        if (trainingRunning) {
+            trainingTimeoutId = window.requestAnimationFrame(predictTraining);
+        }
+        return;
+    }
 
-    canvasElement.width = video.videoWidth;
-    canvasElement.height = video.videoHeight;
+    // Ensure canvas dimensions match video dimensions
+    if (canvasElement.width !== video.videoWidth || canvasElement.height !== video.videoHeight) {
+        canvasElement.width = video.videoWidth;
+        canvasElement.height = video.videoHeight;
+    }
 
     const nowInMs = Date.now();
-    const results = await gestureRecognizer.recognizeForVideo(video, nowInMs);
+    // Use lastTrainingVideoTime to avoid processing the same frame multiple times
+    let results;
+    if (video.currentTime !== lastTrainingVideoTime) {
+        lastTrainingVideoTime = video.currentTime;
+        results = await gestureRecognizer.recognizeForVideo(video, nowInMs);
+    } else {
+        // If time hasn't changed, just request the next frame
+        if (trainingRunning) {
+            trainingTimeoutId = window.requestAnimationFrame(predictTraining);
+        }
+        return;
+    }
 
     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
 
-    if (results.landmarks) {
+    if (results && results.landmarks) {
         const drawingUtils = new DrawingUtils(canvasCtx);
         for (const landmarks of results.landmarks) {
             drawingUtils.drawConnectors(landmarks, GestureRecognizer.HAND_CONNECTIONS, { color: "#00FF00", lineWidth: 5 });
@@ -810,57 +906,105 @@ const predictTraining = async () => {
     }
 
     let recognizedLetter = "None";
-    if (results.gestures && results.gestures.length > 0) {
+    if (results && results.gestures && results.gestures.length > 0) {
         const { categoryName, score } = results.gestures[0][0];
+        // Use a confidence threshold
         if (score > 0.70) {
             recognizedLetter = categoryName;
         }
     }
 
-    if (currentTrainingLetter && recognizedLetter.toUpperCase() === currentTrainingLetter.toUpperCase()) {
+    // Check against the 'lettera' property of the currentTrainingLetter object
+    if (currentTrainingLetter && recognizedLetter.toUpperCase() === currentTrainingLetter.lettera.toUpperCase()) {
         if (correctGestureStartTime === null) {
             correctGestureStartTime = nowInMs;
+            console.log(`Correct gesture (${recognizedLetter}) detected. Starting timer.`); // Log timer start
         }
 
         if (container) container.classList.add("correct-gesture");
 
         if (nowInMs - correctGestureStartTime >= CORRECT_GESTURE_DURATION) {
-            showNewTrainingLetter();
+            console.log(`Correct gesture held for ${CORRECT_GESTURE_DURATION}ms. Showing next letter.`); // Log next letter trigger
+            showNewTrainingLetter(); // Show the next letter
+            // correctGestureStartTime is reset in showNewTrainingLetter
         }
     } else {
+        // If gesture is incorrect or confidence is low, reset timer and border
         correctGestureStartTime = null;
         if (container) container.classList.remove("correct-gesture");
     }
 
+    // Continue the loop only if training is still running
     if (trainingRunning) {
         trainingTimeoutId = window.requestAnimationFrame(predictTraining);
     }
 };
 
 /**
- * Abilita la webcam per l'allenamento.
+ * Abilita la webcam per l'allenamento e sistema il video.
  */
 const enableTrainingCam = async () => {
-    const constraints = { video: { width: 1280, height: 720 } };
+    if (!gestureRecognizer) {
+        alert("Attendere il caricamento del gesture recognizer");
+        return;
+    }
+    // Check if already running to prevent multiple streams
+    if (trainingRunning && document.getElementById("trainingWebcam").srcObject) {
+        console.log("Training webcam already enabled.");
+        return;
+    }
+
+    const constraints = { video: { width: 640, height: 480 } };
     try {
         const stream = await navigator.mediaDevices.getUserMedia(constraints);
         const video = document.getElementById("trainingWebcam");
         if (video) {
             video.srcObject = stream;
-            video.addEventListener("loadeddata", () => {
-                trainingRunning = true;
-                predictTraining();
+            // Use a promise to wait for loadeddata
+            await new Promise((resolve) => {
+                video.onloadeddata = () => {
+                    console.log("Training webcam video loaded.");
+                    resolve();
+                };
             });
+            // Ensure video dimensions are available before starting prediction
+            if (video.videoWidth > 0 && video.videoHeight > 0) {
+                 video.style.display = "block"; // Ensure the video is visible
+                 trainingRunning = true; // Set flag before starting loop
+                 lastTrainingVideoTime = -1; // Reset video time tracking
+                 predictTraining(); // Start the prediction loop
+                 console.log("Training prediction loop started.");
+            } else {
+                 console.error("Training webcam video dimensions not available after loadeddata.");
+                 // Handle error, maybe stop stream and show message
+                 stream.getTracks().forEach((track) => track.stop());
+                 video.srcObject = null;
+                 alert("Failed to initialize training webcam.");
+            }
         }
     } catch (err) {
-        console.error("Error accessing webcam: ", err);
+        console.error("Error accessing training webcam: ", err);
+        alert("Could not access webcam for training. Please check permissions.");
+        trainingRunning = false; // Ensure flag is false on error
     }
 };
 
 /**
  * Inizia la modalità di allenamento facile.
  */
-window.startEasyTraining = () => {
-    showNewTrainingLetter();
-    enableTrainingCam();
+window.startEasyTraining = async () => {
+    // Ensure vocabulary is loaded before starting
+    if (!vocabolario) {
+        console.log("Vocabolario non caricato, caricamento in corso...");
+        await caricaVocabolario(); // Wait for vocabulary to load
+        if (!vocabolario) {
+            alert("Errore nel caricamento del vocabolario. Impossibile avviare l'allenamento.");
+            toSlide('selDifficolta'); // Go back if loading failed
+            return;
+        }
+        console.log("Vocabolario caricato.");
+    }
+    console.log("Starting easy training...");
+    showNewTrainingLetter(); // Show the first letter
+    await enableTrainingCam(); // Enable webcam and start predictions
 };

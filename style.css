@@ -11,7 +11,7 @@ body {
     padding: 0;
     display: flex;
     flex-direction: column;
-    background-color: #aa1b84;
+    background-color: #1baa33;
     overflow-x: hidden;
     transition: opacity 0.5s ease-in-out;
 }
@@ -511,10 +511,10 @@ form {
 
 /*------------------------------------SELEZIONE MODALITà--------------------------------*/
 #selModalita {
-    margin-top: calc(30vh - 40% - 1.5rem); /* Center vertically between footer and language selection */
     align-items: center;
     justify-content: center;
     gap: 1rem;
+    margin-top: calc(clamp(40vh, 10vw + 20vh, 110vh) - 50% - 24px);
 }
 
 .card {
@@ -587,77 +587,6 @@ form {
     max-width: 15rem;
 }
 
-/* Media queries for different devices */
-@media (min-width: 500px) { /* Small devices */
-    #selModalita {
-        margin-top: calc(40vh - 50% - 24px);
-    }
-}
-@media (min-width: 590px) { /* Small devices */
-    #selModalita {
-        margin-top: calc(50vh - 50% - 24px);
-    }
-}
-@media (min-width: 700px) { /* Small devices */
-    #selModalita {
-        margin-top: calc(60vh - 50% - 24px);
-    }
-}
-@media (min-width: 800px) { /* Small devices */
-    #selModalita {
-        margin-top: calc(65vh - 50% - 24px);
-    }
-}
-@media (min-width: 900px) { /* Small devices */
-    #selModalita {
-        margin-top: calc(70vh - 50% - 24px);
-    }
-}
-@media (min-width: 1000px) { /* Small devices */
-    #selModalita {
-        margin-top: calc(75vh - 50% - 24px);
-    }
-}
-@media (min-width: 1100px) { /* Small devices */
-    #selModalita {
-        margin-top: calc(80vh - 50% - 24px);
-    }
-}
-@media (min-width: 1200px) { /* Small devices */
-    #selModalita {
-        margin-top: calc(85vh - 50% - 24px);
-    }
-}
-@media (min-width: 1300px) { /* Small devices */
-    #selModalita {
-        margin-top: calc(90vh - 50% - 24px);
-    }
-}
-@media (min-width: 1350px) { /* Small devices */
-    #selModalita {
-        margin-top: calc(95vh - 50% - 24px);
-    }
-}
-@media (min-width: 1400px) { /* Small devices */
-    #selModalita {
-        margin-top: calc(100vh - 50% - 24px);
-    }
-}
-@media (min-width: 1500px) { /* Small devices */
-    #selModalita {
-        margin-top: calc(105vh - 50% - 24px);
-    }
-}
-@media (min-width: 1600px) { /* Small devices */
-    #selModalita {
-        margin-top: calc(110vh - 50% - 24px);
-    }
-}
-@media (min-width: 1700px) { /* Small devices */
-    #selModalita {
-        margin-top: calc(115vh - 50% - 24px);
-    }
-}
 
 /*-------------- SCHERMATA DI CARICAMENTO-------------*/
 .loading {

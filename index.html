@@ -114,9 +114,18 @@
     </div>
 
     <!-- ---------------------------------- EASY GAME PAGE ----------------------------------------- -->
-    <div id="giocoFacile" class="slide marginBottom giocoSviluppo" style="display: none;">
-        <p>Easy game mode still in development</p>
-        <button onclick="toSlide('selDifficolta')"> Go Back </button>
+    <div id="giocoFacile" class="slide" style="display: none;">
+        <button class="backButton" onclick="stopTraining(); toSlide('selDifficolta')">Go Back</button>
+        <div id="trainingContainer">
+            <div id="targetLetterContainer">
+                <img id="targetLetterImage" src="" alt="Target Letter">
+                <p id="targetLetterText"></p>
+            </div>
+            <div id="trainingVideoContainer" class="videoContainer">
+                <video id="trainingWebcam" autoplay playsinline></video>
+                <canvas class="output_canvas" id="training_output_canvas" width="1280" height="720"></canvas>
+            </div>
+        </div>
     </div>
 
     <!-- ---------------------------------- MEDIUM GAME PAGE ----------------------------------------- -->

@@ -214,6 +214,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   };
 
+  //Pulisce l'output dei gesti
   window.clearOutput = () => {
     if (gestureOutput) {
       gestureOutput.innerText = "";
@@ -223,6 +224,23 @@ document.addEventListener("DOMContentLoaded", async () => {
     ultimo_valore = "";
   };
 
+  //inserisce uno spazio manualmente
+  window.spaceOutput = () => {
+    if (gestureOutput) {
+        daStampare += " ";
+        gestureOutput.innerText = daStampare;
+    }
+  };
+
+  //cancella un carattere manualmente
+  window.undoOutput = () => {
+    if (gestureOutput) {
+        daStampare = daStampare.slice(0, -1);
+        gestureOutput.innerText = daStampare;
+    }
+  };
+
+  // Esporta la funzione per disabilitare la webcam
   window.disableCam = disableCam;
 });
 

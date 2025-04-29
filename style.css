@@ -633,27 +633,27 @@ form {
         margin-top: calc(90vh - 50% - 24px);
     }
 }
-@media (min-width: 1400px) { /* Small devices */
+@media (min-width: 1350px) { /* Small devices */
     #selModalita {
         margin-top: calc(95vh - 50% - 24px);
     }
 }
-@media (min-width: 1500px) { /* Small devices */
+@media (min-width: 1400px) { /* Small devices */
     #selModalita {
         margin-top: calc(100vh - 50% - 24px);
     }
 }
-@media (min-width: 1600px) { /* Small devices */
+@media (min-width: 1500px) { /* Small devices */
     #selModalita {
         margin-top: calc(105vh - 50% - 24px);
     }
 }
-@media (min-width: 1700px) { /* Small devices */
+@media (min-width: 1600px) { /* Small devices */
     #selModalita {
         margin-top: calc(110vh - 50% - 24px);
     }
 }
-@media (min-width: 1800px) { /* Small devices */
+@media (min-width: 1700px) { /* Small devices */
     #selModalita {
         margin-top: calc(115vh - 50% - 24px);
     }

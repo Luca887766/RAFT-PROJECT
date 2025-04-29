@@ -73,7 +73,6 @@ body {
     border-top-left-radius: 1.25rem;
     border-top-right-radius: 1.25rem;
     border-bottom: 0.3rem solid #21279b;
-    ;
     box-shadow: 0rem 0.25rem 0.3rem rgba(0, 0, 0, 0.1);
 }
 
@@ -82,7 +81,6 @@ body {
     font-size: 2rem;
     font-weight: bold;
     color: #21279b;
-    ;
     letter-spacing: 0.1rem;
 }
 
@@ -102,7 +100,6 @@ body {
 
 #traduzione {
     flex: 1;
-    /* Ensure the translation slide takes full height */
     display: flex;
     flex-direction: column;
 }
@@ -114,7 +111,6 @@ body {
     overflow: hidden;
     background-color: #ffffff;
     display: block;
-    /* Ensure the container is displayed as a block element */
 }
 
 video {
@@ -416,10 +412,9 @@ video {
     text-align: left;
 }
 
-/* Input e Select */
-input[type="text"], 
-input[type="email"], 
-select, 
+input[type="text"],
+input[type="email"],
+select,
 textarea {
     width: 100%;
     padding: 0.8rem;
@@ -439,7 +434,6 @@ form {
     margin-bottom: 1rem;
 }
 
-/* Checkbox e Radio */
 .checkbox-group {
     display: flex;
     gap: 1rem;
@@ -451,7 +445,6 @@ form {
     align-items: center;
 }
 
-/* Bottone di invio */
 .formContainer button {
     width: 100%;
     padding: 0.8rem;
@@ -467,7 +460,6 @@ form {
     background-color: #3238ab;
 }
 
-/* Stile per la select con freccia */
 .select-wrapper {
     position: relative;
     width: 100%;
@@ -478,7 +470,7 @@ form {
     background-color: white;
     cursor: pointer;
     width: 100%;
-    padding-right: 2rem; /* Spazio per l'icona */
+    padding-right: 2rem;
 }
 
 .select-wrapper select:focus {
@@ -486,25 +478,23 @@ form {
     border-color: #007bff;
 }
 
-/* Icona freccia nella select */
 .select-wrapper::after {
     content: "";
     position: absolute;
-    right: 1.5rem; 
-    top: 45%; 
+    right: 1.5rem;
+    top: 45%;
     transform: translateY(-50%);
-    width: 20px; 
+    width: 20px;
     height: 20px;
     background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-compact-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.553 6.776a.5.5 0 0 1 .67-.223L8 9.44l5.776-2.888a.5.5 0 1 1 .448.894l-6 3a.5.5 0 0 1-.448 0l-6-3a.5.5 0 0 1-.223-.67"/></svg>') no-repeat center;
     background-size: contain;
     pointer-events: none;
 }
 
-/* Testo opzionale */
 #testoOpzionale {
     font-size: 0.8rem;
     color: #6e6e6e;
-} 
+}
 
 /* -------------------------------------FONT DEL SITO---------------------------------- */
 @font-face {
@@ -524,7 +514,7 @@ form {
 
 /*------------------------------------SELEZIONE MODALITà--------------------------------*/
 #selModalita {
-    margin-top: calc(30vh - 40% - 1.5rem); /* Center vertically between footer and language selection */
+    margin-top: calc(30vh - 40% - 1.5rem);
     align-items: center;
     justify-content: center;
     gap: 1rem;
@@ -600,93 +590,28 @@ form {
     max-width: 15rem;
 }
 
-/* Media queries for different devices */
-@media (min-width: 36rem) { /* Small devices */
+@media (min-width: 36rem) {
     #selModalita {
         margin-top: calc(30vh - 50% - 1.5rem);
     }
 }
 
-@media (min-width: 48rem) { /* Medium devices */
+@media (min-width: 48rem) {
     #selModalita {
         margin-top: calc(60vh - 50% - 1.5rem);
     }
 }
 
-@media (min-width: 75rem) { /* Extra large devices */
+@media (min-width: 75rem) {
     #selModalita {
         margin-top: calc(70vh - 50% - 1.5rem);
     }
 }
 
-@media (min-width: 187.5rem) { /* Ultra large devices */
+@media (min-width: 187.5rem) {
     #selModalita {
         margin-top: calc(70vh - 50% - 1.5rem);
     }
-}
-
-/*-------------- SCHERMATA DI CARICAMENTO-------------*/
-.loading {
-    position: relative;
-    height: 100vh;
-    width: 100%;
-    background-color: #10145C;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    cursor: progress;
-}
-
-.pattern {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url('img/draw/pattern.png');
-    background-repeat: repeat;
-    background-size: 12rem;
-    z-index: 1;
-}
-
-.logoNome {
-    z-index: 2;
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    bottom: 15%;
-}
-
-.loading img {
-    max-width: 14rem;
-    width: 100%;
-    height: auto;
-    z-index: 2;
-}
-
-.loading h1 {
-    font-family: 'logoTitolo';
-    font-size: 3em;
-    -webkit-text-stroke: 0.1rem #007bff;
-    color: white;
-    text-shadow: 0.2rem 0.2rem 0.3rem rgba(145, 186, 230, 0.8);
-}
-
-.loading p {
-    font-family: 'logoTitolo';
-    font-size: 1.2rem;
-    color: #ffffff;
-    margin-top: 0.3rem;
-    letter-spacing: 0.01rem;
-    text-shadow: 0.05rem 0.05rem 0.1rem rgba(145, 186, 230, 0.9);
-}
-
-.loading img {
-    width: 12.5rem;
-    height: auto;
 }
 
 /*--------------SCELTA DIFFICOLTA'-------------------*/
@@ -711,10 +636,8 @@ form {
     box-shadow: 0.3rem 0.3rem 1rem rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease-in-out;
     position: relative;
-
     width: 22rem;
     height: 7.5rem;
-
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -759,47 +682,20 @@ form {
 
 /*----------------------------- EASY GAME PAGE STYLES -----------------------*/
 #trainingContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: calc(100vh - 5rem);
-    padding-top: 4rem;
-}
-
-#targetLetterContainer {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
-    background-color: #f0f0f0;
-    padding: 1rem;
-    border-radius: 0.5rem;
-}
-
-#targetLetterImage {
-    max-width: 5rem;
-    height: auto;
-    border: 2px solid #ccc;
-    border-radius: 0.3rem;
-}
-
-#targetLetterText {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #10145C;
+    height: 100vh;
+    width: 100%;
+    position: relative;
 }
 
 #trainingVideoContainer {
-    position: relative;
-    width: 80vw;
-    max-width: 600px;
-    height: 60vh;
-    max-height: 450px;
-    border-radius: 1rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
     overflow: hidden;
-    border: 5px solid transparent;
-    transition: border-color 0.3s ease;
+    z-index: 1;
 }
 
 #trainingWebcam {
@@ -817,11 +713,268 @@ form {
     height: 100%;
     object-fit: cover;
     display: block;
-    z-index: 1;
+    z-index: 2;
     transform: scaleX(-1);
 }
 
-/* Style for correct gesture indication */
-#trainingVideoContainer.correct-gesture {
-    border-color: #00FF00;
+#targetLetterContainer {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    right: 1rem;
+    background: radial-gradient(80.97% 1714.77% at 58.68% -1061.36%, #21279B 0%, #10145C 100%);
+    padding: 1rem;
+    border-radius: 1rem;
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    border: 3px solid #FFFFFF;
+    min-height: 6rem;
+    transition: background 0.3s ease;
+}
+
+#targetLetterImage {
+    max-width: 13rem;
+    max-height: 13rem;
+    height: auto;
+    border: 2px solid #ccc;
+    border-radius: 0.3rem;
+    background-color: #fff;
+    padding: 0.2rem;
+}
+
+#targetLetterText {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #FFFFFF;
+    margin: 0;
+}
+
+#targetLetterContainer.correct-gesture {
+    background: #008000;
+}
+
+/*----------------------------- MEDIUM GAME PAGE STYLES -----------------------*/
+#mediumTrainingContainer {
+    height: 100vh;
+    width: 100%;
+    position: relative;
+}
+
+#mediumVideoContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    overflow: hidden;
+    z-index: 1;
+}
+
+#mediumWebcam {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scaleX(-1);
+}
+
+#medium_output_canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    z-index: 2;
+    transform: scaleX(-1);
+}
+
+#mediumLetterContainer {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    right: 1rem;
+    background: radial-gradient(80.97% 1714.77% at 58.68% -1061.36%, #21279B 0%, #10145C 100%);
+    padding: 1rem;
+    border-radius: 1rem;
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    border: 3px solid #FFFFFF;
+    min-height: 6rem;
+    transition: background 0.3s ease;
+}
+
+#mediumTargetLetterImage {
+    max-width: 10rem;
+    max-height: 10rem;
+    height: auto;
+    border: 2px solid #ccc;
+    border-radius: 0.3rem;
+    background-color: #fff;
+    padding: 0.2rem;
+}
+
+#mediumTargetText {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #FFFFFF;
+    margin: 0;
+}
+
+#mediumCorrectContainer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    display: none;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 1rem;
+    padding: 1rem;
+    box-shadow: 0 0 2rem rgba(0, 0, 0, 0.5);
+    animation: fadeInOut 2s ease-in-out;
+}
+
+#mediumCorrectImage {
+    max-width: 15rem;
+    max-height: 15rem;
+    object-fit: contain;
+}
+
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+
+    20% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    80% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+}
+
+#mediumLetterContainer.correct-gesture {
+    background: #008000;
+}
+
+/*----------------------------- HARD GAME PAGE STYLES -----------------------*/
+#hardTrainingContainer {
+    height: 100vh;
+    width: 100%;
+    position: relative;
+}
+
+#hardVideoContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    overflow: hidden;
+    z-index: 1;
+}
+
+#hardWebcam {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scaleX(-1);
+}
+
+#hard_output_canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    z-index: 2;
+    transform: scaleX(-1);
+}
+
+#hardWordContainer {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    right: 1rem;
+    background: radial-gradient(80.97% 1714.77% at 58.68% -1061.36%, #21279B 0%, #10145C 100%);
+    padding: 1rem;
+    border-radius: 1rem;
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 3px solid #FFFFFF;
+    min-height: 6rem;
+    transition: background 0.3s ease;
+}
+
+#hardTargetWord {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #FFFFFF;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.25rem;
+}
+
+#hardProgressContainer {
+    position: absolute;
+    bottom: 8rem;
+    left: 1rem;
+    right: 1rem;
+    height: 1.5rem;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 0.75rem;
+    z-index: 3;
+    overflow: hidden;
+}
+
+#hardProgress {
+    height: 100%;
+    width: 0%;
+    background-color: #4CAF50;
+    border-radius: 0.75rem;
+    transition: width 0.5s ease-in-out;
+}
+
+#hardCorrectContainer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 4;
+    display: none;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 1rem;
+    padding: 2rem 3rem;
+    box-shadow: 0 0 2rem rgba(0, 0, 0, 0.5);
+    animation: fadeInOut 3s ease-in-out;
+}
+
+#hardCorrectWord {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #008000;
+    margin: 0;
+    text-transform: uppercase;
 }

@@ -7,6 +7,84 @@
     <meta name="theme-color" content="#10145C" />
     <title>RAFT</title>
 
+    <!-- Loading styles inline for immediate rendering -->
+    <style>
+        @font-face {
+            font-family: "logoTitolo";
+            src: url(fonts/Subway-Black.ttf);
+        }
+
+        .loading {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            background-color: #10145C;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            cursor: progress;
+        }
+
+        .gameLoading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10;
+        }
+
+        .pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('img/draw/pattern.png');
+            background-repeat: repeat;
+            background-size: 12rem;
+            z-index: 1;
+        }
+
+        .logoNome {
+            z-index: 2;
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            bottom: 15%;
+        }
+
+        .loading img {
+            max-width: 14rem;
+            width: 100%;
+            height: auto;
+            z-index: 2;
+        }
+
+        .loading h1 {
+            font-family: 'logoTitolo';
+            font-size: 3em;
+            -webkit-text-stroke: 0.1rem #007bff;
+            color: white;
+            text-shadow: 0.2rem 0.2rem 0.3rem rgba(145, 186, 230, 0.8);
+        }
+
+        .loading p {
+            font-family: 'logoTitolo';
+            font-size: 1.2rem;
+            color: #ffffff;
+            margin-top: 0.3rem;
+            letter-spacing: 0.01rem;
+            text-shadow: 0.05rem 0.05rem 0.1rem rgba(145, 186, 230, 0.9);
+        }
+
+        .loading img {
+            width: 12.5rem;
+            height: auto;
+        }
+    </style>
+
     <!-- CSS -->
     <link rel="stylesheet" type="text/css" href="style.css" />
 
@@ -20,6 +98,16 @@
     <!-- Script -->
     <script src="script.js" type="text/javascript"></script>
 </head>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YDPFPDFBRR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-YDPFPDFBRR');
+</script>
 
 <body onload="fadeToHomePage()">
     <!-- ---------------------------------- LOADING PAGE ----------------------------------------- -->
@@ -116,28 +204,86 @@
     <!-- ---------------------------------- EASY GAME PAGE ----------------------------------------- -->
     <div id="giocoFacile" class="slide" style="display: none;">
         <button class="backButton" onclick="stopTraining(); toSlide('selDifficolta')">Go Back</button>
-        <div id="trainingContainer">
-            <div id="targetLetterContainer">
-                <img id="targetLetterImage" src="" alt="Target Letter">
-                <p id="targetLetterText"></p>
+        
+        <!-- Loading Screen for Easy Mode -->
+        <div id="loadingTrainingMode" class="loading gameLoading">
+            <div class="logoNome">
+                <img src="img/draw/logoRaft.png" alt="Raft Logo">
+                <h1>RAFT</h1>
+                <p>Loading...</p>
             </div>
+            <div class="pattern"></div>
+        </div>
+        
+        <div id="trainingContainer">
             <div id="trainingVideoContainer" class="videoContainer">
                 <video id="trainingWebcam" autoplay playsinline></video>
                 <canvas class="output_canvas" id="training_output_canvas" width="1280" height="720"></canvas>
+            </div>
+            <div id="targetLetterContainer">
+                <img id="targetLetterImage" src="" alt="Target Letter">
+                <p id="targetLetterText"></p>
             </div>
         </div>
     </div>
 
     <!-- ---------------------------------- MEDIUM GAME PAGE ----------------------------------------- -->
-    <div id="giocoMedio" class="slide marginBottom giocoSviluppo" style="display: none;">
-        <p>Medium game mode still in development</p>
-        <button onclick="toSlide('selDifficolta')"> Go Back </button>
+    <div id="giocoMedio" class="slide" style="display: none;">
+        <button class="backButton" onclick="stopMediumTraining(); toSlide('selDifficolta')">Go Back</button>
+        
+        <!-- Loading Screen for Medium Mode -->
+        <div id="loadingMediumMode" class="loading gameLoading">
+            <div class="logoNome">
+                <img src="img/draw/logoRaft.png" alt="Raft Logo">
+                <h1>RAFT</h1>
+                <p>Loading...</p>
+            </div>
+            <div class="pattern"></div>
+        </div>
+        
+        <div id="mediumTrainingContainer">
+            <div id="mediumVideoContainer" class="videoContainer">
+                <video id="mediumWebcam" autoplay playsinline></video>
+                <canvas class="output_canvas" id="medium_output_canvas" width="1280" height="720"></canvas>
+            </div>
+            <div id="mediumLetterContainer">
+                <p id="mediumTargetText"></p>
+            </div>
+            <div id="mediumCorrectContainer">
+                <img id="mediumCorrectImage" src="" alt="Correct Letter">
+            </div>
+        </div>
     </div>
 
     <!-- ---------------------------------- HARD GAME PAGE ----------------------------------------- -->
-    <div id="giocoDifficile" class="slide marginBottom giocoSviluppo" style="display: none;">
-        <p>Hard game mode still in development</p>
-        <button onclick="toSlide('selDifficolta')"> Go Back </button>
+    <div id="giocoDifficile" class="slide" style="display: none;">
+        <button class="backButton" onclick="stopHardTraining(); toSlide('selDifficolta')">Go Back</button>
+        
+        <!-- Loading Screen for Hard Mode -->
+        <div id="loadingHardMode" class="loading gameLoading">
+            <div class="logoNome">
+                <img src="img/draw/logoRaft.png" alt="Raft Logo">
+                <h1>RAFT</h1>
+                <p>Loading...</p>
+            </div>
+            <div class="pattern"></div>
+        </div>
+        
+        <div id="hardTrainingContainer">
+            <div id="hardVideoContainer" class="videoContainer">
+                <video id="hardWebcam" autoplay playsinline></video>
+                <canvas class="output_canvas" id="hard_output_canvas" width="1280" height="720"></canvas>
+            </div>
+            <div id="hardWordContainer">
+                <p id="hardTargetWord"></p>
+            </div>
+            <div id="hardProgressContainer">
+                <div id="hardProgress"></div>
+            </div>
+            <div id="hardCorrectContainer">
+                <p id="hardCorrectWord"></p>
+            </div>
+        </div>
     </div>
 
     <!-- ---------------------------------- VOCABULARY PAGE ----------------------------------------- -->
@@ -157,26 +303,21 @@
 
     <!-- ---------------------------------- CONTACT PAGE ----------------------------------------- -->
     <div id="contatti" class="slide marginBottom">
-        <!-- Intestazione -->
         <div id="contattiHeader">
             <h1 class="contattiTitolo">Contact our team</h1>
             <p class="contattiTesto">Send us feedback or report an issue with our application</p>
         </div>
         <form id="contactForm" action="https://formsubmit.co/raft.galileo@gmail.com" method="POST"
             class="formContainer">
-            <!-- Nascondere CAPTCHA e risposta -->
             <input type="hidden" name="_captcha" value="false">
             <input type="hidden" name="_next" value="javascript:void(0);">
 
-            <!-- Nickname -->
             <label for="nickname">Nickname</label>
             <input type="text" id="nickname" name="nickname" placeholder="Nickname" required>
 
-            <!-- Email -->
             <label for="email">Email (Optional)</label>
             <input type="email" id="email" name="email" placeholder="Email">
 
-            <!-- Motivo della richiesta -->
             <label for="reason">Reason</label>
             <div class="select-wrapper">
                 <select id="reason" name="motivazione">
@@ -187,11 +328,9 @@
                 </select>
             </div>
 
-            <!-- Dispositivo utilizzato -->
             <label for="device">Device used</label>
             <input type="text" id="device" name="dispositivo" placeholder="E.g., iPhone 13, Samsung S22...">
 
-            <!-- Lingua -->
             <label>Language</label>
             <div class="checkbox-group">
                 <input type="radio" id="europe" name="lingua" value="Europe">
@@ -201,16 +340,13 @@
                 <label for="american">American</label>
             </div>
 
-            <!-- Messaggio -->
             <label for="message">Message</label>
             <textarea id="message" name="messaggio" placeholder="Write your message..." required></textarea>
 
-            <!-- Pulsante di invio -->
             <button type="submit">Send</button>
         </form>
     </div>
 
-    <!-- Pop-up di conferma -->
     <div id="successPopup"
         style="display: none; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #4CAF50; color: white; padding: 10px 20px; border-radius: 5px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);">
         Email sent successfully!

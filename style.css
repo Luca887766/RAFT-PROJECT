@@ -588,27 +588,27 @@ form {
 }
 
 /* Media queries for different devices */
-@media (min-width: 36rem) { /* Small devices */
+@media (min-width: 500px) { /* Small devices */
     #selModalita {
-        margin-top: calc(30vh - 50% - 1.5rem);
+        margin-top: calc(30vh - 50% - 24px);
     }
 }
 
-@media (min-width: 48rem) { /* Medium devices */
+@media (min-width: 768px) { 
     #selModalita {
-        margin-top: calc(60vh - 50% - 1.5rem);
+        margin-top: calc(60vh - 50% - 24px);
     }
 }
 
-@media (min-width: 75rem) { /* Extra large devices */
+@media (min-width: 1200px) { 
     #selModalita {
-        margin-top: calc(70vh - 50% - 1.5rem);
+        margin-top: calc(70vh - 50% - 24px);
     }
 }
 
-@media (min-width: 187.5rem) { /* Ultra large devices */
+@media (min-width: 3000px) { 
     #selModalita {
-        margin-top: calc(70vh - 50% - 1.5rem);
+        margin-top: calc(70vh - 50% - 24px);
     }
 }
 

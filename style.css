@@ -11,7 +11,7 @@ body {
     padding: 0;
     display: flex;
     flex-direction: column;
-    background-color: #9e3333;
+    background-color: #ac8c8c;
     overflow-x: hidden;
     transition: opacity 0.5s ease-in-out;
 }
@@ -591,6 +591,11 @@ form {
 @media (min-width: 500px) { /* Small devices */
     #selModalita {
         margin-top: calc(40vh - 50% - 24px);
+    }
+}
+@media (min-width: 600px) { /* Small devices */
+    #selModalita {
+        margin-top: calc(50vh - 50% - 24px);
     }
 }
 

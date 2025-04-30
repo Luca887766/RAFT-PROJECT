@@ -47,6 +47,10 @@ let lastAppendTime = 0;
 let usedTrainingLetters = [];
 let usedMediumLetters = [];
 
+// Available camera devices
+let videoDevices = [];
+let activeVideoDeviceId = null;
+
 const disableCam = () => {
   webcamRunning = false;
   const video = document.getElementById("webcam");
@@ -1493,3 +1497,164 @@ function selectDifficulty(selectedButton) {
       }
     }
 }
+
+/*------------CAMERA SWITCHING FUNCTIONALITY-------------*/
+async function getCameraDevices() {
+  try {
+    const devices = await navigator.mediaDevices.enumerateDevices();
+    return devices.filter(device => device.kind === 'videoinput');
+  } catch (err) {
+    console.error('Error enumerating devices:', err);
+    return [];
+  }
+}
+
+async function initCameraSelector(btnId, dropdownId, videoElement, activeMode) {
+  const switchBtn = document.getElementById(btnId);
+  const dropdown = document.getElementById(dropdownId);
+  
+  if (!switchBtn || !dropdown) return;
+
+  try {
+    // Get available video devices
+    videoDevices = await getCameraDevices();
+    
+    // If we only have two cameras (likely front and back on mobile)
+    if (videoDevices.length === 2) {
+      // Set up direct switching between the two cameras
+      switchBtn.onclick = () => {
+        const currentDeviceId = videoElement.srcObject?.getVideoTracks()[0]?.getSettings()?.deviceId;
+        const otherDevice = videoDevices.find(device => device.deviceId !== currentDeviceId);
+        
+        if (otherDevice) {
+          switchToCamera(otherDevice.deviceId, videoElement, activeMode);
+        }
+      };
+    } else if (videoDevices.length > 1) {
+      // Set up dropdown for multiple cameras
+      populateCameraDropdown(dropdown, videoElement, activeMode);
+      
+      // Show/hide dropdown when button is clicked
+      switchBtn.onclick = () => {
+        if (dropdown.style.display === 'block') {
+          dropdown.style.display = 'none';
+        } else {
+          dropdown.style.display = 'block';
+        }
+      };
+      
+      // Close dropdown when clicking elsewhere
+      document.addEventListener('click', (event) => {
+        if (!switchBtn.contains(event.target) && !dropdown.contains(event.target)) {
+          dropdown.style.display = 'none';
+        }
+      });
+    } else {
+      // Hide button if only one camera
+      switchBtn.style.display = 'none';
+    }
+  } catch (err) {
+    console.error('Error initializing camera selector:', err);
+    switchBtn.style.display = 'none';
+  }
+}
+
+function populateCameraDropdown(dropdown, videoElement, activeMode) {
+  // Clear existing options
+  dropdown.innerHTML = '';
+  
+  // Get current device ID
+  const currentDeviceId = videoElement.srcObject?.getVideoTracks()[0]?.getSettings()?.deviceId;
+  
+  // Add options for each camera
+  videoDevices.forEach((device, index) => {
+    const button = document.createElement('button');
+    button.textContent = device.label || `Camera ${index + 1}`;
+    button.className = device.deviceId === currentDeviceId ? 'active' : '';
+    
+    button.onclick = () => {
+      // Set this as active in the dropdown
+      dropdown.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+      
+      // Switch to this camera
+      switchToCamera(device.deviceId, videoElement, activeMode);
+      
+      // Hide dropdown
+      dropdown.style.display = 'none';
+    };
+    
+    dropdown.appendChild(button);
+  });
+}
+
+async function switchToCamera(deviceId, videoElement, activeMode) {
+  try {
+    // Stop current stream
+    if (videoElement.srcObject) {
+      const tracks = videoElement.srcObject.getTracks();
+      tracks.forEach(track => track.stop());
+    }
+    
+    // Start stream with new device
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: { deviceId: { exact: deviceId } }
+    });
+    
+    videoElement.srcObject = stream;
+    
+    // Wait for the video to be ready
+    await new Promise((resolve) => {
+      videoElement.onloadedmetadata = () => resolve();
+    });
+    
+    // Reset video time tracking based on active mode
+    if (activeMode === 'translation') {
+      lastVideoTime = -1;
+    } else if (activeMode === 'training') {
+      lastTrainingVideoTime = -1;
+    } else if (activeMode === 'medium') {
+      lastMediumVideoTime = -1;
+    } else if (activeMode === 'hard') {
+      lastHardVideoTime = -1;
+    }
+    
+    // Store the active device ID
+    activeVideoDeviceId = deviceId;
+    
+  } catch (err) {
+    console.error('Error switching camera:', err);
+    alert('Failed to switch camera. Please try again.');
+  }
+}
+
+// Initialize camera selectors for each mode when appropriate
+document.addEventListener('DOMContentLoaded', () => {
+  // For translation mode
+  document.getElementById('cameraSwitchBtn')?.addEventListener('click', async () => {
+    if (!videoDevices.length) {
+      await initCameraSelector('cameraSwitchBtn', 'cameraDropdown', document.getElementById('webcam'), 'translation');
+    }
+  });
+  
+  // For easy training mode
+  document.getElementById('trainingCameraSwitchBtn')?.addEventListener('click', async () => {
+    if (!videoDevices.length) {
+      await initCameraSelector('trainingCameraSwitchBtn', 'trainingCameraDropdown', document.getElementById('trainingWebcam'), 'training');
+    }
+  });
+  
+  // For medium training mode
+  document.getElementById('mediumCameraSwitchBtn')?.addEventListener('click', async () => {
+    if (!videoDevices.length) {
+      await initCameraSelector('mediumCameraSwitchBtn', 'mediumCameraDropdown', document.getElementById('mediumWebcam'), 'medium');
+    }
+  });
+  
+  // For hard training mode
+  document.getElementById('hardCameraSwitchBtn')?.addEventListener('click', async () => {
+    if (!videoDevices.length) {
+      await initCameraSelector('hardCameraSwitchBtn', 'hardCameraDropdown', document.getElementById('hardWebcam'), 'hard');
+    }
+  });
+});

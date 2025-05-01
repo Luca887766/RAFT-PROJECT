@@ -1632,8 +1632,45 @@ function populateCameraDropdown(devices, dropdown, videoElement, activeMode) {
   // Get current device ID
   const currentDeviceId = videoElement.srcObject?.getVideoTracks()[0]?.getSettings()?.deviceId;
   
+  // For iOS, simplify the camera list (iPhone often shows many virtual cameras)
+  const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+  
+  if (isIOS) {
+    // On iOS, just add front and back camera options
+    const frontBtn = document.createElement('button');
+    frontBtn.innerHTML = '📱 Fotocamera Frontale';
+    frontBtn.onclick = async () => {
+      await switchToCamera('user', videoElement, activeMode);
+      dropdown.style.display = 'none';
+    };
+    dropdown.appendChild(frontBtn);
+    
+    const backBtn = document.createElement('button');
+    backBtn.innerHTML = '🌍 Fotocamera Posteriore';
+    backBtn.onclick = async () => {
+      await switchToCamera('environment', videoElement, activeMode);
+      dropdown.style.display = 'none';
+    };
+    dropdown.appendChild(backBtn);
+    
+    return; // Don't add individual device entries for iOS
+  }
+  
+  // For non-iOS devices, proceed with regular device listing
   // Add specific device options
-  devices.forEach((device, index) => {
+  // Filter out duplicates based on label to reduce clutter
+  const uniqueDevices = [];
+  const labelsSeen = new Set();
+  
+  devices.forEach(device => {
+    const label = device.label || 'Unnamed Camera';
+    if (!labelsSeen.has(label)) {
+      labelsSeen.add(label);
+      uniqueDevices.push(device);
+    }
+  });
+  
+  uniqueDevices.forEach((device, index) => {
     const button = document.createElement('button');
     
     // Try to determine if it's front or back camera based on label
@@ -1664,7 +1701,7 @@ function populateCameraDropdown(devices, dropdown, videoElement, activeMode) {
     dropdown.appendChild(button);
   });
   
-  // If we couldn't identify front/back cameras clearly, add generic options
+  // If we couldn't identify front/back cameras, add generic options
   const hasFrontOption = dropdown.innerHTML.includes('Fotocamera Frontale');
   const hasBackOption = dropdown.innerHTML.includes('Fotocamera Posteriore');
   
@@ -1699,19 +1736,32 @@ async function switchToCamera(source, videoElement, activeMode) {
     // Set constraints based on source
     let constraints = { video: {} };
     
+    // Flag to track if we're using front or back camera
+    let isBackCamera = false;
+    
     if (source === 'user' || source === 'environment') {
       // Use facing mode
       constraints.video.facingMode = source;
+      isBackCamera = source === 'environment';
     } else {
       // Use device ID
       constraints.video.deviceId = { exact: source };
+      
+      // Try to determine if this is a back camera from the device label
+      const matchingDevice = videoDevices.find(device => device.deviceId === source);
+      if (matchingDevice) {
+        const label = matchingDevice.label.toLowerCase();
+        isBackCamera = label.includes('back') || 
+                       label.includes('rear') || 
+                       label.includes('environment');
+      }
     }
     
     // Add size constraints
     constraints.video.width = { ideal: 1280 };
     constraints.video.height = { ideal: 720 };
     
-    console.log('Switching camera with constraints:', JSON.stringify(constraints));
+    console.log(`Switching to ${isBackCamera ? 'BACK' : 'FRONT'} camera with constraints:`, JSON.stringify(constraints));
     
     // Request new stream
     const stream = await navigator.mediaDevices.getUserMedia(constraints);
@@ -1721,6 +1771,26 @@ async function switchToCamera(source, videoElement, activeMode) {
     await new Promise((resolve) => {
       videoElement.onloadedmetadata = () => resolve();
     });
+    
+    // Apply mirroring based on camera type
+    // Front camera should be mirrored, back camera should not be mirrored
+    videoElement.style.transform = isBackCamera ? 'scaleX(1)' : 'scaleX(-1)';
+    
+    // Also mirror the canvas that draws the hand landmarks
+    let canvasElement;
+    if (activeMode === 'translation') {
+      canvasElement = document.getElementById('output_canvas');
+    } else if (activeMode === 'training') {
+      canvasElement = document.getElementById('training_output_canvas');
+    } else if (activeMode === 'medium') {
+      canvasElement = document.getElementById('medium_output_canvas');
+    } else if (activeMode === 'hard') {
+      canvasElement = document.getElementById('hard_output_canvas');
+    }
+    
+    if (canvasElement) {
+      canvasElement.style.transform = isBackCamera ? 'scaleX(1)' : 'scaleX(-1)';
+    }
     
     // Reset timing
     if (activeMode === 'translation') {
@@ -1733,7 +1803,7 @@ async function switchToCamera(source, videoElement, activeMode) {
       lastHardVideoTime = -1;
     }
     
-    console.log(`Camera switched successfully`);
+    console.log(`Camera switched successfully to ${isBackCamera ? 'back' : 'front'} camera`);
     return true;
   } catch (err) {
     console.error('Error switching camera:', err);

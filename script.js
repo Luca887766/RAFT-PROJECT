@@ -1576,6 +1576,10 @@ async function getCameraDevices() {
     const videoDevices = devices.filter(device => device.kind === 'videoinput');
     
     console.log(`Detected ${videoDevices.length} camera devices`);
+    videoDevices.forEach((device, i) => {
+      console.log(`Camera ${i+1}: ${device.label || 'unlabeled'}`);
+    });
+    
     return videoDevices;
   } catch (err) {
     console.error('Error enumerating devices:', err);
@@ -1583,87 +1587,166 @@ async function getCameraDevices() {
   }
 }
 
-// Function to toggle between front and back cameras on mobile
-async function toggleFacingMode(videoElement, activeMode) {
+// Initialize camera buttons for all modes
+function initCameraSelector(btnId, dropdownId, videoElementId, activeMode) {
+  const btn = document.getElementById(btnId);
+  const dropdown = document.getElementById(dropdownId);
+  const video = document.getElementById(videoElementId);
+  
+  if (!btn || !dropdown || !video) return;
+  
+  // Toggle dropdown visibility
+  btn.onclick = async () => {
+    // Get camera devices
+    const devices = await getCameraDevices();
+    
+    // Hide button if only one camera available
+    if (devices.length <= 1) {
+      btn.style.display = 'none';
+      return;
+    }
+    
+    // Populate dropdown
+    populateCameraDropdown(devices, dropdown, video, activeMode);
+    
+    // Toggle display
+    if (dropdown.style.display === 'block') {
+      dropdown.style.display = 'none';
+    } else {
+      dropdown.style.display = 'block';
+    }
+  };
+  
+  // Close dropdown when clicking elsewhere
+  document.addEventListener('click', (event) => {
+    if (!btn.contains(event.target) && !dropdown.contains(event.target)) {
+      dropdown.style.display = 'none';
+    }
+  });
+}
+
+function populateCameraDropdown(devices, dropdown, videoElement, activeMode) {
+  // Clear dropdown
+  dropdown.innerHTML = '';
+  
+  // Get current device ID
+  const currentDeviceId = videoElement.srcObject?.getVideoTracks()[0]?.getSettings()?.deviceId;
+  
+  // Add specific device options
+  devices.forEach((device, index) => {
+    const button = document.createElement('button');
+    
+    // Try to determine if it's front or back camera based on label
+    const deviceLabel = device.label || `Camera ${index + 1}`;
+    let labelText = deviceLabel;
+    
+    // Label identification
+    if (deviceLabel.toLowerCase().includes('front') || 
+        deviceLabel.toLowerCase().includes('selfie') || 
+        deviceLabel.toLowerCase().includes('user')) {
+      labelText = '📱 Fotocamera Frontale';
+    } else if (deviceLabel.toLowerCase().includes('back') || 
+               deviceLabel.toLowerCase().includes('rear') || 
+               deviceLabel.toLowerCase().includes('environment')) {
+      labelText = '🌍 Fotocamera Posteriore';
+    } else {
+      labelText = `📹 ${deviceLabel}`;
+    }
+    
+    button.innerHTML = labelText;
+    button.className = device.deviceId === currentDeviceId ? 'active' : '';
+    
+    button.onclick = async () => {
+      await switchToCamera(device.deviceId, videoElement, activeMode);
+      dropdown.style.display = 'none';
+    };
+    
+    dropdown.appendChild(button);
+  });
+  
+  // If we couldn't identify front/back cameras clearly, add generic options
+  const hasFrontOption = dropdown.innerHTML.includes('Fotocamera Frontale');
+  const hasBackOption = dropdown.innerHTML.includes('Fotocamera Posteriore');
+  
+  if (!hasFrontOption) {
+    const frontBtn = document.createElement('button');
+    frontBtn.innerHTML = '📱 Fotocamera Frontale';
+    frontBtn.onclick = async () => {
+      await switchToCamera('user', videoElement, activeMode);
+      dropdown.style.display = 'none';
+    };
+    dropdown.insertBefore(frontBtn, dropdown.firstChild);
+  }
+  
+  if (!hasBackOption) {
+    const backBtn = document.createElement('button');
+    backBtn.innerHTML = '🌍 Fotocamera Posteriore';
+    backBtn.onclick = async () => {
+      await switchToCamera('environment', videoElement, activeMode);
+      dropdown.style.display = 'none';
+    };
+    dropdown.insertBefore(backBtn, hasFrontOption ? dropdown.children[1] : dropdown.firstChild);
+  }
+}
+
+async function switchToCamera(source, videoElement, activeMode) {
   try {
     // Stop current stream
     if (videoElement.srcObject) {
       videoElement.srcObject.getTracks().forEach(track => track.stop());
     }
     
-    // Determine current facing mode
-    let currentFacingMode = 'user'; // Default to front camera
-    try {
-      const currentTrack = videoElement.srcObject?.getVideoTracks()[0];
-      if (currentTrack) {
-        const settings = currentTrack.getSettings();
-        currentFacingMode = settings.facingMode || 'user';
-      }
-    } catch (e) {
-      console.log('Could not determine current facing mode:', e);
+    // Set constraints based on source
+    let constraints = { video: {} };
+    
+    if (source === 'user' || source === 'environment') {
+      // Use facing mode
+      constraints.video.facingMode = source;
+    } else {
+      // Use device ID
+      constraints.video.deviceId = { exact: source };
     }
     
-    // Toggle facing mode
-    const newFacingMode = currentFacingMode === 'user' ? 'environment' : 'user';
-    console.log(`Switching from ${currentFacingMode} to ${newFacingMode}`);
+    // Add size constraints
+    constraints.video.width = { ideal: 1280 };
+    constraints.video.height = { ideal: 720 };
     
-    // Get new stream with toggled facing mode
-    const constraints = {
-      video: {
-        facingMode: newFacingMode,
-        width: { ideal: 1280 },
-        height: { ideal: 720 }
-      }
-    };
+    console.log('Switching camera with constraints:', JSON.stringify(constraints));
     
+    // Request new stream
     const stream = await navigator.mediaDevices.getUserMedia(constraints);
     videoElement.srcObject = stream;
     
-    // Reset video time tracking based on active mode
-    resetVideoTimeForMode(activeMode);
+    // Wait for the video to be ready
+    await new Promise((resolve) => {
+      videoElement.onloadedmetadata = () => resolve();
+    });
     
+    // Reset timing
+    if (activeMode === 'translation') {
+      lastVideoTime = -1;
+    } else if (activeMode === 'training') {
+      lastTrainingVideoTime = -1;
+    } else if (activeMode === 'medium') {
+      lastMediumVideoTime = -1;
+    } else if (activeMode === 'hard') {
+      lastHardVideoTime = -1;
+    }
+    
+    console.log(`Camera switched successfully`);
     return true;
   } catch (err) {
-    console.error('Error toggling camera:', err);
+    console.error('Error switching camera:', err);
+    alert('Errore nel cambio della fotocamera. Riprova.');
     return false;
   }
 }
 
-// Reset video time tracking
-function resetVideoTimeForMode(activeMode) {
-  if (activeMode === 'translation') {
-    lastVideoTime = -1;
-  } else if (activeMode === 'training') {
-    lastTrainingVideoTime = -1;
-  } else if (activeMode === 'medium') {
-    lastMediumVideoTime = -1;
-  } else if (activeMode === 'hard') {
-    lastHardVideoTime = -1;
-  }
-}
-
-// Initialize camera buttons for all modes
-function initAllCameraButtons() {
-  // Function to set up a camera button
-  const setupCameraButton = (btnId, videoElementId, activeMode) => {
-    const btn = document.getElementById(btnId);
-    if (!btn) return;
-    
-    btn.onclick = async () => {
-      const videoElement = document.getElementById(videoElementId);
-      if (!videoElement) return;
-      
-      // Simple toggle for both mobile and desktop
-      await toggleFacingMode(videoElement, activeMode);
-    };
-  };
-  
-  // Set up buttons for all modes
-  setupCameraButton('cameraSwitchBtn', 'webcam', 'translation');
-  setupCameraButton('trainingCameraSwitchBtn', 'trainingWebcam', 'training');
-  setupCameraButton('mediumCameraSwitchBtn', 'mediumWebcam', 'medium');
-  setupCameraButton('hardCameraSwitchBtn', 'hardWebcam', 'hard');
-}
-
-// Call this function to initialize all camera buttons when the document is loaded
-document.addEventListener('DOMContentLoaded', initAllCameraButtons);
+// Call this function to initialize camera selectors for each mode
+document.addEventListener('DOMContentLoaded', () => {
+  // Initialize selectors when each button is clicked
+  initCameraSelector('cameraSwitchBtn', 'cameraDropdown', 'webcam', 'translation');
+  initCameraSelector('trainingCameraSwitchBtn', 'trainingCameraDropdown', 'trainingWebcam', 'training');
+  initCameraSelector('mediumCameraSwitchBtn', 'mediumCameraDropdown', 'mediumWebcam', 'medium');
+  initCameraSelector('hardCameraSwitchBtn', 'hardCameraDropdown', 'hardWebcam', 'hard');
+});

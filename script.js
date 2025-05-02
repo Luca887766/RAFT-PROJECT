@@ -47,6 +47,10 @@ let lastAppendTime = 0;
 let usedTrainingLetters = [];
 let usedMediumLetters = [];
 
+// Available camera devices
+let videoDevices = [];
+let activeVideoDeviceId = null;
+
 const disableCam = () => {
   webcamRunning = false;
   const video = document.getElementById("webcam");
@@ -189,8 +193,27 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    const constraints = { video: { width: videoWidth, height: videoHeight } };
+    const switchBtn = document.getElementById('cameraSwitchBtn');
+    
     try {
+      // Check camera devices
+      const devices = await getCameraDevices();
+      // Show switch button if more than one camera
+      if (devices.length > 1 && switchBtn) {
+        switchBtn.style.display = 'flex';
+      } else if (switchBtn) {
+        switchBtn.style.display = 'none';
+      }
+      
+      // Start with user-facing camera (selfie) by default
+      const constraints = { 
+        video: { 
+          facingMode: 'user',
+          width: { ideal: videoWidth }, 
+          height: { ideal: videoHeight } 
+        } 
+      };
+      
       const stream = await navigator.mediaDevices.getUserMedia(constraints);
       const video = document.getElementById("webcam");
       if (video) {
@@ -862,42 +885,63 @@ const predictTraining = async () => {
 };
 
 const enableTrainingCam = async () => {
-    if (!gestureRecognizer) {
-        alert("Attendere il caricamento del gesture recognizer");
-        return;
+  if (!gestureRecognizer) {
+    alert("Attendere il caricamento del gesture recognizer");
+    return;
+  }
+  
+  if (trainingRunning && document.getElementById("trainingWebcam").srcObject) {
+    return;
+  }
+  
+  const switchBtn = document.getElementById('trainingCameraSwitchBtn');
+  
+  try {
+    // Check camera devices
+    const devices = await getCameraDevices();
+    // Show switch button if more than one camera
+    if (devices.length > 1 && switchBtn) {
+      switchBtn.style.display = 'flex';
+    } else if (switchBtn) {
+      switchBtn.style.display = 'none';
     }
-    if (trainingRunning && document.getElementById("trainingWebcam").srcObject) {
-        return;
+    
+    // Start with user-facing camera by default
+    const constraints = { 
+      video: { 
+        facingMode: 'user',
+        width: { ideal: 1280 }, 
+        height: { ideal: 720 } 
+      } 
+    };
+    
+    const stream = await navigator.mediaDevices.getUserMedia(constraints);
+    const video = document.getElementById("trainingWebcam");
+    if (video) {
+      video.srcObject = stream;
+      await new Promise((resolve) => {
+        video.onloadeddata = () => {
+          resolve();
+        };
+      });
+      
+      if (video.videoWidth > 0 && video.videoHeight > 0) {
+        video.style.display = "block";
+        trainingRunning = true;
+        lastTrainingVideoTime = -1;
+        predictTraining();
+      } else {
+        console.error("Training webcam video dimensions not available after loadeddata.");
+        stream.getTracks().forEach((track) => track.stop());
+        video.srcObject = null;
+        alert("Failed to initialize training webcam.");
+      }
     }
-
-    const constraints = { video: { width: 1280, height: 720 } };
-    try {
-        const stream = await navigator.mediaDevices.getUserMedia(constraints);
-        const video = document.getElementById("trainingWebcam");
-        if (video) {
-            video.srcObject = stream;
-            await new Promise((resolve) => {
-                video.onloadeddata = () => {
-                    resolve();
-                };
-            });
-            if (video.videoWidth > 0 && video.videoHeight > 0) {
-                 video.style.display = "block";
-                 trainingRunning = true;
-                 lastTrainingVideoTime = -1;
-                 predictTraining();
-            } else {
-                 console.error("Training webcam video dimensions not available after loadeddata.");
-                 stream.getTracks().forEach((track) => track.stop());
-                 video.srcObject = null;
-                 alert("Failed to initialize training webcam.");
-            }
-        }
-    } catch (err) {
-        console.error("Error accessing training webcam: ", err);
-        alert("Could not access webcam for training. Please check permissions.");
-        trainingRunning = false;
-    }
+  } catch (err) {
+    console.error("Error accessing training webcam: ", err);
+    alert("Could not access webcam for training. Please check permissions.");
+    trainingRunning = false;
+  }
 };
 
 /*-------------------MEDIUM TRAINING MODE------------------*/
@@ -1387,9 +1431,11 @@ window.startEasyTraining = async () => {
     if (trainingContainer) trainingContainer.style.display = "none";
     
     try {
+        // Initialize vocabulary if needed
         if (!vocabolario) {
             await caricaVocabolario();
         }
+        
         showNewTrainingLetter();
         await enableTrainingCam();
         
@@ -1412,9 +1458,31 @@ window.startMediumTraining = async () => {
     if (mediumTrainingContainer) mediumTrainingContainer.style.display = "none";
     
     try {
+        // Initialize vocabulary if needed
         if (!vocabolario) {
             await caricaVocabolario();
         }
+        
+        // Initialize camera devices list
+        if (!videoDevices.length) {
+            try {
+                videoDevices = await getCameraDevices();
+                console.log(`Camera devices detected: ${videoDevices.length}`);
+                
+                // Initialize camera selector button based on detected devices
+                const switchBtn = document.getElementById('mediumCameraSwitchBtn');
+                if (switchBtn) {
+                    if (videoDevices.length <= 1) {
+                        switchBtn.style.display = 'none';
+                    } else {
+                        initCameraSelector('mediumCameraSwitchBtn', 'mediumCameraDropdown', document.getElementById('mediumWebcam'), 'medium');
+                    }
+                }
+            } catch (err) {
+                console.error('Error detecting camera devices:', err);
+            }
+        }
+        
         showNewMediumLetter();
         await enableMediumCam();
         
@@ -1437,6 +1505,7 @@ window.startHardTraining = async () => {
     if (hardTrainingContainer) hardTrainingContainer.style.display = "none";
     
     try {
+        // Initialize vocabulary if needed
         if (!vocabolario) {
             await caricaVocabolario();
         }
@@ -1493,3 +1562,261 @@ function selectDifficulty(selectedButton) {
       }
     }
 }
+
+/*------------CAMERA SWITCHING FUNCTIONALITY-------------*/
+async function getCameraDevices() {
+  try {
+    // First request camera permission to ensure we get labels
+    const tempStream = await navigator.mediaDevices.getUserMedia({ video: true });
+    // Stop the stream immediately
+    tempStream.getTracks().forEach(track => track.stop());
+    
+    // Now enumerate devices
+    const devices = await navigator.mediaDevices.enumerateDevices();
+    const videoDevices = devices.filter(device => device.kind === 'videoinput');
+    
+    console.log(`Detected ${videoDevices.length} camera devices`);
+    videoDevices.forEach((device, i) => {
+      console.log(`Camera ${i+1}: ${device.label || 'unlabeled'}`);
+    });
+    
+    return videoDevices;
+  } catch (err) {
+    console.error('Error enumerating devices:', err);
+    return [];
+  }
+}
+
+// Initialize camera buttons for all modes
+function initCameraSelector(btnId, dropdownId, videoElementId, activeMode) {
+  const btn = document.getElementById(btnId);
+  const dropdown = document.getElementById(dropdownId);
+  const video = document.getElementById(videoElementId);
+  
+  if (!btn || !dropdown || !video) return;
+  
+  // Toggle dropdown visibility
+  btn.onclick = async () => {
+    // Get camera devices
+    const devices = await getCameraDevices();
+    
+    // Hide button if only one camera available
+    if (devices.length <= 1) {
+      btn.style.display = 'none';
+      return;
+    }
+    
+    // Populate dropdown
+    populateCameraDropdown(devices, dropdown, video, activeMode);
+    
+    // Toggle display
+    if (dropdown.style.display === 'block') {
+      dropdown.style.display = 'none';
+    } else {
+      dropdown.style.display = 'block';
+    }
+  };
+  
+  // Close dropdown when clicking elsewhere
+  document.addEventListener('click', (event) => {
+    if (!btn.contains(event.target) && !dropdown.contains(event.target)) {
+      dropdown.style.display = 'none';
+    }
+  });
+}
+
+function populateCameraDropdown(devices, dropdown, videoElement, activeMode) {
+  // Clear dropdown
+  dropdown.innerHTML = '';
+  
+  // Get current device ID
+  const currentDeviceId = videoElement.srcObject?.getVideoTracks()[0]?.getSettings()?.deviceId;
+  
+  // For iOS, simplify the camera list (iPhone often shows many virtual cameras)
+  const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+  
+  if (isIOS) {
+    // On iOS, just add front and back camera options
+    const frontBtn = document.createElement('button');
+    frontBtn.innerHTML = '📱 Fotocamera Frontale';
+    frontBtn.onclick = async () => {
+      await switchToCamera('user', videoElement, activeMode);
+      dropdown.style.display = 'none';
+    };
+    dropdown.appendChild(frontBtn);
+    
+    const backBtn = document.createElement('button');
+    backBtn.innerHTML = '🌍 Fotocamera Posteriore';
+    backBtn.onclick = async () => {
+      await switchToCamera('environment', videoElement, activeMode);
+      dropdown.style.display = 'none';
+    };
+    dropdown.appendChild(backBtn);
+    
+    return; // Don't add individual device entries for iOS
+  }
+  
+  // For non-iOS devices, proceed with regular device listing
+  // Add specific device options
+  // Filter out duplicates based on label to reduce clutter
+  const uniqueDevices = [];
+  const labelsSeen = new Set();
+  
+  devices.forEach(device => {
+    const label = device.label || 'Unnamed Camera';
+    if (!labelsSeen.has(label)) {
+      labelsSeen.add(label);
+      uniqueDevices.push(device);
+    }
+  });
+  
+  uniqueDevices.forEach((device, index) => {
+    const button = document.createElement('button');
+    
+    // Try to determine if it's front or back camera based on label
+    const deviceLabel = device.label || `Camera ${index + 1}`;
+    let labelText = deviceLabel;
+    
+    // Label identification
+    if (deviceLabel.toLowerCase().includes('front') || 
+        deviceLabel.toLowerCase().includes('selfie') || 
+        deviceLabel.toLowerCase().includes('user')) {
+      labelText = '📱 Fotocamera Frontale';
+    } else if (deviceLabel.toLowerCase().includes('back') || 
+               deviceLabel.toLowerCase().includes('rear') || 
+               deviceLabel.toLowerCase().includes('environment')) {
+      labelText = '🌍 Fotocamera Posteriore';
+    } else {
+      labelText = `📹 ${deviceLabel}`;
+    }
+    
+    button.innerHTML = labelText;
+    button.className = device.deviceId === currentDeviceId ? 'active' : '';
+    
+    button.onclick = async () => {
+      await switchToCamera(device.deviceId, videoElement, activeMode);
+      dropdown.style.display = 'none';
+    };
+    
+    dropdown.appendChild(button);
+  });
+  
+  // If we couldn't identify front/back cameras, add generic options
+  const hasFrontOption = dropdown.innerHTML.includes('Fotocamera Frontale');
+  const hasBackOption = dropdown.innerHTML.includes('Fotocamera Posteriore');
+  
+  if (!hasFrontOption) {
+    const frontBtn = document.createElement('button');
+    frontBtn.innerHTML = '📱 Fotocamera Frontale';
+    frontBtn.onclick = async () => {
+      await switchToCamera('user', videoElement, activeMode);
+      dropdown.style.display = 'none';
+    };
+    dropdown.insertBefore(frontBtn, dropdown.firstChild);
+  }
+  
+  if (!hasBackOption) {
+    const backBtn = document.createElement('button');
+    backBtn.innerHTML = '🌍 Fotocamera Posteriore';
+    backBtn.onclick = async () => {
+      await switchToCamera('environment', videoElement, activeMode);
+      dropdown.style.display = 'none';
+    };
+    dropdown.insertBefore(backBtn, hasFrontOption ? dropdown.children[1] : dropdown.firstChild);
+  }
+}
+
+async function switchToCamera(source, videoElement, activeMode) {
+  try {
+    // Stop current stream
+    if (videoElement.srcObject) {
+      videoElement.srcObject.getTracks().forEach(track => track.stop());
+    }
+    
+    // Set constraints based on source
+    let constraints = { video: {} };
+    
+    // Flag to track if we're using front or back camera
+    let isBackCamera = false;
+    
+    if (source === 'user' || source === 'environment') {
+      // Use facing mode
+      constraints.video.facingMode = source;
+      isBackCamera = source === 'environment';
+    } else {
+      // Use device ID
+      constraints.video.deviceId = { exact: source };
+      
+      // Try to determine if this is a back camera from the device label
+      const matchingDevice = videoDevices.find(device => device.deviceId === source);
+      if (matchingDevice) {
+        const label = matchingDevice.label.toLowerCase();
+        isBackCamera = label.includes('back') || 
+                       label.includes('rear') || 
+                       label.includes('environment');
+      }
+    }
+    
+    // Add size constraints
+    constraints.video.width = { ideal: 1280 };
+    constraints.video.height = { ideal: 720 };
+    
+    console.log(`Switching to ${isBackCamera ? 'BACK' : 'FRONT'} camera with constraints:`, JSON.stringify(constraints));
+    
+    // Request new stream
+    const stream = await navigator.mediaDevices.getUserMedia(constraints);
+    videoElement.srcObject = stream;
+    
+    // Wait for the video to be ready
+    await new Promise((resolve) => {
+      videoElement.onloadedmetadata = () => resolve();
+    });
+    
+    // Apply mirroring based on camera type
+    // Front camera should be mirrored, back camera should not be mirrored
+    videoElement.style.transform = isBackCamera ? 'scaleX(1)' : 'scaleX(-1)';
+    
+    // Also mirror the canvas that draws the hand landmarks
+    let canvasElement;
+    if (activeMode === 'translation') {
+      canvasElement = document.getElementById('output_canvas');
+    } else if (activeMode === 'training') {
+      canvasElement = document.getElementById('training_output_canvas');
+    } else if (activeMode === 'medium') {
+      canvasElement = document.getElementById('medium_output_canvas');
+    } else if (activeMode === 'hard') {
+      canvasElement = document.getElementById('hard_output_canvas');
+    }
+    
+    if (canvasElement) {
+      canvasElement.style.transform = isBackCamera ? 'scaleX(1)' : 'scaleX(-1)';
+    }
+    
+    // Reset timing
+    if (activeMode === 'translation') {
+      lastVideoTime = -1;
+    } else if (activeMode === 'training') {
+      lastTrainingVideoTime = -1;
+    } else if (activeMode === 'medium') {
+      lastMediumVideoTime = -1;
+    } else if (activeMode === 'hard') {
+      lastHardVideoTime = -1;
+    }
+    
+    console.log(`Camera switched successfully to ${isBackCamera ? 'back' : 'front'} camera`);
+    return true;
+  } catch (err) {
+    console.error('Error switching camera:', err);
+    alert('Errore nel cambio della fotocamera. Riprova.');
+    return false;
+  }
+}
+
+// Call this function to initialize camera selectors for each mode
+document.addEventListener('DOMContentLoaded', () => {
+  // Initialize selectors when each button is clicked
+  initCameraSelector('cameraSwitchBtn', 'cameraDropdown', 'webcam', 'translation');
+  initCameraSelector('trainingCameraSwitchBtn', 'trainingCameraDropdown', 'trainingWebcam', 'training');
+  initCameraSelector('mediumCameraSwitchBtn', 'mediumCameraDropdown', 'mediumWebcam', 'medium');
+  initCameraSelector('hardCameraSwitchBtn', 'hardCameraDropdown', 'hardWebcam', 'hard');
+});

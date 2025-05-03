@@ -7,9 +7,9 @@ if ('serviceWorker' in navigator) {
     }).catch(err => console.error('Service Worker registration failed:', err));
 }
 
-if (location.protocol === "http:") {
+/*if (location.protocol === "http:") {
     location.href = "https" + location.href.substring(4);
-}
+}*/
 
 const xhr = new XMLHttpRequest();
 xhr.onload = function () {

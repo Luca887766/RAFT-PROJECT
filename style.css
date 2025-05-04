@@ -140,32 +140,54 @@ video {
 #gesture_output_container {
     position: absolute;
     bottom: 1rem;
-    right: 1rem;
     left: 1rem;
-    height: 15rem;
+    right: 1rem;
+    height: auto;
+    max-height: 15rem;
     overflow-y: auto;
     background: radial-gradient(80.97% 1714.77% at 58.68% -1061.36%, #21279B 0%, #10145C 100%);
-    padding: 2rem;
+    padding: 1rem 1.5rem;
     border-radius: 1rem;
     color: white;
     z-index: 2;
-    border: 3px solid #FFFFFF;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 10rem;
+}
+
+.toolbar {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 1rem;
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    color: #00A3FF;
+    font-size: 1.25rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.icon-button:hover {
+    transform: scale(1.2);
 }
 
 .output {
     margin: 0;
+    min-height: 5rem;
 }
 
-.backButton,
-.spaceButton,
-.undoButton,
-.clearButton {
+.backButton{
     background: #10145C;
     color: #FFFFFF;
     font-size: 1rem;
     font-weight: bold;
     padding: 0.6rem 1.4rem;
-    border: 3px solid #FFFFFF;
     border-radius: 2rem;
     cursor: pointer;
     transition: all 0.25s ease-in-out;
@@ -185,24 +207,7 @@ video {
     left: 1rem;
 }
 
-.clearButton {
-    bottom: 17rem;
-    right: 1rem;
-}
-
-.spaceButton {
-    bottom: 17rem;
-    right: 9rem;
-}
-
-.undoButton {
-    bottom: 17rem;
-    right: 17rem;
-}
-
-.backButton:active,
-.spaceButton:active,
-.clearButton:active {
+.backButton:active{
     transform: scale(0.95);
     box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.5);
 }
@@ -989,7 +994,6 @@ form {
     font-size: 1rem;
     font-weight: bold;
     padding: 0.6rem 1rem;
-    border: 3px solid #FFFFFF;
     border-radius: 2rem;
     cursor: pointer;
     transition: all 0.25s ease-in-out;

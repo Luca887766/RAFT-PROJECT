@@ -360,6 +360,36 @@ video {
     background-color: #FCB200;
 }
 
+/* Nascondi il footer su dispositivi desktop */
+@media screen and (min-width: 1024px) {
+    #nav {
+        display: none;
+    }
+}
+
+/* Stile per il menu nella barra del logo */
+#menuBar {
+    display: none; /* Nascondi di default */
+    gap: 2rem;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #21279b;
+    cursor: pointer;
+}
+
+#menuBar div {
+    transition: color 0.3s ease;
+}
+
+#menuBar div:hover {
+    color: #10145C;
+}
+
+@media screen and (min-width: 1024px) {
+    #menuBar {
+        display: flex; /* Mostra il menu su desktop */
+    }
+}
 
 /*------------------------- CONTATTI PAGE---------------------------*/
 #contatti {
@@ -520,8 +550,8 @@ form {
 .card {
     border-radius: 1.25rem;
     box-shadow: 0 0.25rem 0.3rem rgba(0, 0, 0, 0.1);
-    width: clamp(12rem, 18rem , 24rem);
-    height: clamp(16rem, 50vh, 26rem);
+    width: 16rem;
+    height: 22rem;
     display: flex;
     align-items: center;
     padding: 1rem;

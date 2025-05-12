@@ -520,8 +520,8 @@ form {
 .card {
     border-radius: 1.25rem;
     box-shadow: 0 0.25rem 0.3rem rgba(0, 0, 0, 0.1);
-    width: 16rem;
-    height: 22rem;
+    width: clamp(12rem, 18rem , 24rem);
+    height: clamp(16rem, 50vh, 26rem);
     display: flex;
     align-items: center;
     padding: 1rem;

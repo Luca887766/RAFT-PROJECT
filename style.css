@@ -511,82 +511,65 @@ form {
 
 /*------------------------------------SELEZIONE MODALITà--------------------------------*/
 #selModalita {
-    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
     justify-content: center;
-    gap: 1rem;
-    margin-top: calc(clamp(40vh, 10vw + 20vh, 110vh) - 50% - 24px);
+    align-items: center;
+    gap: 2rem; /* Spazio tra le card */
+    margin-top: 5rem;
 }
 
 .card {
-    border-radius: 1.25rem;
-    box-shadow: 0 0.25rem 0.3rem rgba(0, 0, 0, 0.1);
-    width: 16rem;
-    height: 22rem;
     display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
+    width: 100%; /* Default width */
+    max-width: 18rem; /* Limite massimo */
+    height: auto;
+    aspect-ratio: 3 / 4; /* Mantiene proporzioni */
     padding: 1rem;
-    cursor: pointer;
-    position: relative;
+    box-shadow: 0 0.25rem 0.3rem rgba(0, 0, 0, 0.1);
+    border-radius: 1.25rem;
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card img {
-    width: 100%;
+    width: 80%; /* Adatta dinamicamente */
+    height: auto;
+    object-fit: contain; /* Mantiene proporzioni */
 }
 
-#cardTraduttore.active img {
-    content: url('img/draw/traduzioneOn.png');
+.card-container h3, .card-container p {
+    text-align: center;
+    margin: 0.5rem 0;
 }
 
-#cardAllenamento.active img {
-    content: url('img/draw/allenamentoOn.png');
+/* Media query per tablet e dispositivi più grandi */
+@media screen and (min-width: 768px) {
+    #selModalita {
+        gap: 3rem; /* Maggiore spazio tra le card */
+    }
+
+    .card {
+        max-width: 22rem; /* Aumenta la dimensione massima */
+    }
+
+    .card img {
+        width: 90%; /* Adatta dinamicamente */
+    }
 }
 
-#cardTraduttore.disactive img {
-    content: url('img/draw/traduzioneOff.png');
-}
+@media screen and (min-width: 1024px) {
+    #selModalita {
+        gap: 4rem;
+    }
 
-#cardAllenamento.disactive img {
-    content: url('img/draw/allenamentoOff.png');
+    .card {
+        max-width: 25rem;
+    }
 }
-
-.card-container h3 {
-    font-size: 1.5rem;
-    color: #000;
-    margin: 0;
-    margin-top: 0.5rem;
-    margin-left: 0.5rem;
-    max-width: 18rem;
-}
-
-.card-container p {
-    font-size: 1rem;
-    color: #858585;
-    margin: 0;
-    margin-top: 0.5rem;
-    margin-left: 0.5rem;
-    max-width: 18rem;
-}
-
-.card.active {
-    background: radial-gradient(circle, #ffca28, #ff9800);
-    color: #000;
-}
-
-.card.disactive {
-    background: radial-gradient(80.97% 1714.77% at 58.68% -1061.36%, #21279B 0%, #10145C 100%);
-    color: #fff;
-    transform: scale(0.85);
-}
-
-.card.disactive~h3 {
-    font-size: 1.2rem;
-    margin: 0;
-    margin-left: 0.5rem;
-    max-width: 15rem;
-}
-
 
 /* Media query per iPad (larghezza tra 768px e 1024px) */
 @media screen and (min-width: 768px) and (max-width: 1024px) {

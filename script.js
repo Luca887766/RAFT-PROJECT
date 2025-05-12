@@ -673,17 +673,6 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(adjustContainerPosition, 50); // Corregge il posizionamento iniziale
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-    const selModalita = document.getElementById("selModalita");
-    const isTablet = window.matchMedia("(min-width: 768px) and (max-width: 1024px)").matches;
-    const isDesktop = window.matchMedia("(min-width: 1024px)").matches;
-
-    if (isTablet) {
-        selModalita.classList.add("tablet-view");
-    } else if (isDesktop) {
-        selModalita.classList.add("desktop-view");
-    }
-});
 
 
 /*------------------------------ ROTATE CONTACTS ARROW--------------*/

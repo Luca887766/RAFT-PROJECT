@@ -722,16 +722,3 @@ function selectDifficulty(selectedButton) {
 
     selectedButton.classList.add("active");
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-    const menuItems = document.querySelectorAll("#menuBar div");
-    const slides = document.querySelectorAll(".slide");
-
-    menuItems.forEach(item => {
-        item.addEventListener("click", () => {
-            const targetId = item.getAttribute("onclick").match(/'([^']+)'/)[1];
-            slides.forEach(slide => slide.style.display = "none");
-            document.getElementById(targetId).style.display = "block";
-        });
-    });
-});

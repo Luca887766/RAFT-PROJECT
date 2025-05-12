@@ -662,18 +662,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function adjustContainerPosition() {
         if (!activeCard) return;
-
-        if (activeCard.id === "cardTraduttore") {
-            container.style.transform = "translateX(6rem)"; // Sposta a destra
-        } else if (activeCard.id === "cardAllenamento") {
-            container.style.transform = "translateX(-6rem)"; // Sposta a sinistra
-        }
+    
+        const index = Array.from(cards).indexOf(activeCard);
+        const offset = (index - 0.5) * -50; 
+        container.style.transform = `translateX(${offset}%)`;
     }
+    
 
     setTimeout(adjustContainerPosition, 50); // Corregge il posizionamento iniziale
 });
-
-
 
 /*------------------------------ ROTATE CONTACTS ARROW--------------*/
 function toggleFrecciaRotation() {

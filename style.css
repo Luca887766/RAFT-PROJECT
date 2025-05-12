@@ -514,14 +514,26 @@ form {
     align-items: center;
     justify-content: center;
     gap: 1rem;
-    margin-top: calc(clamp(40vh, 10vw + 20vh, 110vh) - 50% - 24px);
+    margin-top: 0;
+} 
+
+#selModalita.slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    flex-wrap: nowrap;
+    gap: 2rem;
+    width: 100%;
+    position: relative;
+    touch-action: pan-y; 
 }
 
 .card {
     border-radius: 1.25rem;
     box-shadow: 0 0.25rem 0.3rem rgba(0, 0, 0, 0.1);
-    width: 16rem;
-    height: 22rem;
+    width: clamp(12rem, 40vw, 18rem);
+    height: clamp(16rem, 50vh, 26rem);
     display: flex;
     align-items: center;
     padding: 1rem;
@@ -549,6 +561,14 @@ form {
 
 #cardAllenamento.disactive img {
     content: url('img/draw/allenamentoOff.png');
+}
+
+.card-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: clamp(12rem, 40vw, 18rem);
 }
 
 .card-container h3 {

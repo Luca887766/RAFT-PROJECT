@@ -11,7 +11,7 @@ body {
     padding: 0;
     display: flex;
     flex-direction: column;
-    background-color: #b16b9f;
+    background-color: #aa1b84;
     overflow-x: hidden;
     transition: opacity 0.5s ease-in-out;
 }
@@ -514,31 +514,20 @@ form {
     align-items: center;
     justify-content: center;
     gap: 1rem;
-    margin-top: 0;
-} 
-
-#selModalita.slide {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    flex-wrap: nowrap;
-    gap: 2rem;
-    width: 100%;
-    position: relative;
-    touch-action: pan-y; 
+    margin-top: calc(clamp(40vh, 10vw + 20vh, 110vh) - 50% - 24px);
 }
 
 .card {
     border-radius: 1.25rem;
     box-shadow: 0 0.25rem 0.3rem rgba(0, 0, 0, 0.1);
-    width: clamp(12rem, 40vw, 18rem);
-    height: clamp(16rem, 50vh, 23rem);
+    width: 16rem;
+    height: 22rem;
     display: flex;
     align-items: center;
     padding: 1rem;
     cursor: pointer;
     position: relative;
+    overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -560,14 +549,6 @@ form {
 
 #cardAllenamento.disactive img {
     content: url('img/draw/allenamentoOff.png');
-}
-
-.card-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    width: clamp(12rem, 40vw, 18rem);
 }
 
 .card-container h3 {
@@ -606,7 +587,82 @@ form {
     max-width: 15rem;
 }
 
-
+/* Media queries for different devices */
+@media (min-width: 500px) { /* Small devices */
+    #selModalita {
+        margin-top: calc(40vh - 50% - 24px);
+    }
+}
+@media (min-width: 590px) { /* Small devices */
+    #selModalita {
+        margin-top: calc(50vh - 50% - 24px);
+    }
+}
+@media (min-width: 700px) { /* Small devices */
+    #selModalita {
+        margin-top: calc(60vh - 50% - 24px);
+    }
+}
+@media (min-width: 800px) { /* Small devices */
+    #selModalita {
+        margin-top: calc(65vh - 50% - 24px);
+    }
+}
+@media (min-width: 900px) { /* Small devices */
+    #selModalita {
+        margin-top: calc(70vh - 50% - 24px);
+    }
+}
+@media (min-width: 1000px) { /* Small devices */
+    #selModalita {
+        margin-top: calc(75vh - 50% - 24px);
+    }
+}
+@media (min-width: 1100px) { /* Small devices */
+    #selModalita {
+        margin-top: calc(80vh - 50% - 24px);
+    }
+}
+@media (min-width: 1200px) { /* Small devices */
+    #selModalita {
+        margin-top: calc(85vh - 50% - 24px);
+    }
+}
+@media (min-width: 1300px) { /* Small devices */
+    #selModalita {
+        margin-top: calc(90vh - 50% - 24px);
+    }
+}
+@media (min-width: 1350px) { /* Small devices */
+    #selModalita {
+        margin-top: calc(95vh - 50% - 24px);
+    }
+}
+@media (min-width: 1400px) { /* Small devices */
+    #selModalita {
+        margin-top: calc(100vh - 50% - 24px);
+    }
+}
+@media (min-width: 1450px) { /* Small devices */
+    #selModalita {
+        margin-top: calc(105vh - 50% - 24px);
+    }
+}
+@media (min-width: 1500px) { /* Small devices */
+    #selModalita {
+        margin-top: calc(110vh - 50% - 24px);
+    }
+}
+@media (min-width: 1550px) { /* Small devices */
+    #selModalita {
+        margin-top: calc(115vh - 50% - 24px);
+    }
+}
+@media (min-width: 1600px) { /* Small devices */
+    #selModalita {
+        margin-top: calc(120vh - 50% - 24px);
+    }
+}
 
 /*-------------- SCHERMATA DI CARICAMENTO-------------*/
 .loading {

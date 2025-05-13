@@ -625,44 +625,30 @@ form {
 }
 @media (min-width: 1200px) { /* Small devices */
     #selModalita {
-        margin-top: calc(85vh - 50% - 24px);
+        margin-top: calc(90vh - 50% - 24px);
     }
 }
 @media (min-width: 1300px) { /* Small devices */
     #selModalita {
-        margin-top: calc(90vh - 50% - 24px);
+        margin-top: calc(95vh - 50% - 24px);
     }
 }
 @media (min-width: 1350px) { /* Small devices */
     #selModalita {
-        margin-top: calc(95vh - 50% - 24px);
+        margin-top: calc(100vh - 50% - 24px);
     }
 }
 @media (min-width: 1400px) { /* Small devices */
     #selModalita {
-        margin-top: calc(100vh - 50% - 24px);
+        margin-top: calc(105vh - 50% - 24px);
     }
 }
 @media (min-width: 1450px) { /* Small devices */
     #selModalita {
-        margin-top: calc(105vh - 50% - 24px);
-    }
-}
-@media (min-width: 1500px) { /* Small devices */
-    #selModalita {
         margin-top: calc(110vh - 50% - 24px);
     }
 }
-@media (min-width: 1550px) { /* Small devices */
-    #selModalita {
-        margin-top: calc(115vh - 50% - 24px);
-    }
-}
-@media (min-width: 1600px) { /* Small devices */
-    #selModalita {
-        margin-top: calc(120vh - 50% - 24px);
-    }
-}
+
 
 /*-------------- SCHERMATA DI CARICAMENTO-------------*/
 .loading {

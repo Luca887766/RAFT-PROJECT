@@ -296,7 +296,6 @@ function toSlide(dest) {
     }
   });
 
-  // Gestione responsive del footer e del top menu
   toggleResponsiveUI(elementsToShow.map(e => e.id));
 }
 
@@ -316,7 +315,6 @@ function toggleResponsiveUI(visibleIds = []) {
       topMenu.style.display = 'none';
     }
   } else {
-    // Se la slide corrente non prevede nav, nascondi entrambi
     footer.style.display = 'none';
     topMenu.style.display = 'none';
   }

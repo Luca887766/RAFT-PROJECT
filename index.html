@@ -35,7 +35,7 @@
     <!-- ---------------------------------- TITLE BAR AND LOGO ----------------------------------------- -->
     <header id="barraLogo" class="slide">
         <div id="nomeApp">RAFT</div>
-        <div class="menu-bar">
+        <div class="menu-bar"  id="topMenu">
             <a href="#" class="menu-item menu-home">home</a>
             <div class="divider"></div>
             <a href="#" class="menu-item menu-vocabulary">vocabulary</a>
@@ -290,7 +290,7 @@
       footer.style.display = 'none';
       topMenu.style.display = 'flex';
     } else {
-      footer.style.display = 'flex'; // o il valore originale, es: 'block'
+      footer.style.display = 'flex';
       topMenu.style.display = 'none';
     }
   }

@@ -860,5 +860,5 @@ form {
 }
 
 #nav, #topMenu {
-  display: none !important;
+  display: none;
 }

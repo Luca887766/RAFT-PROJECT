@@ -9,17 +9,6 @@
 
     <!-- CSS -->
     <link rel="stylesheet" type="text/css" href="style.css" />
-    <style>
-      /* Nascondi il footer di default su desktop */
-      @media (min-width: 901px) {
-        #nav { display: none !important; }
-        #topMenu { display: flex !important; }
-      }
-      @media (max-width: 900px) {
-        #nav { display: flex !important; }
-        #topMenu { display: none !important; }
-      }
-    </style>
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="192x192" href="favicon.png" />
@@ -293,22 +282,23 @@
     });
 
      function toggleFooterOnResize() {
-        const footer = document.getElementById('nav');
-        const topMenu = document.getElementById('topMenu');
-        if (!footer || !topMenu) return;
-        const maxWidth = 900;
-        if (window.innerWidth > maxWidth) {
-            footer.style.display = 'none';
-            topMenu.style.display = 'flex';
-        } else {
-            footer.style.display = 'flex';
-            topMenu.style.display = 'none';
-        }
-    }
+  const footer = document.getElementById('nav');
+  const topMenu = document.getElementById('topMenu');
+  const maxWidth = 900;
 
-    // Esegui la funzione al primo caricamento e al resize
-    window.addEventListener('load', toggleFooterOnResize);
-    window.addEventListener('resize', toggleFooterOnResize);
+  if (window.innerWidth > maxWidth) {
+    footer.style.display = 'none';
+    topMenu.style.display = 'flex';
+  } else {
+    footer.style.display = 'flex';
+    topMenu.style.display = 'none';
+  }
+}
+
+// Usa 'load' invece di 'DOMContentLoaded' per sicurezza
+window.addEventListener('load', toggleFooterOnResize);
+window.addEventListener('resize', toggleFooterOnResize);
+
 
 </script>
 

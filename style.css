@@ -11,7 +11,7 @@ body {
     padding: 0;
     display: flex;
     flex-direction: column;
-    background-color: #ffffff;
+    background-color: #962d2d;
     overflow-x: hidden;
     transition: opacity 0.5s ease-in-out;
 }
@@ -857,4 +857,8 @@ form {
       height: 20px;
       width: 2px;
       background-color: #1a179c; /* Colore blu scuro */
-    }
+}
+
+#nav, #topMenu {
+  display: none;
+}

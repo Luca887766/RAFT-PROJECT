@@ -282,23 +282,23 @@
     });
 
      function toggleFooterOnResize() {
-  const footer = document.getElementById('nav');
-  const topMenu = document.getElementById('topMenu');
-  const maxWidth = 900;
+    const footer = document.getElementById('nav');
+    const topMenu = document.getElementById('topMenu');
+    const maxWidth = 900;
 
-  if (window.innerWidth > maxWidth) {
-    footer.style.display = 'none';
-    topMenu.style.display = 'flex';
-  } else {
-    footer.style.display = 'flex';
-    topMenu.style.display = 'none';
+    if (window.innerWidth > maxWidth) {
+      footer.style.display = 'none';
+      topMenu.style.display = 'flex';
+    } else {
+      footer.style.display = 'flex';
+      topMenu.style.display = 'none';
+    }
   }
-}
 
-// Usa 'load' invece di 'DOMContentLoaded' per sicurezza
-window.addEventListener('load', toggleFooterOnResize);
-window.addEventListener('resize', toggleFooterOnResize);
-
+  // Esegui la funzione al primo caricamento
+  window.addEventListener('DOMContentLoaded', toggleFooterOnResize);
+  // Esegui la funzione al resize
+  window.addEventListener('resize', toggleFooterOnResize);
 
 </script>
 

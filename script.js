@@ -269,33 +269,66 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 //--------------------------------- SLIDE MANAGEMENT -----------------------------------*/
 function toSlide(dest) {
-    const slides = document.querySelectorAll(".slide");
-    slides.forEach((slide) => (slide.style.display = "none"));
+  const slides = document.querySelectorAll(".slide");
+  slides.forEach((slide) => (slide.style.display = "none"));
 
-    // Disattiva tutti i bottoni della selezione difficoltà
-    const buttons = document.querySelectorAll("#selDifficolta button");
-    buttons.forEach(button => button.classList.remove("active"));
+  const buttons = document.querySelectorAll("#selDifficolta button");
+  buttons.forEach(button => button.classList.remove("active"));
 
-    if (dest === "traduzione") {
-        const nav = document.getElementById("nav");
-        nav.style.display = "none";
-        document.getElementById("loadingIntelligenza").style.display = "flex";
-        document.getElementById("traduzione").style.display = "none";
-        // enableCam();
-        return;
+  if (dest === "traduzione") {
+    disableCam();
+    document.getElementById("nav").style.display = "none";
+    document.getElementById("loadingIntelligenza").style.display = "flex";
+    document.getElementById("traduzione").style.display = "none";
+    return;
+  } else {
+    disableCam();
+  }
+
+  const elementsToShow = getElementsForSlide(dest);
+  elementsToShow.forEach((element) => {
+    if (element.id === "barraLogo" || element.id === "selezioneLinguaBarra" || element.id === "selModalita" || element.id === "selDifficolta" || element.id === "loadingIntelligenza" || element.id === "loadingIniziale") {
+      element.style.display = "flex";
+    } else if (element.id === "nav") {
+      // Qui NON lo mostriamo direttamente. Lasciamo che lo faccia la funzione responsive.
     } else {
-        disableCam();
+      element.style.display = "block";
     }
+  });
 
-    const elementsToShow = getElementsForSlide(dest);
-    elementsToShow.forEach((element) => {
-        if (element.id === "nav" || element.id === "barraLogo" || element.id === "selezioneLinguaBarra" || element.id === "selModalita" || element.id === "loadingIntelligenza" || element.id === "loadingIniziale" || element.id === "selDifficolta") {
-            element.style.display = "flex";
-        } else {
-            element.style.display = "block";
-        }
-    });
+  // Gestione responsive del footer e del top menu
+  toggleResponsiveUI(elementsToShow.map(e => e.id));
 }
+
+function toggleResponsiveUI(visibleIds = []) {
+  const footer = document.getElementById('nav');
+  const topMenu = document.getElementById('topMenu');
+  const maxWidth = 900;
+
+  const shouldShowNav = visibleIds.includes("nav");
+
+  if (shouldShowNav) {
+    if (window.innerWidth > maxWidth) {
+      footer.style.display = 'none';
+      topMenu.style.display = 'flex';
+    } else {
+      footer.style.display = 'flex';
+      topMenu.style.display = 'none';
+    }
+  } else {
+    // Se la slide corrente non prevede nav, nascondi entrambi
+    footer.style.display = 'none';
+    topMenu.style.display = 'none';
+  }
+}
+
+window.addEventListener('resize', () => {
+  // Recupera l’elemento visibile corrente per sapere se includere 'nav'
+  const visibleElements = Array.from(document.querySelectorAll('.slide'))
+    .filter(el => el.style.display !== 'none')
+    .map(el => el.id);
+  toggleResponsiveUI(visibleElements);
+});
 
 function getElementsForSlide(dest) {
     const elements = [];

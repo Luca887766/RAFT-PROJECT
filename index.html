@@ -281,22 +281,24 @@
         });
     });
 
-    function toggleFooterOnResize() {
-        const footer = document.getElementById('nav');
-        const maxWidth = 1024; // Imposta la larghezza limite
+     function toggleFooterOnResize() {
+    const footer = document.getElementById('nav');
+    const topMenu = document.getElementById('topMenu');
+    const maxWidth = 900;
 
-        if (window.innerWidth > maxWidth) {
-            footer.style.display = 'none';
-        } else {
-            footer.style.display = 'flex'; // O il valore che usi normalmente
-        }
+    if (window.innerWidth > maxWidth) {
+      footer.style.display = 'none';
+      topMenu.style.display = 'flex';
+    } else {
+      footer.style.display = 'flex'; // o il valore originale, es: 'block'
+      topMenu.style.display = 'none';
     }
+  }
 
-    // Controllo iniziale al caricamento della pagina
-    window.addEventListener('DOMContentLoaded', toggleFooterOnResize);
-
-    // Controllo ogni volta che la finestra viene ridimensionata
-    window.addEventListener('resize', toggleFooterOnResize);
+  // Esegui la funzione al primo caricamento
+  window.addEventListener('DOMContentLoaded', toggleFooterOnResize);
+  // Esegui la funzione al resize
+  window.addEventListener('resize', toggleFooterOnResize);
 
 </script>
 

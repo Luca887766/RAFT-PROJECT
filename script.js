@@ -275,6 +275,8 @@ function toSlide(dest) {
   const buttons = document.querySelectorAll("#selDifficolta button");
   buttons.forEach(button => button.classList.remove("active"));
 
+  updateActiveMenuItem(dest);
+
   if (dest === "traduzione") {
     disableCam();
     document.getElementById("nav").style.display = "none";
@@ -317,6 +319,20 @@ function toggleResponsiveUI(visibleIds = []) {
   } else {
     footer.style.display = 'none';
     topMenu.style.display = 'none';
+  }
+}
+
+function updateActiveMenuItem(dest) {
+  // Rimuovi la classe "active" da tutte le voci di menu
+  document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
+
+  // Aggiungi la classe "active" solo a quella corretta
+  if (dest === 'homePage') {
+    document.querySelectorAll('.menu-home').forEach(el => el.classList.add('active'));
+  } else if (dest === 'vocabolario') {
+    document.querySelectorAll('.menu-vocabulary').forEach(el => el.classList.add('active'));
+  } else if (dest === 'contatti') {
+    document.querySelectorAll('.menu-contact').forEach(el => el.classList.add('active'));
   }
 }
 

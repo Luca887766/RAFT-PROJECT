@@ -11,7 +11,7 @@ body {
     padding: 0;
     display: flex;
     flex-direction: column;
-    background-color: #ffffff;
+    background-color: #aa1b84;
     overflow-x: hidden;
     transition: opacity 0.5s ease-in-out;
 }
@@ -825,69 +825,4 @@ form {
     cursor: not-allowed;
     font-size: 1rem;
     opacity: 0.6;
-}
-
-/* Desktop Navigation */
-.desktop-nav {
-    display: none;
-    align-items: center;
-    margin: 0 20px;
-}
-
-.desktop-nav a {
-    color: white;
-    text-decoration: none;
-    padding: 5px 15px;
-    font-size: 1.1em;
-}
-
-.desktop-nav a.active {
-    font-weight: bold;
-}
-
-.nav-separator {
-    color: white;
-    margin: 0 5px;
-}
-
-/* Card Layout */
-.card-container {
-    width: 300px;
-    margin: 20px;
-}
-
-/* Responsive Layout */
-@media screen and (min-width: 768px) {
-    .desktop-nav {
-        display: flex;
-    }
-
-    #nav {
-        display: none;
-    }
-
-    #selModalita {
-        display: flex;
-        justify-content: center;
-        gap: 30px;
-        margin-top: 50px;
-    }
-
-    #barraLogo {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px 20px;
-    }
-}
-
-/* Mobile Layout */
-@media screen and (max-width: 767px) {
-    .desktop-nav {
-        display: none;
-    }
-
-    #nav {
-        display: flex;
-    }
 }

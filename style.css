@@ -826,3 +826,35 @@ form {
     font-size: 1rem;
     opacity: 0.6;
 }
+
+/*----------------------------- DESKTOP -----------------------*/
+
+.menu-bar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      padding: 10px 0;
+    }
+
+    .menu-item {
+      font-family: Arial, sans-serif;
+      font-size: 18px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .menu-home {
+      color: #00a2ff; /* Blu chiaro */
+      letter-spacing: 4px;
+    }
+
+    .menu-contact {
+      color: #1a179c; /* Blu scuro */
+    }
+
+    .divider {
+      height: 20px;
+      width: 2px;
+      background-color: #1a179c; /* Colore blu scuro */
+    }

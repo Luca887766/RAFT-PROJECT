@@ -11,7 +11,7 @@ body {
     padding: 0;
     display: flex;
     flex-direction: column;
-    background-color: #803030;
+    background-color: #a86c6c;
     overflow-x: hidden;
     transition: opacity 0.5s ease-in-out;
 }
@@ -201,9 +201,17 @@ video {
 /* -------------------------- VOCABOLARIO ---------------------------*/
 #imgVocabolario {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+    justify-content: center;
     gap: 0.5rem;
     padding: 1rem;
+}
+
+.lettera {
+    max-width: 10rem;
+    width: 100%;
+    height: auto;
+    margin: auto;
 }
 
 #imgVocabolario.alternato {
@@ -250,17 +258,6 @@ video {
     z-index: 0;
 }
 
-@media (min-width: 768px) {
-    #imgVocabolario {
-        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    }
-}
-
-@media (min-width: 1200px) {
-    #imgVocabolario {
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    }
-}
 /*------------------ BARRA RICERCA VOCABOLARIO ----------------------*/
 #barraRicerca {
     position: relative;

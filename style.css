@@ -496,8 +496,6 @@ textarea {
     color: #21279B;
     margin: 0;
     margin-top: 1rem;
-    justify-content: center;
-    align-items: center;
 }
 
 .contattiTesto {
@@ -505,8 +503,6 @@ textarea {
     color: #808080;
     margin: 0.5rem 0 0 0;
     line-height: 1.4;
-    justify-content: center;
-    align-items: center;
 }
 
 /* -------------------------------------FONT DEL SITO---------------------------------- */
@@ -861,4 +857,16 @@ textarea {
 
 #nav, #topMenu {
     display: none;
+}
+
+#contattiHeader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* opzionale: centra anche verticalmente se vuoi */
+    margin-left: auto;
+    margin-right: auto;
+    /* Se vuoi centrare anche verticalmente tutta la pagina contatti:
+    min-height: 40vh;
+    */
 }

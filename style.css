@@ -496,6 +496,8 @@ textarea {
     color: #21279B;
     margin: 0;
     margin-top: 1rem;
+    justify-content: center;
+    align-items: center;
 }
 
 .contattiTesto {
@@ -503,6 +505,8 @@ textarea {
     color: #808080;
     margin: 0.5rem 0 0 0;
     line-height: 1.4;
+    justify-content: center;
+    align-items: center;
 }
 
 /* -------------------------------------FONT DEL SITO---------------------------------- */

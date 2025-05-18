@@ -11,7 +11,7 @@ body {
     padding: 0;
     display: flex;
     flex-direction: column;
-    background-color: #ffffff;
+    background-color: #4f2121;
     overflow-x: hidden;
     transition: opacity 0.5s ease-in-out;
 }
@@ -459,7 +459,6 @@ form {
     background-color: #3238ab;
 }
 
-/* Stile per la select con freccia */
 .select-wrapper {
     position: relative;
     width: 100%;
@@ -470,7 +469,7 @@ form {
     background-color: white;
     cursor: pointer;
     width: 100%;
-    padding-right: 2rem; /* Spazio per l'icona */
+    padding-right: 2rem; 
 }
 
 .select-wrapper select:focus {
@@ -478,7 +477,6 @@ form {
     border-color: #007bff;
 }
 
-/* Icona freccia nella select */
 .select-wrapper::after {
     content: "";
     position: absolute;
@@ -492,11 +490,45 @@ form {
     pointer-events: none;
 }
 
-/* Testo opzionale */
 #testoOpzionale {
     font-size: 0.8rem;
     color: #6e6e6e;
 } 
+
+.formContainer {
+    display: flex;
+    flex-wrap: wrap;           
+    gap: 2rem;                 
+    justify-content: space-between;
+}
+
+.formContainer label,
+.formContainer input,
+.formContainer select,
+.formContainer textarea,
+.formContainer .checkbox-group,
+.formContainer .select-wrapper,
+.formContainer button {
+    flex: 1 1 100%;  
+}
+
+@media (min-width: 768px) {
+    .formContainer {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+
+    .form-left,
+    .form-right {
+        flex: 1 1 45%; 
+        min-width: 300px;
+    }
+
+    .formContainer button {
+        flex: 1 1 100%;
+    }
+}
+
 
 /* -------------------------------------FONT DEL SITO---------------------------------- */
 @font-face {

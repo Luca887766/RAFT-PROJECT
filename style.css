@@ -11,7 +11,7 @@ body {
     padding: 0;
     display: flex;
     flex-direction: column;
-    background-color: #bf5959;
+    background-color: #ffffff;
     overflow-x: hidden;
     transition: opacity 0.5s ease-in-out;
 }
@@ -251,6 +251,122 @@ video {
 
 
 /*------------------ BARRA RICERCA VOCABOLARIO ----------------------*/
+#barraRicerca {
+    position: relative;
+    display: flex;
+    justify-content: center; 
+    align-items: center;     
+    width: 100%;
+    margin: 1rem 0;
+}
+
+.input-container {
+    position: relative;
+    width: 18.75rem;
+}
+
+.input-container svg {
+    position: absolute;
+    top: 50%;
+    left: 1.5rem;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #aaa;
+}
+
+.input-container input[type="search"] {
+    width: 100%;
+    padding: 0.6rem 0.9rem 0.6rem 2rem;
+    border: 0.05rem solid #ccc;
+    border-radius: 0.6rem;
+    background-color: #f9f9f9;
+    font-size: 1rem;
+    outline: none;
+    box-shadow: 0 0.1rem 0.3rem rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+    margin: 1rem;
+}
+
+.input-container input[type="search"]::placeholder {
+    color: #ccc;
+    font-style: calibri;
+}
+
+.input-container input[type="search"]:focus {
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
+    border-color: #aaa;
+}
+
+/*----------------------- FOOTER ---------------------*/
+
+#nav {
+    position: fixed;
+    bottom: 0;
+    width: calc(100% - 4rem);
+    z-index: 999999;
+    background: radial-gradient(80.97% 1714.77% at 58.68% -1061.36%, #21279B 0%, #10145C 100%);
+    border-radius: 1.25rem;
+    height: 5rem;
+    margin: 2rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0rem -0.3rem 0.5rem rgba(0, 0, 0, 0.2);
+    padding: 0 1rem;
+}
+
+#nav button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.875rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#nav button svg {
+    width: 2rem;
+    height: 2rem;
+    fill: #009CFC;
+    margin-bottom: 0.25rem;
+}
+
+#nav button span {
+    font-size: 0.75rem;
+    color: #ffffff;
+}
+
+#nav button.active svg {
+    fill: #FCB200;
+    transform: scale(1.2);
+    transition: transform 0.3s ease, fill 0.3s ease;
+    color: #ffffff;
+}
+
+#nav button {
+    position: relative;
+}
+
+.indicator {
+    position: absolute;
+    top: -1.5rem;
+    left: 50%;
+    width: 3.75rem;
+    height: 0.5rem;
+    background-color: transparent;
+    border-radius: 0.6rem;
+    transform: translateX(-50%);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#nav button.active .indicator {
+    background-color: #FCB200;
+}
+
+
+/*------------------------- CONTATTI PAGE---------------------------*/
 #contatti {
     align-self: center;
 }
@@ -258,54 +374,41 @@ video {
 #contattiHeader {
     text-align: center;
     max-width: 23rem;
-    margin: 0 auto;
 }
 
 .contattiTitolo {
     font-size: 1.5rem;
     font-weight: bold;
     color: #21279B;
+    margin: 0;
     margin-top: 1rem;
 }
 
 .contattiTesto {
     font-size: 1rem;
     color: #808080;
-    margin: 0.5rem 0 1rem 0;
+    margin: 0.5rem 0 0 0;
     line-height: 1.4;
 }
 
-/* Layout container principale */
 .formContainer {
     background-color: white;
     padding: 2rem;
     border-radius: 0.75rem;
     width: 100%;
     display: flex;
+    justify-content: center;
     flex-direction: column;
-    gap: 2rem;
 }
 
-/* Colonne del form */
-.formColumn {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+.formContainer label {
+    font-weight: bold;
+    margin: 0.5rem 0 0.3rem;
+    font-size: 1.25rem;
+    text-align: left;
 }
 
-/* Responsività: due colonne affiancate su desktop */
-@media (min-width: 768px) {
-    .formContainer {
-        flex-direction: row;
-        justify-content: space-between;
-    }
-
-    .formColumn {
-        flex: 1 1 45%;
-    }
-}
-
-/* Input e select */
+/* Input e Select */
 input[type="text"], 
 input[type="email"], 
 select, 
@@ -314,6 +417,7 @@ textarea {
     padding: 0.8rem;
     border: 1px solid #ccc;
     border-radius: 0.5rem;
+    margin-bottom: 1rem;
     box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.05);
     font-size: 1rem;
 }
@@ -323,24 +427,24 @@ textarea {
     resize: none;
 }
 
-label {
-    font-weight: bold;
-    font-size: 1.1rem;
+form {
+    margin-bottom: 1rem;
 }
 
-/* Checkbox e radio */
+/* Checkbox e Radio */
 .checkbox-group {
     display: flex;
     gap: 1rem;
-    align-items: center;
 }
 
 .checkbox-group label {
     font-weight: normal;
+    display: flex;
+    align-items: center;
 }
 
-/* Pulsante */
-button {
+/* Bottone di invio */
+.formContainer button {
     width: 100%;
     padding: 0.8rem;
     background-color: #21279b;
@@ -351,11 +455,11 @@ button {
     font-size: 1rem;
 }
 
-button:hover {
+.formContainer button:hover {
     background-color: #3238ab;
 }
 
-/* Wrapper per la select con freccia */
+/* Stile per la select con freccia */
 .select-wrapper {
     position: relative;
     width: 100%;
@@ -365,21 +469,34 @@ button:hover {
     appearance: none;
     background-color: white;
     cursor: pointer;
-    padding-right: 2rem;
+    width: 100%;
+    padding-right: 2rem; 
 }
 
+.select-wrapper select:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+/* Icona freccia nella select */
 .select-wrapper::after {
     content: "";
     position: absolute;
-    right: 1.5rem;
-    top: 45%;
+    right: 1.5rem; 
+    top: 45%; 
     transform: translateY(-50%);
-    width: 20px;
+    width: 20px; 
     height: 20px;
     background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-compact-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.553 6.776a.5.5 0 0 1 .67-.223L8 9.44l5.776-2.888a.5.5 0 1 1 .448.894l-6 3a.5.5 0 0 1-.448 0l-6-3a.5.5 0 0 1-.223-.67"/></svg>') no-repeat center;
     background-size: contain;
     pointer-events: none;
 }
+
+/* Testo opzionale */
+#testoOpzionale {
+    font-size: 0.8rem;
+    color: #6e6e6e;
+} 
 
 /* -------------------------------------FONT DEL SITO---------------------------------- */
 @font-face {

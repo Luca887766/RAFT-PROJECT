@@ -11,7 +11,7 @@ body {
     padding: 0;
     display: flex;
     flex-direction: column;
-    background-color: #a89696;
+    background-color: #ffffff;
     overflow-x: hidden;
     transition: opacity 0.5s ease-in-out;
 }
@@ -210,7 +210,7 @@ video {
 .lettera {
     position: relative;
     width: 100%;
-    max-width: 15rem;
+    max-width: 20rem;
     aspect-ratio: 1 / 1;
     border: 0.6rem solid transparent;
     border-radius: 0.75rem;
@@ -253,6 +253,11 @@ video {
 /*------------------ BARRA RICERCA VOCABOLARIO ----------------------*/
 #barraRicerca {
     position: relative;
+    display: flex;
+    justify-content: center; 
+    align-items: center;     
+    width: 100%;
+    margin: 1rem 0;
 }
 
 .input-container {

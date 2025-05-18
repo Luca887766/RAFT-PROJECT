@@ -11,7 +11,7 @@ body {
     padding: 0;
     display: flex;
     flex-direction: column;
-    background-color: #a38484;
+    background-color: #361919;
     overflow-x: hidden;
     transition: opacity 0.5s ease-in-out;
 }
@@ -210,7 +210,7 @@ video {
 .lettera {
     position: relative;
     width: 100%;
-    max-width: 10rem;
+    max-width: 15rem;
     aspect-ratio: 1 / 1;
     border: 0.6rem solid transparent;
     border-radius: 0.75rem;
@@ -220,11 +220,11 @@ video {
 }
 
 .lettera:nth-child(odd) {
-    transform: translateY(-1rem);
+    transform: translateY(-0.5rem);
 }
 
 .lettera:nth-child(even) {
-    transform: translateY(1rem);
+    transform: translateY(0.5rem);
 }
 
 .lettera h3 {

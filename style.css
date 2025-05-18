@@ -11,7 +11,7 @@ body {
     padding: 0;
     display: flex;
     flex-direction: column;
-    background-color: #735656;
+    background-color: #bf5959;
     overflow-x: hidden;
     transition: opacity 0.5s ease-in-out;
 }
@@ -258,41 +258,54 @@ video {
 #contattiHeader {
     text-align: center;
     max-width: 23rem;
+    margin: 0 auto;
 }
 
 .contattiTitolo {
     font-size: 1.5rem;
     font-weight: bold;
     color: #21279B;
-    margin: 0;
     margin-top: 1rem;
 }
 
 .contattiTesto {
     font-size: 1rem;
     color: #808080;
-    margin: 0.5rem 0 0 0;
+    margin: 0.5rem 0 1rem 0;
     line-height: 1.4;
 }
 
+/* Layout container principale */
 .formContainer {
     background-color: white;
     padding: 2rem;
     border-radius: 0.75rem;
     width: 100%;
     display: flex;
-    justify-content: center;
     flex-direction: column;
+    gap: 2rem;
 }
 
-.formContainer label {
-    font-weight: bold;
-    margin: 0.5rem 0 0.3rem;
-    font-size: 1.25rem;
-    text-align: left;
+/* Colonne del form */
+.formColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
-/* Input e Select */
+/* Responsività: due colonne affiancate su desktop */
+@media (min-width: 768px) {
+    .formContainer {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .formColumn {
+        flex: 1 1 45%;
+    }
+}
+
+/* Input e select */
 input[type="text"], 
 input[type="email"], 
 select, 
@@ -301,7 +314,6 @@ textarea {
     padding: 0.8rem;
     border: 1px solid #ccc;
     border-radius: 0.5rem;
-    margin-bottom: 1rem;
     box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.05);
     font-size: 1rem;
 }
@@ -311,24 +323,24 @@ textarea {
     resize: none;
 }
 
-form {
-    margin-bottom: 1rem;
+label {
+    font-weight: bold;
+    font-size: 1.1rem;
 }
 
-/* Checkbox e Radio */
+/* Checkbox e radio */
 .checkbox-group {
     display: flex;
     gap: 1rem;
+    align-items: center;
 }
 
 .checkbox-group label {
     font-weight: normal;
-    display: flex;
-    align-items: center;
 }
 
-/* Bottone di invio */
-.formContainer button {
+/* Pulsante */
+button {
     width: 100%;
     padding: 0.8rem;
     background-color: #21279b;
@@ -339,11 +351,11 @@ form {
     font-size: 1rem;
 }
 
-.formContainer button:hover {
+button:hover {
     background-color: #3238ab;
 }
 
-/* Stile per la select con freccia */
+/* Wrapper per la select con freccia */
 .select-wrapper {
     position: relative;
     width: 100%;
@@ -353,34 +365,21 @@ form {
     appearance: none;
     background-color: white;
     cursor: pointer;
-    width: 100%;
-    padding-right: 2rem; /* Spazio per l'icona */
+    padding-right: 2rem;
 }
 
-.select-wrapper select:focus {
-    outline: none;
-    border-color: #007bff;
-}
-
-/* Icona freccia nella select */
 .select-wrapper::after {
     content: "";
     position: absolute;
-    right: 1.5rem; 
-    top: 45%; 
+    right: 1.5rem;
+    top: 45%;
     transform: translateY(-50%);
-    width: 20px; 
+    width: 20px;
     height: 20px;
     background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-compact-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.553 6.776a.5.5 0 0 1 .67-.223L8 9.44l5.776-2.888a.5.5 0 1 1 .448.894l-6 3a.5.5 0 0 1-.448 0l-6-3a.5.5 0 0 1-.223-.67"/></svg>') no-repeat center;
     background-size: contain;
     pointer-events: none;
 }
-
-/* Testo opzionale */
-#testoOpzionale {
-    font-size: 0.8rem;
-    color: #6e6e6e;
-} 
 
 /* -------------------------------------FONT DEL SITO---------------------------------- */
 @font-face {

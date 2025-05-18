@@ -153,27 +153,37 @@
     </div>
 
     <!-- ---------------------------------- CONTACT PAGE ----------------------------------------- -->
-<div id="contatti" class="slide marginBottom"> 
-        <!-- Intestazione -->
-        <div id="contattiHeader">
-            <h1 class="contattiTitolo">Contact our team</h1>
-            <p class="contattiTesto">Send us feedback or report an issue with our application</p>
-        </div>
-        <form id="contactForm" action="https://formsubmit.co/raft.galileo@gmail.com" method="POST"
-            class="formContainer">
-            <!-- Nascondere CAPTCHA e risposta -->
-            <input type="hidden" name="_captcha" value="false">
-            <input type="hidden" name="_next" value="javascript:void(0);">
+<div id="contatti" class="slide marginBottom">
+    <div id="contattiHeader">
+        <h1 class="contattiTitolo">Contact our team</h1>
+        <p class="contattiTesto">Send us feedback or report an issue with our application</p>
+    </div>
 
-            <!-- Nickname -->
+    <form id="contactForm" action="https://formsubmit.co/raft.galileo@gmail.com" method="POST" class="formContainer">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_next" value="javascript:void(0);">
+
+        <div class="formColumn">
             <label for="nickname">Nickname</label>
             <input type="text" id="nickname" name="nickname" placeholder="Nickname" required>
 
-            <!-- Email -->
             <label for="email">Email (Optional)</label>
             <input type="email" id="email" name="email" placeholder="Email">
 
-            <!-- Motivo della richiesta -->
+            <label for="device">Device used</label>
+            <input type="text" id="device" name="dispositivo" placeholder="E.g., iPhone 13, Samsung S22...">
+
+            <label>Language</label>
+            <div class="checkbox-group">
+                <input type="radio" id="europe" name="lingua" value="Europe">
+                <label for="europe">Europe</label>
+
+                <input type="radio" id="american" name="lingua" value="American">
+                <label for="american">American</label>
+            </div>
+        </div>
+
+        <div class="formColumn">
             <label for="reason">Reason</label>
             <div class="select-wrapper">
                 <select id="reason" name="motivazione">
@@ -184,34 +194,19 @@
                 </select>
             </div>
 
-            <!-- Dispositivo utilizzato -->
-            <label for="device">Device used</label>
-            <input type="text" id="device" name="dispositivo" placeholder="E.g., iPhone 13, Samsung S22...">
-
-            <!-- Lingua -->
-            <label>Language</label>
-            <div class="checkbox-group">
-                <input type="radio" id="europe" name="lingua" value="Europe">
-                <label for="europe">Europe</label>
-
-                <input type="radio" id="american" name="lingua" value="American">
-                <label for="american">American</label>
-            </div>
-
-            <!-- Messaggio -->
             <label for="message">Message</label>
             <textarea id="message" name="messaggio" placeholder="Write your message..." required></textarea>
+        </div>
 
-            <!-- Pulsante di invio -->
-            <button type="submit">Send</button>
-        </form>
-    </div>
+        <button type="submit">Send</button>
+    </form>
+</div>
 
-    <!-- Pop-up di conferma -->
-    <div id="successPopup"
-        style="display: none; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #4CAF50; color: white; padding: 10px 20px; border-radius: 5px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);">
-        Email sent successfully!
-    </div>
+<div id="successPopup"
+    style="display: none; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #4CAF50; color: white; padding: 10px 20px; border-radius: 5px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);">
+    Email sent successfully!
+</div>
+
 
 
     <!-- ---------------------------------- FOOTER ----------------------------------------- -->

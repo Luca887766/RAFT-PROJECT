@@ -201,7 +201,7 @@ video {
 /* -------------------------- VOCABOLARIO ---------------------------*/
 #imgVocabolario {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(6.25rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 0.5rem;
     padding: 1rem;
 }
@@ -250,6 +250,17 @@ video {
     z-index: 0;
 }
 
+@media (min-width: 768px) {
+    #imgVocabolario {
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    }
+}
+
+@media (min-width: 1200px) {
+    #imgVocabolario {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+}
 /*------------------ BARRA RICERCA VOCABOLARIO ----------------------*/
 #barraRicerca {
     position: relative;

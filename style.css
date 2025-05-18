@@ -11,7 +11,7 @@ body {
     padding: 0;
     display: flex;
     flex-direction: column;
-    background-color: #a86c6c;
+    background-color: #9b0c0c;
     overflow-x: hidden;
     transition: opacity 0.5s ease-in-out;
 }
@@ -201,17 +201,9 @@ video {
 /* -------------------------- VOCABOLARIO ---------------------------*/
 #imgVocabolario {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
-    justify-content: center;
+    grid-template-columns: repeat(auto-fill, minmax(6.25rem, 1fr));
     gap: 0.5rem;
     padding: 1rem;
-}
-
-.lettera {
-    max-width: 10rem;
-    width: 100%;
-    height: auto;
-    margin: auto;
 }
 
 #imgVocabolario.alternato {

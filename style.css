@@ -490,6 +490,20 @@ textarea {
     font-size: 0.8rem;
     color: #6e6e6e;
 } 
+.contattiTitolo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #21279B;
+    margin: 0;
+    margin-top: 1rem;
+}
+
+.contattiTesto {
+    font-size: 1rem;
+    color: #808080;
+    margin: 0.5rem 0 0 0;
+    line-height: 1.4;
+}
 
 /* -------------------------------------FONT DEL SITO---------------------------------- */
 @font-face {

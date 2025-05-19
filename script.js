@@ -310,17 +310,25 @@ function toggleResponsiveUI(visibleIds = []) {
 
   if (shouldShowNav) {
     if (window.innerWidth > maxWidth) {
-      footer.style.display = 'none';
+      // Mostra topMenu, nascondi footer
       topMenu.style.display = 'flex';
+      footer.style.display = 'none';
     } else {
+      // Mostra footer, nascondi topMenu
       footer.style.display = 'flex';
       topMenu.style.display = 'none';
     }
   } else {
-    footer.style.display = 'none';
-    topMenu.style.display = 'none';
+    // SE nav non deve essere mostrato, ma entrambi spariscono,
+    // allora forziamo la visualizzazione di uno dei due
+    if (window.innerWidth > maxWidth) {
+      topMenu.style.display = 'flex';
+    } else {
+      footer.style.display = 'flex';
+    }
   }
 }
+
 
 function updateActiveMenuItem(dest) {
   // Rimuovi la classe "active" da tutte le voci di menu
@@ -687,10 +695,10 @@ document.addEventListener("DOMContentLoaded", () => {
         card.classList.remove("disactive");
         activeCard = card;
 
-        // **Usiamo un piccolo delay per garantire che lo stato sia aggiornato**
+        //Usiamo un piccolo delay per garantire che lo stato sia aggiornato
         setTimeout(adjustContainerPosition, 50);
 
-        // **Abilita il click solo sulla card attiva**
+        //Abilita il click solo sulla card attiva**
         cards.forEach((c) => {
             c.onclick = null; // Rimuove tutti gli eventi onclick
         });

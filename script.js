@@ -269,8 +269,33 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 //--------------------------------- SLIDE MANAGEMENT -----------------------------------*/
 function toSlide(dest) {
-    const slides = document.querySelectorAll(".slide");
-    slides.forEach((slide) => (slide.style.display = "none"));
+  const slides = document.querySelectorAll(".slide");
+  slides.forEach((slide) => (slide.style.display = "none"));
+
+
+  const buttons = document.querySelectorAll("#selDifficolta button");
+  buttons.forEach(button => button.classList.remove("active"));
+
+  updateActiveMenuItem(dest);
+
+  if (dest === "traduzione") {
+    disableCam();
+    document.getElementById("nav").style.display = "none";
+    document.getElementById("loadingIntelligenza").style.display = "flex";
+    document.getElementById("traduzione").style.display = "none";
+    return;
+  } else {
+    disableCam();
+  }
+
+  const elementsToShow = getElementsForSlide(dest);
+  elementsToShow.forEach((element) => {
+    if (element.id === "barraLogo" || element.id === "selezioneLinguaBarra" || element.id === "selModalita" || element.id === "selDifficolta" || element.id === "loadingIntelligenza" || element.id === "loadingIniziale") {
+      element.style.display = "flex";
+    } else if (element.id === "nav") {
+      // Qui NON lo mostriamo direttamente. Lasciamo che lo faccia la funzione responsive.
+    } else {
+      element.style.display = "block";
 
     const diffButtons = document.querySelectorAll("#selDifficolta button");
     diffButtons.forEach(button => button.classList.remove("active"));
@@ -314,26 +339,61 @@ function toSlide(dest) {
              stopHardTraining();
         }
     }
+  });
 
-    const elementsToShow = getElementsForSlide(dest);
-    elementsToShow.forEach((element) => {
-        if (!element) return;
-        if ([ "nav", "barraLogo", "selezioneLinguaBarra", "selModalita", "loadingIntelligenza", "loadingIniziale", "selDifficolta"].includes(element.id)) {
-            element.style.display = "flex";
-        } else {
-            element.style.display = "block";
-        }
-    });
-
-    const nav = document.getElementById("nav");
-    if (nav) {
-        if ([ "homePage", "vocabolario", "contatti", "selDifficolta"].includes(dest)) {
-            nav.style.display = "flex";
-        } else {
-            nav.style.display = "none";
-        }
-    }
+  toggleResponsiveUI(elementsToShow.map(e => e.id));
 }
+
+function toggleResponsiveUI(visibleIds = []) {
+  const footer = document.getElementById('nav');
+  const topMenu = document.getElementById('topMenu');
+  const maxWidth = 900;
+
+  const shouldShowNav = visibleIds.includes("nav");
+
+  if (shouldShowNav) {
+    if (window.innerWidth > maxWidth) {
+      // Mostra topMenu, nascondi footer
+      topMenu.style.display = 'flex';
+      footer.style.display = 'none';
+    } else {
+      // Mostra footer, nascondi topMenu
+      footer.style.display = 'flex';
+      topMenu.style.display = 'none';
+    }
+  } else {
+    // SE nav non deve essere mostrato, ma entrambi spariscono,
+    // allora forziamo la visualizzazione di uno dei due
+    if (window.innerWidth > maxWidth) {
+      topMenu.style.display = 'flex';
+    } else {
+      footer.style.display = 'flex';
+    }
+  }
+}
+
+
+function updateActiveMenuItem(dest) {
+  // Rimuovi la classe "active" da tutte le voci di menu
+  document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
+
+  // Aggiungi la classe "active" solo a quella corretta
+  if (dest === 'homePage') {
+    document.querySelectorAll('.menu-home').forEach(el => el.classList.add('active'));
+  } else if (dest === 'vocabolario') {
+    document.querySelectorAll('.menu-vocabulary').forEach(el => el.classList.add('active'));
+  } else if (dest === 'contatti') {
+    document.querySelectorAll('.menu-contact').forEach(el => el.classList.add('active'));
+  }
+}
+
+window.addEventListener('resize', () => {
+  // Recupera l’elemento visibile corrente per sapere se includere 'nav'
+  const visibleElements = Array.from(document.querySelectorAll('.slide'))
+    .filter(el => el.style.display !== 'none')
+    .map(el => el.id);
+  toggleResponsiveUI(visibleElements);
+});
 
 function getElementsForSlide(dest) {
     const elements = [];
@@ -673,8 +733,10 @@ document.addEventListener("DOMContentLoaded", () => {
         card.classList.remove("disactive");
         activeCard = card;
 
+        //Usiamo un piccolo delay per garantire che lo stato sia aggiornato
         setTimeout(adjustContainerPosition, 50);
 
+        //Abilita il click solo sulla card attiva**
         cards.forEach((c) => {
             c.onclick = null;
         });

@@ -272,7 +272,6 @@ function toSlide(dest) {
   const slides = document.querySelectorAll(".slide");
   slides.forEach((slide) => (slide.style.display = "none"));
 
-
   const buttons = document.querySelectorAll("#selDifficolta button");
   buttons.forEach(button => button.classList.remove("active"));
 
@@ -290,56 +289,61 @@ function toSlide(dest) {
 
   const elementsToShow = getElementsForSlide(dest);
   elementsToShow.forEach((element) => {
-    if (element.id === "barraLogo" || element.id === "selezioneLinguaBarra" || element.id === "selModalita" || element.id === "selDifficolta" || element.id === "loadingIntelligenza" || element.id === "loadingIniziale") {
+    if (
+      element.id === "barraLogo" ||
+      element.id === "selezioneLinguaBarra" ||
+      element.id === "selModalita" ||
+      element.id === "selDifficolta" ||
+      element.id === "loadingIntelligenza" ||
+      element.id === "loadingIniziale"
+    ) {
       element.style.display = "flex";
     } else if (element.id === "nav") {
-      // Qui NON lo mostriamo direttamente. Lasciamo che lo faccia la funzione responsive.
+      // Lasciamo che lo faccia la funzione responsive
     } else {
       element.style.display = "block";
+    }
+  }); // <-- QUI chiudiamo correttamente il ciclo forEach
 
-    const diffButtons = document.querySelectorAll("#selDifficolta button");
-    diffButtons.forEach(button => button.classList.remove("active"));
+  const currentEasySlide = document.getElementById('giocoFacile');
+  const currentMediumSlide = document.getElementById('giocoMedio');
+  const currentHardSlide = document.getElementById('giocoDifficile');
+  const currentTranslationSlide = document.getElementById('traduzione');
 
-    const currentEasySlide = document.getElementById('giocoFacile');
-    const currentMediumSlide = document.getElementById('giocoMedio');
-    const currentHardSlide = document.getElementById('giocoDifficile');
-    const currentTranslationSlide = document.getElementById('traduzione');
+  if (currentEasySlide && currentEasySlide.style.display !== 'none' && dest !== 'giocoFacile') {
+    stopTraining();
+  }
+  if (currentMediumSlide && currentMediumSlide.style.display !== 'none' && dest !== 'giocoMedio') {
+    stopMediumTraining();
+  }
+  if (currentHardSlide && currentHardSlide.style.display !== 'none' && dest !== 'giocoDifficile') {
+    stopHardTraining();
+  }
+  if (currentTranslationSlide && currentTranslationSlide.style.display !== 'none' && dest !== 'traduzione') {
+    disableCam();
+  }
 
-    if (currentEasySlide && currentEasySlide.style.display !== 'none' && dest !== 'giocoFacile') {
-        stopTraining();
+  if (dest === "traduzione") {
+    const nav = document.getElementById("nav");
+    if (nav) nav.style.display = "none";
+    document.getElementById("loadingIntelligenza").style.display = "flex";
+    document.getElementById("traduzione").style.display = "none";
+    enableCam();
+    return;
+  } else if (dest === "giocoFacile" || dest === "giocoMedio" || dest === "giocoDifficile") {
+    const nav = document.getElementById("nav");
+    if (nav) nav.style.display = "none";
+  } else {
+    if (dest !== 'giocoFacile' && trainingRunning) {
+      stopTraining();
     }
-    if (currentMediumSlide && currentMediumSlide.style.display !== 'none' && dest !== 'giocoMedio') {
-        stopMediumTraining();
+    if (dest !== 'giocoMedio' && mediumTrainingRunning) {
+      stopMediumTraining();
     }
-    if (currentHardSlide && currentHardSlide.style.display !== 'none' && dest !== 'giocoDifficile') {
-        stopHardTraining();
+    if (dest !== 'giocoDifficile' && hardTrainingRunning) {
+      stopHardTraining();
     }
-    if (currentTranslationSlide && currentTranslationSlide.style.display !== 'none' && dest !== 'traduzione') {
-        disableCam();
-    }
-
-    if (dest === "traduzione") {
-        const nav = document.getElementById("nav");
-        if (nav) nav.style.display = "none";
-        document.getElementById("loadingIntelligenza").style.display = "flex";
-        document.getElementById("traduzione").style.display = "none";
-        enableCam();
-        return;
-    } else if (dest === "giocoFacile" || dest === "giocoMedio" || dest === "giocoDifficile") {
-        const nav = document.getElementById("nav");
-        if (nav) nav.style.display = "none";
-    } else {
-        if (dest !== 'giocoFacile' && trainingRunning) {
-             stopTraining();
-        }
-        if (dest !== 'giocoMedio' && mediumTrainingRunning) {
-             stopMediumTraining();
-        }
-        if (dest !== 'giocoDifficile' && hardTrainingRunning) {
-             stopHardTraining();
-        }
-    }
-  });
+  }
 
   toggleResponsiveUI(elementsToShow.map(e => e.id));
 }

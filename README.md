@@ -1,10 +1,9 @@
 # RAFT-PROJECT
 
-RAFT (Real Time Automated Fingerspelling Translator) è un’applicazione web progettata principalmente per dispositivi mobili (Android).  
-Al momento iOS non è supportato, poiché le librerie necessarie per l’intelligenza artificiale non sono compatibili con questo sistema operativo.
+RAFT (Real Time Automated Fingerspelling Translator) è un’applicazione web progettata principalmente per dispositivi mobili.  
 
 ## Come accedere a RAFT
-1. Su smartphone Android, apri un motore di ricerca (Chrome, Firefox, ecc.); evitare Safari.  
+1. Su smartphone Android, apri un motore di ricerca (Chrome, Firefox, ecc.).  
 2. Digita:  
    • https://raftonline.live  
 3. Usa RAFT direttamente dal browser o installa la PWA per l’uso offline.

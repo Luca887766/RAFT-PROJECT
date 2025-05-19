@@ -563,72 +563,21 @@ function inizializzaEventi() {
         }
     }, 200);
 }
-
-/*----------------- LANGUAGE SELECTION FUNCTION ----------------------*/
+/*----------------- LANGUAGE SELECTION FUNCTION ----------------------*/ 
 document.addEventListener("DOMContentLoaded", () => { 
     const container = document.getElementById("selModalita");
     const cards = document.querySelectorAll(".card");
 
     let activeCard = document.querySelector(".card.active");
-    let startX = 0;
-    let currentX = 0;
-    let isDragging = false;
 
-    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-
-    if (isTouchDevice) {
-        container.addEventListener("touchstart", startDrag);
-    } else {
-        // Solo per desktop: abilita click per selezionare le card
-        cards.forEach(card => {
-            card.addEventListener("click", () => {
-                if (card !== activeCard) {
-                    updateActiveCard(card);
-                }
-            });
-        });
-    }
-
-    function startDrag(event) {
-        isDragging = true;
-        startX = event.touches ? event.touches[0].clientX : event.clientX;
-
-        document.addEventListener("touchmove", onDrag);
-        document.addEventListener("touchend", stopDrag);
-    }
-
-    function onDrag(event) {
-        if (!isDragging) return;
-        currentX = event.touches[0].clientX;
-        const deltaX = currentX - startX;
-        container.style.transform = `translateX(${deltaX}px)`;
-    }
-
-    function stopDrag() {
-        isDragging = false;
-
-        document.removeEventListener("touchmove", onDrag);
-        document.removeEventListener("touchend", stopDrag);
-
-        const centerX = window.innerWidth / 2;
-        let closestCard = null;
-        let closestDistance = Infinity;
-
-        cards.forEach((card) => {
-            const cardRect = card.getBoundingClientRect();
-            const cardCenter = cardRect.left + cardRect.width / 2;
-            const distance = Math.abs(cardCenter - centerX);
-
-            if (distance < closestDistance) {
-                closestDistance = distance;
-                closestCard = card;
+    // Gestione click per selezionare le card
+    cards.forEach(card => {
+        card.addEventListener("click", () => {
+            if (card !== activeCard) {
+                updateActiveCard(card);
             }
         });
-
-        if (closestCard && closestCard !== activeCard) {
-            updateActiveCard(closestCard);
-        }
-    }
+    });
 
     function updateActiveCard(card) {
         if (activeCard) {
@@ -641,7 +590,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         setTimeout(adjustContainerPosition, 50);
 
-        // Rimuove e assegna onClick solo alla card attiva
+        // Abilita il click solo sulla card attiva
         cards.forEach((c) => {
             c.onclick = null;
         });

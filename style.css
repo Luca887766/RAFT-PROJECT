@@ -73,7 +73,6 @@ body {
     border-top-left-radius: 1.25rem;
     border-top-right-radius: 1.25rem;
     border-bottom: 0.3rem solid #21279b;
-    ;
     box-shadow: 0rem 0.25rem 0.3rem rgba(0, 0, 0, 0.1);
 }
 
@@ -82,7 +81,6 @@ body {
     font-size: 2rem;
     font-weight: bold;
     color: #21279b;
-    ;
     letter-spacing: 0.1rem;
 }
 
@@ -102,7 +100,6 @@ body {
 
 #traduzione {
     flex: 1;
-    /* Ensure the translation slide takes full height */
     display: flex;
     flex-direction: column;
 }
@@ -114,7 +111,6 @@ body {
     overflow: hidden;
     background-color: #ffffff;
     display: block;
-    /* Ensure the container is displayed as a block element */
 }
 
 video {
@@ -144,30 +140,54 @@ video {
 #gesture_output_container {
     position: absolute;
     bottom: 1rem;
-    right: 1rem;
     left: 1rem;
-    height: 15rem;
+    right: 1rem;
+    height: auto;
+    max-height: 15rem;
     overflow-y: auto;
     background: radial-gradient(80.97% 1714.77% at 58.68% -1061.36%, #21279B 0%, #10145C 100%);
-    padding: 2rem;
+    padding: 1rem 1.5rem;
     border-radius: 1rem;
     color: white;
     z-index: 2;
-    border: 3px solid #FFFFFF;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 10rem;
+}
+
+.toolbar {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 1rem;
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    color: #00A3FF;
+    font-size: 1.25rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.icon-button:hover {
+    transform: scale(1.2);
 }
 
 .output {
     margin: 0;
+    min-height: 5rem;
 }
 
-.backButton,
-.clearButton {
+.backButton{
     background: #10145C;
     color: #FFFFFF;
     font-size: 1rem;
     font-weight: bold;
     padding: 0.6rem 1.4rem;
-    border: 3px solid #FFFFFF;
     border-radius: 2rem;
     cursor: pointer;
     transition: all 0.25s ease-in-out;
@@ -187,13 +207,7 @@ video {
     left: 1rem;
 }
 
-.clearButton {
-    bottom: 17rem;
-    right: 1rem;
-}
-
-.backButton:active,
-.clearButton:active {
+.backButton:active{
     transform: scale(0.95);
     box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.5);
 }
@@ -430,6 +444,7 @@ textarea {
   resize: none;
 }
 
+
 /* Checkbox/Radio */
 .checkbox-group {
   display: flex;
@@ -442,6 +457,7 @@ textarea {
   display: flex;
   align-items: center;
 }
+
 
 /* Pulsante di invio */
 .formContainer button {
@@ -457,6 +473,7 @@ textarea {
 .formContainer button:hover {
   background-color: #3238ab;
 }
+
 
 /* Select personalizzata */
 .select-wrapper {
@@ -485,7 +502,6 @@ textarea {
   pointer-events: none;
 }
 
-/* Testo opzionale */
 #testoOpzionale {
     font-size: 0.8rem;
     color: #6e6e6e;
@@ -605,16 +621,19 @@ textarea {
         margin-top: calc(40vh - 50% - 24px);
     }
 }
+
 @media (min-width: 550px) { 
     #selModalita {
         margin-top: calc(50vh - 50% - 24px);
     }
 }
+
 @media (min-width: 600px) { 
     #selModalita {
         margin-top: calc(55vh - 50% - 24px);
     }
 }
+
 @media (min-width: 700px) { 
     #selModalita {
         margin-top: calc(65vh - 50% - 24px);
@@ -663,69 +682,6 @@ textarea {
 
 
 
-/*-------------- SCHERMATA DI CARICAMENTO-------------*/
-.loading {
-    position: relative;
-    height: 100vh;
-    width: 100%;
-    background-color: #10145C;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-}
-
-.pattern {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url('img/draw/pattern.png');
-    background-repeat: repeat;
-    background-size: 12rem;
-    z-index: 1;
-}
-
-.logoNome {
-    z-index: 2;
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    bottom: 15%;
-}
-
-.loading img {
-    max-width: 14rem;
-    width: 100%;
-    height: auto;
-    z-index: 2;
-}
-
-.loading h1 {
-    font-family: 'logoTitolo';
-    font-size: 3em;
-    -webkit-text-stroke: 0.1rem #007bff;
-    color: white;
-    text-shadow: 0.2rem 0.2rem 0.3rem rgba(145, 186, 230, 0.8);
-}
-
-.loading p {
-    font-family: 'logoTitolo';
-    font-size: 1.2rem;
-    color: #ffffff;
-    margin-top: 0.3rem;
-    letter-spacing: 0.01rem;
-    text-shadow: 0.05rem 0.05rem 0.1rem rgba(145, 186, 230, 0.9);
-}
-
-.loading img {
-    width: 12.5rem;
-    height: auto;
-}
-
 /*--------------SCELTA DIFFICOLTA'-------------------*/
 #selDifficolta {
     display: flex;
@@ -748,10 +704,8 @@ textarea {
     box-shadow: 0.3rem 0.3rem 1rem rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease-in-out;
     position: relative;
-
     width: 22rem;
     height: 7.5rem;
-
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -794,36 +748,357 @@ textarea {
     opacity: 1;
 }
 
-/*----------------------------- SCHERMATE DI GIOCO ANCORA IN SVILUPPO -----------------------*/
-.giocoSviluppo {
-    text-align: center;
-    padding: 1.25rem;
-    background-color: #f8f8f8;
-    border: 0.05rem dashed #bbb;
-    border-radius: 0.5rem;
-    width: 80%;
-    max-width: 25rem;
+/*----------------------------- EASY GAME PAGE STYLES -----------------------*/
+#trainingContainer {
+    height: 100vh;
+    width: 100%;
+    position: relative;
+}
 
+#trainingVideoContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    overflow: hidden;
+    z-index: 1;
+}
+
+#trainingWebcam {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scaleX(-1);
+}
+
+#training_output_canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    z-index: 2;
+    transform: scaleX(-1);
+}
+
+#targetLetterContainer {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    right: 1rem;
+    background: radial-gradient(80.97% 1714.77% at 58.68% -1061.36%, #21279B 0%, #10145C 100%);
+    padding: 1rem;
+    border-radius: 1rem;
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    border: 3px solid #FFFFFF;
+    min-height: 6rem;
+    transition: background 0.3s ease;
+}
+
+#targetLetterImage {
+    max-width: 13rem;
+    max-height: 13rem;
+    height: auto;
+    border: 2px solid #ccc;
+    border-radius: 0.3rem;
+    background-color: #fff;
+    padding: 0.2rem;
+}
+
+#targetLetterText {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #FFFFFF;
+    margin: 0;
+}
+
+#targetLetterContainer.correct-gesture {
+    background: #008000;
+}
+
+/*----------------------------- MEDIUM GAME PAGE STYLES -----------------------*/
+#mediumTrainingContainer {
+    height: 100vh;
+    width: 100%;
+    position: relative;
+}
+
+#mediumVideoContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    overflow: hidden;
+    z-index: 1;
+}
+
+#mediumWebcam {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scaleX(-1);
+}
+
+#medium_output_canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    z-index: 2;
+    transform: scaleX(-1);
+}
+
+#mediumLetterContainer {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    right: 1rem;
+    background: radial-gradient(80.97% 1714.77% at 58.68% -1061.36%, #21279B 0%, #10145C 100%);
+    padding: 1rem;
+    border-radius: 1rem;
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    border: 3px solid #FFFFFF;
+    min-height: 6rem;
+    transition: background 0.3s ease;
+}
+
+#mediumTargetLetterImage {
+    max-width: 10rem;
+    max-height: 10rem;
+    height: auto;
+    border: 2px solid #ccc;
+    border-radius: 0.3rem;
+    background-color: #fff;
+    padding: 0.2rem;
+}
+
+#mediumTargetText {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #FFFFFF;
+    margin: 0;
+}
+
+#mediumCorrectContainer {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    z-index: 3;
+    display: none;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 1rem;
+    padding: 1rem;
+    box-shadow: 0 0 2rem rgba(0, 0, 0, 0.5);
+    animation: fadeInOut 2s ease-in-out;
 }
 
-.giocoSviluppo p {
+#mediumCorrectImage {
+    max-width: 15rem;
+    max-height: 15rem;
+    object-fit: contain;
+}
+
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+
+    20% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    80% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+}
+
+#mediumLetterContainer.correct-gesture {
+    background: #008000;
+}
+
+/*----------------------------- HARD GAME PAGE STYLES -----------------------*/
+#hardTrainingContainer {
+    height: 100vh;
+    width: 100%;
+    position: relative;
+}
+
+#hardVideoContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    overflow: hidden;
+    z-index: 1;
+}
+
+#hardWebcam {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scaleX(-1);
+}
+
+#hard_output_canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    z-index: 2;
+    transform: scaleX(-1);
+}
+
+#hardWordContainer {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    right: 1rem;
+    background: radial-gradient(80.97% 1714.77% at 58.68% -1061.36%, #21279B 0%, #10145C 100%);
+    padding: 1rem;
+    border-radius: 1rem;
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 3px solid #FFFFFF;
+    min-height: 6rem;
+    transition: background 0.3s ease;
+}
+
+#hardTargetWord {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #FFFFFF;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.25rem;
+}
+
+#hardProgressContainer {
+    position: absolute;
+    bottom: 8rem;
+    left: 1rem;
+    right: 1rem;
+    height: 1.5rem;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 0.75rem;
+    z-index: 3;
+    overflow: hidden;
+}
+
+#hardProgress {
+    height: 100%;
+    width: 0%;
+    background-color: #4CAF50;
+    border-radius: 0.75rem;
+    transition: width 0.5s ease-in-out;
+}
+
+#hardCorrectContainer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 4;
+    display: none;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 1rem;
+    padding: 2rem 3rem;
+    box-shadow: 0 0 2rem rgba(0, 0, 0, 0.5);
+    animation: fadeInOut 3s ease-in-out;
+}
+
+#hardCorrectWord {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #008000;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+/*---------------------- CAMERA SWITCH BUTTON ----------------------*/
+.cameraSwitchButton {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: #10145C;
+    color: #FFFFFF;
     font-size: 1rem;
-    color: #888;
+    font-weight: bold;
+    padding: 0.6rem 1rem;
+    border-radius: 2rem;
+    cursor: pointer;
+    transition: all 0.25s ease-in-out;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    z-index: 10;
 }
 
-.giocoSviluppo button {
-    background-color: #ddd;
-    color: #666;
+.cameraSwitchButton:active {
+    transform: scale(0.95);
+    box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+.cameraDropdown {
+    position: absolute;
+    top: 4rem;
+    right: 1rem;
+    background: #10145C;
+    border: 3px solid #FFFFFF;
+    border-radius: 1rem;
+    padding: 0.5rem;
+    z-index: 11;
+    display: none;
+    max-height: 50vh;
+    overflow-y: auto;
+}
+
+.cameraDropdown button {
+    display: block;
+    width: 100%;
+    padding: 0.8rem 1.5rem;
+    margin-bottom: 0.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
     border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
-    cursor: not-allowed;
-    font-size: 1rem;
-    opacity: 0.6;
+    border-radius: 0.5rem;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.2s ease;
 }
 
 /*----------------------------- DESKTOP -----------------------*/

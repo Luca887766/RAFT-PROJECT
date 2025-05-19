@@ -622,42 +622,42 @@ textarea {
 }
 @media (min-width: 800px) { 
     #selModalita {
-        margin-top: calc(75vh - 50% - 24px);
+        margin-top: calc(70vh - 50% - 24px);
     }
 }
 @media (min-width: 900px) {
     #selModalita {
-        margin-top: calc(85vh - 50% - 24px);
+        margin-top: calc(80vh - 50% - 24px);
     }
 }
 @media (min-width: 1000px) { 
     #selModalita {
-        margin-top: calc(95vh - 50% - 24px);
+        margin-top: calc(90vh - 50% - 24px);
     }
 }
 @media (min-width: 1100px) { 
     #selModalita {
-        margin-top: calc(105vh - 50% - 24px);
+        margin-top: calc(100vh - 50% - 24px);
     }
 }
 @media (min-width: 1200px) {
     #selModalita {
-        margin-top: calc(115vh - 50% - 24px);
+        margin-top: calc(110vh - 50% - 24px);
     }
 }
 @media (min-width: 1300px) { 
     #selModalita {
-        margin-top: calc(125vh - 50% - 24px);
+        margin-top: calc(120vh - 50% - 24px);
     }
 }
 @media (min-width: 1400px) { 
     #selModalita {
-        margin-top: calc(135vh - 50% - 24px);
+        margin-top: calc(130vh - 50% - 24px);
     }
 }
 @media (min-width: 1500px) {
     #selModalita {
-        margin-top: calc(145vh - 50% - 24px);
+        margin-top: calc(140vh - 50% - 24px);
     }
 }
 

@@ -766,6 +766,13 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+     cards.forEach(card => {
+        card.addEventListener('click', () => {
+            if (isDragging) return;
+            updateActiveCard(card);
+        });
+    });
+
     setTimeout(adjustContainerPosition, 50);
 });
 

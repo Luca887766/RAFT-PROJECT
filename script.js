@@ -417,7 +417,6 @@ function getElementsForSlide(dest) {
                 document.getElementById("barraLogo"),
                 document.getElementById("selezioneLinguaBarra"),
                 document.getElementById("selModalita"),
-                document.getElementById("nav")
             );
             break;
         case "vocabolario":

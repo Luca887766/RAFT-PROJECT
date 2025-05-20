@@ -563,6 +563,7 @@ function inizializzaEventi() {
         }
     }, 200);
 }
+
 /*----------------- LANGUAGE SELECTION FUNCTION ----------------------*/ 
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('selezioneLinguaBarra');

@@ -564,7 +564,6 @@ function inizializzaEventi() {
     }, 200);
 }
 /*----------------- LANGUAGE SELECTION FUNCTION ----------------------*/ 
-const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('selezioneLinguaBarra');
     const europeButton = document.querySelector('.lang-btn[data-lang="Europe"]');
@@ -596,16 +595,17 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        if (isTouchDevice) {
-            button.addEventListener('touchstart', startDrag);
-        }
+        button.addEventListener('mousedown', startDrag);
+        button.addEventListener('touchstart', startDrag);
     });
 
     function startDrag(event) {
         isDragging = true;
         startX = event.touches ? event.touches[0].clientX : event.clientX;
 
+        document.addEventListener('mousemove', onDrag);
         document.addEventListener('touchmove', onDrag);
+        document.addEventListener('mouseup', stopDrag);
         document.addEventListener('touchend', stopDrag);
     }
 
@@ -620,7 +620,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function stopDrag(event) {
         isDragging = false;
 
+        document.removeEventListener('mousemove', onDrag);
         document.removeEventListener('touchmove', onDrag);
+        document.removeEventListener('mouseup', stopDrag);
         document.removeEventListener('touchend', stopDrag);
 
         let closestInactiveButton = findClosestInactiveButton(event.target);
@@ -669,7 +671,7 @@ document.querySelectorAll('.lang-btn').forEach(button => {
 
 
 //----------------------------MODE SELECTION---------------------------
-document.addEventListener("DOMContentLoaded", () => {
+ document.addEventListener("DOMContentLoaded", () => {
     const container = document.getElementById("selModalita");
     const cards = document.querySelectorAll(".card");
 
@@ -678,21 +680,22 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentX = 0;
     let isDragging = false;
 
-    if (isTouchDevice) {
-        container.addEventListener("touchstart", startDrag);
-    }
+    container.addEventListener("mousedown", startDrag);
+    container.addEventListener("touchstart", startDrag);
 
     function startDrag(event) {
         isDragging = true;
-        startX = event.touches[0].clientX;
+        startX = event.touches ? event.touches[0].clientX : event.clientX;
 
+        document.addEventListener("mousemove", onDrag);
         document.addEventListener("touchmove", onDrag);
+        document.addEventListener("mouseup", stopDrag);
         document.addEventListener("touchend", stopDrag);
     }
 
     function onDrag(event) {
         if (!isDragging) return;
-        currentX = event.touches[0].clientX;
+        currentX = event.touches ? event.touches[0].clientX : event.clientX;
         const deltaX = currentX - startX;
         container.style.transform = `translateX(${deltaX}px)`;
     }
@@ -700,7 +703,9 @@ document.addEventListener("DOMContentLoaded", () => {
     function stopDrag() {
         isDragging = false;
 
+        document.removeEventListener("mousemove", onDrag);
         document.removeEventListener("touchmove", onDrag);
+        document.removeEventListener("mouseup", stopDrag);
         document.removeEventListener("touchend", stopDrag);
 
         const centerX = window.innerWidth / 2;
@@ -732,9 +737,10 @@ document.addEventListener("DOMContentLoaded", () => {
         card.classList.remove("disactive");
         activeCard = card;
 
+        //Usiamo un piccolo delay per garantire che lo stato sia aggiornato
         setTimeout(adjustContainerPosition, 50);
 
-        // Abilita il click solo sulla card attiva
+        //Abilita il click solo sulla card attiva**
         cards.forEach((c) => {
             c.onclick = null;
         });
@@ -763,7 +769,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     setTimeout(adjustContainerPosition, 50);
 });
-
 
 /*------------------------------ ROTATE CONTACTS ARROW--------------*/
 function toggleFrecciaRotation() {

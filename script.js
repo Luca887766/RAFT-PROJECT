@@ -297,7 +297,6 @@ function toSlide(dest) {
 
   if (dest === "traduzione") {
     disableCam();
-    document.getElementById("nav").style.display = "none";
     document.getElementById("loadingIntelligenza").style.display = "flex";
     document.getElementById("traduzione").style.display = "none";
     return;
@@ -317,11 +316,11 @@ function toSlide(dest) {
     ) {
       element.style.display = "flex";
     } else if (element.id === "nav") {
-      // Lasciamo che lo faccia la funzione responsive
+      // Non gestiamo qui #nav: lo fa toggleResponsiveUI()
     } else {
       element.style.display = "block";
     }
-  }); // <-- QUI chiudiamo correttamente il ciclo forEach
+  });
 
   const currentEasySlide = document.getElementById('giocoFacile');
   const currentMediumSlide = document.getElementById('giocoMedio');
@@ -342,25 +341,10 @@ function toSlide(dest) {
   }
 
   if (dest === "traduzione") {
-    const nav = document.getElementById("nav");
-    if (nav) nav.style.display = "none";
     document.getElementById("loadingIntelligenza").style.display = "flex";
     document.getElementById("traduzione").style.display = "none";
     enableCam();
     return;
-  } else if (dest === "giocoFacile" || dest === "giocoMedio" || dest === "giocoDifficile") {
-    const nav = document.getElementById("nav");
-    if (nav) nav.style.display = "none";
-  } else {
-    if (dest !== 'giocoFacile' && trainingRunning) {
-      stopTraining();
-    }
-    if (dest !== 'giocoMedio' && mediumTrainingRunning) {
-      stopMediumTraining();
-    }
-    if (dest !== 'giocoDifficile' && hardTrainingRunning) {
-      stopHardTraining();
-    }
   }
 
   toggleResponsiveUI(elementsToShow.map(e => e.id));
@@ -375,31 +359,21 @@ function toggleResponsiveUI(visibleIds = []) {
 
   if (shouldShowNav) {
     if (window.innerWidth > maxWidth) {
-      // Mostra topMenu, nascondi footer
       topMenu.style.display = 'flex';
       footer.style.display = 'none';
     } else {
-      // Mostra footer, nascondi topMenu
       footer.style.display = 'flex';
       topMenu.style.display = 'none';
     }
   } else {
-    // SE nav non deve essere mostrato, ma entrambi spariscono,
-    // allora forziamo la visualizzazione di uno dei due
-    if (window.innerWidth > maxWidth) {
-      topMenu.style.display = 'flex';
-    } else {
-      footer.style.display = 'flex';
-    }
+    topMenu.style.display = 'none';
+    footer.style.display = 'none';
   }
 }
 
-
 function updateActiveMenuItem(dest) {
-  // Rimuovi la classe "active" da tutte le voci di menu
   document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
 
-  // Aggiungi la classe "active" solo a quella corretta
   if (dest === 'homePage') {
     document.querySelectorAll('.menu-home').forEach(el => el.classList.add('active'));
   } else if (dest === 'vocabolario') {
@@ -410,7 +384,6 @@ function updateActiveMenuItem(dest) {
 }
 
 window.addEventListener('resize', () => {
-  // Recupera l’elemento visibile corrente per sapere se includere 'nav'
   const visibleElements = Array.from(document.querySelectorAll('.slide'))
     .filter(el => el.style.display !== 'none')
     .map(el => el.id);
@@ -418,69 +391,64 @@ window.addEventListener('resize', () => {
 });
 
 function getElementsForSlide(dest) {
-    const elements = [];
-    switch (dest) {
-        case "loadingIntelligenza":
-            elements.push(
-                document.getElementById("loadingIntelligenza")
-            );
-            break;
-        case "loadingIniziale":
-            elements.push(
-                document.getElementById("loadingIniziale")
-            );
-            break;
-        case "homePage":
-            elements.push(
-                document.getElementById("barraLogo"),
-                document.getElementById("selezioneLinguaBarra"),
-                document.getElementById("selModalita"),
-                document.getElementById("nav")
-            );
-            break;
-        case "vocabolario":
-            elements.push(
-                document.getElementById("barraLogo"),
-                document.getElementById("selezioneLinguaBarra"),
-                document.getElementById("vocabolario"),
-                document.getElementById("nav")
-            );
-            break;
-        case "contatti":
-            elements.push(
-                document.getElementById("barraLogo"),
-                document.getElementById("selezioneLinguaBarra"),
-                document.getElementById("contatti"),
-                document.getElementById("nav")
-            );
-            break;
-        case "selDifficolta":
-            elements.push(
-                document.getElementById("barraLogo"),
-                document.getElementById("selDifficolta"),
-                document.getElementById("nav")
-            );
-            break;
-        case "traduzione":
-            elements.push(document.getElementById("traduzione"));
-            break;
-        case "allenamento":
-            elements.push(document.getElementById("allenamento"));
-            break;
-        case "giocoFacile":
-            elements.push(document.getElementById("giocoFacile"));
-            break;
-        case "giocoMedio":
-            elements.push(document.getElementById("giocoMedio"));
-            break;
-        case "giocoDifficile":
-            elements.push(document.getElementById("giocoDifficile"));
-            break;
-        default:
-            break;
-    }
-    return elements;
+  const elements = [];
+  switch (dest) {
+    case "loadingIntelligenza":
+      elements.push(document.getElementById("loadingIntelligenza"));
+      break;
+    case "loadingIniziale":
+      elements.push(document.getElementById("loadingIniziale"));
+      break;
+    case "homePage":
+      elements.push(
+        document.getElementById("barraLogo"),
+        document.getElementById("selezioneLinguaBarra"),
+        document.getElementById("selModalita"),
+        document.getElementById("nav")
+      );
+      break;
+    case "vocabolario":
+      elements.push(
+        document.getElementById("barraLogo"),
+        document.getElementById("selezioneLinguaBarra"),
+        document.getElementById("vocabolario"),
+        document.getElementById("nav")
+      );
+      break;
+    case "contatti":
+      elements.push(
+        document.getElementById("barraLogo"),
+        document.getElementById("selezioneLinguaBarra"),
+        document.getElementById("contatti"),
+        document.getElementById("nav")
+      );
+      break;
+    case "selDifficolta":
+      elements.push(
+        document.getElementById("barraLogo"),
+        document.getElementById("selDifficolta"),
+        document.getElementById("nav")
+      );
+      break;
+    case "traduzione":
+      elements.push(document.getElementById("traduzione"));
+      break;
+    case "allenamento":
+      elements.push(document.getElementById("allenamento"));
+      break;
+    case "giocoFacile":
+      elements.push(document.getElementById("giocoFacile"));
+      break;
+    case "giocoMedio":
+      elements.push(document.getElementById("giocoMedio"));
+      break;
+    case "giocoDifficile":
+      elements.push(document.getElementById("giocoDifficile"));
+      break;
+  }
+  return elements;
 }
+
 
 /* ------------------------ VOCABULARY ----------------------*/
 
@@ -591,65 +559,119 @@ function inizializzaEventi() {
         }
     }, 200);
 }
+
 /*----------------- LANGUAGE SELECTION FUNCTION ----------------------*/ 
-document.addEventListener("DOMContentLoaded", () => { 
-    const container = document.getElementById("selModalita");
-    const cards = document.querySelectorAll(".card");
+document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('selezioneLinguaBarra');
+    const europeButton = document.querySelector('.lang-btn[data-lang="Europe"]');
+    const containerRect = container.getBoundingClientRect();
+    const EUROPE_OFFSET = europeButton ? europeButton.getBoundingClientRect().left - containerRect.left : 20;
 
-    let activeCard = document.querySelector(".card.active");
+    const screenWidth = window.innerWidth;
+    const initialOffset = screenWidth * 0.1;
+    container.style.transform = `translateX(${initialOffset}px)`;
 
-    // Gestione click per selezionare le card
-    cards.forEach(card => {
-        card.addEventListener("click", () => {
-            if (card !== activeCard) {
-                updateActiveCard(card);
+    const buttons = document.querySelectorAll('.lang-btn:not(#noClick)');
+    let activeButton = document.querySelector('.lang-btn.active');
+    let isDragging = false;
+    let startX = 0;
+    let currentX = 0;
+
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+    // Click su tutti i dispositivi
+    buttons.forEach(button => {
+        button.addEventListener('click', () => {
+            if (!isDragging && button !== activeButton) {
+                buttons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                activeButton = button;
+
+                const buttonRect = button.getBoundingClientRect();
+                const newOffset = buttonRect.left - container.getBoundingClientRect().left;
+                const translateX = EUROPE_OFFSET - newOffset + initialOffset;
+                container.style.transform = `translateX(${translateX}px)`;
+                activeButtonContent = button.textContent;
             }
         });
     });
 
-    function updateActiveCard(card) {
-        if (activeCard) {
-            activeCard.classList.remove("active");
-            activeCard.classList.add("disactive");
+    if (isTouchDevice) {
+        buttons.forEach(button => {
+            button.addEventListener('touchstart', startDrag);
+        });
+    }
+
+    function startDrag(event) {
+        isDragging = true;
+        startX = event.touches[0].clientX;
+
+        document.addEventListener('touchmove', onDrag);
+        document.addEventListener('touchend', stopDrag);
+    }
+
+    function onDrag(event) {
+        if (!isDragging) return;
+        currentX = event.touches[0].clientX;
+
+        const deltaX = currentX - startX;
+        container.style.transform = `translateX(${initialOffset + deltaX}px)`;
+    }
+
+    function stopDrag(event) {
+        isDragging = false;
+
+        document.removeEventListener('touchmove', onDrag);
+        document.removeEventListener('touchend', stopDrag);
+
+        let closestInactiveButton = findClosestInactiveButton(event.target);
+
+        if (closestInactiveButton) {
+            buttons.forEach(btn => btn.classList.remove('active'));
+            closestInactiveButton.classList.add('active');
+            activeButton = closestInactiveButton;
+
+            const buttonRect = closestInactiveButton.getBoundingClientRect();
+            const newOffset = buttonRect.left - container.getBoundingClientRect().left;
+            const translateX = EUROPE_OFFSET - newOffset + initialOffset;
+            container.style.transform = `translateX(${translateX}px)`;
+            activeButtonContent = closestInactiveButton.textContent;
         }
-        card.classList.add("active");
-        card.classList.remove("disactive");
-        activeCard = card;
+    }
 
-        setTimeout(adjustContainerPosition, 50);
+    function findClosestInactiveButton(activeButton) {
+        let activeRect = activeButton.getBoundingClientRect();
+        let closestButton = null;
+        let minDistance = Infinity;
 
-        // Abilita il click solo sulla card attiva
-        cards.forEach((c) => {
-            c.onclick = null;
+        buttons.forEach(button => {
+            if (!button.classList.contains('active')) {
+                let buttonRect = button.getBoundingClientRect();
+                let distance = Math.abs(buttonRect.left - activeRect.left);
+
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    closestButton = button;
+                }
+            }
         });
 
-        if (card.id === "cardTraduttore") {
-            card.onclick = () => {
-                enableCam();
-                toSlide("traduzione");
-            };
-        } else if (card.id === "cardAllenamento") {
-            card.onclick = () => {
-                toSlide("selDifficolta");
-            };
-        }
+        return closestButton;
     }
-
-    function adjustContainerPosition() {
-        if (!activeCard) return;
-
-        if (activeCard.id === "cardTraduttore") {
-            container.style.transform = "translateX(6rem)";
-        } else if (activeCard.id === "cardAllenamento") {
-            container.style.transform = "translateX(-6rem)";
-        }
-    }
-
-    setTimeout(adjustContainerPosition, 50);
 });
 
+// Fallback generale: attivazione con click
+document.querySelectorAll('.lang-btn').forEach(button => {
+    button.onclick = function () {
+        document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+        this.classList.add('active');
+        activeButtonContent = this.textContent;
+    };
+});
+
+
 //----------------------------MODE SELECTION---------------------------
-document.addEventListener("DOMContentLoaded", () => {
+ document.addEventListener("DOMContentLoaded", () => {
     const container = document.getElementById("selModalita");
     const cards = document.querySelectorAll(".card");
 
@@ -658,22 +680,32 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentX = 0;
     let isDragging = false;
 
-    container.addEventListener("mousedown", startDrag);
-    container.addEventListener("touchstart", startDrag);
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+    if (isTouchDevice) {
+        container.addEventListener("touchstart", startDrag);
+    }
+
+    // Click per selezionare una card su tutti i dispositivi
+    cards.forEach(card => {
+        card.addEventListener("click", () => {
+            if (!isDragging && card !== activeCard) {
+                updateActiveCard(card);
+            }
+        });
+    });
 
     function startDrag(event) {
         isDragging = true;
-        startX = event.touches ? event.touches[0].clientX : event.clientX;
+        startX = event.touches[0].clientX;
 
-        document.addEventListener("mousemove", onDrag);
         document.addEventListener("touchmove", onDrag);
-        document.addEventListener("mouseup", stopDrag);
         document.addEventListener("touchend", stopDrag);
     }
 
     function onDrag(event) {
         if (!isDragging) return;
-        currentX = event.touches ? event.touches[0].clientX : event.clientX;
+        currentX = event.touches[0].clientX;
         const deltaX = currentX - startX;
         container.style.transform = `translateX(${deltaX}px)`;
     }
@@ -681,9 +713,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function stopDrag() {
         isDragging = false;
 
-        document.removeEventListener("mousemove", onDrag);
         document.removeEventListener("touchmove", onDrag);
-        document.removeEventListener("mouseup", stopDrag);
         document.removeEventListener("touchend", stopDrag);
 
         const centerX = window.innerWidth / 2;
@@ -715,10 +745,9 @@ document.addEventListener("DOMContentLoaded", () => {
         card.classList.remove("disactive");
         activeCard = card;
 
-        //Usiamo un piccolo delay per garantire che lo stato sia aggiornato
         setTimeout(adjustContainerPosition, 50);
 
-        //Abilita il click solo sulla card attiva**
+        // Abilita il click solo sulla card attiva
         cards.forEach((c) => {
             c.onclick = null;
         });

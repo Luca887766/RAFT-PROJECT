@@ -150,11 +150,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   DrawingUtils = ImportedDrawingUtils;
   GestureRecognizer = ImportedGestureRecognizer;
 
+  // Aggiorna la funzione per scegliere il file task corretto
   const createGestureRecognizer = async () => {
+    updateGestureTaskFile();
     const vision = await FilesetResolver.forVisionTasks(`${visionLibUrl}/wasm`);
     gestureRecognizer = await GestureRecognizer.createFromOptions(vision, {
       baseOptions: {
-        modelAssetPath: "gesture_recognizer.task",
+        modelAssetPath: gestureTaskFile,
         delegate: "GPU",
       },
       runningMode: runningMode,
@@ -265,6 +267,22 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Esporta la funzione per disabilitare la webcam
   window.disableCam = disableCam;
+
+  // Aggiorna il gesture recognizer quando cambia la lingua
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', async function() {
+      if (btn.classList.contains('active') || btn.classList.contains('disabled')) return;
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeButtonContent = btn.dataset.lang.toLowerCase();
+      updateGestureTaskFile();
+      if (gestureRecognizer) {
+        await gestureRecognizer.close();
+        gestureRecognizer = null;
+      }
+      await createGestureRecognizer();
+    });
+  });
 });
 
 //--------------------------------- SLIDE MANAGEMENT -----------------------------------*/
@@ -436,6 +454,16 @@ function getElementsForSlide(dest) {
 
 let vocabolario = null;
 let activeButtonContent = 'europe';
+let gestureTaskFile = 'gesture_recognizer.task'; // default
+
+// Funzione per aggiornare il file del modello in base alla lingua
+function updateGestureTaskFile() {
+    if (activeButtonContent.trim().toLowerCase() === 'american') {
+        gestureTaskFile = 'gesture_recognizer_american.task';
+    } else {
+        gestureTaskFile = 'gesture_recognizer.task';
+    }
+}
 
 function caricaVocabolario() {
     if (vocabolario) {
@@ -1517,11 +1545,11 @@ window.startMediumTraining = async () => {
                 // Initialize camera selector button based on detected devices
                 const switchBtn = document.getElementById('mediumCameraSwitchBtn');
                 if (switchBtn) {
-                    if (videoDevices.length <= 1) {
-                        switchBtn.style.display = 'none';
-                    } else {
-                        initCameraSelector('mediumCameraSwitchBtn', 'mediumCameraDropdown', document.getElementById('mediumWebcam'), 'medium');
-                    }
+                  if (videoDevices.length <= 1) {
+                    switchBtn.style.display = 'none';
+                  } else {
+                    initCameraSelector('mediumCameraSwitchBtn', 'mediumCameraDropdown', document.getElementById('mediumWebcam'), 'medium');
+                  }
                 }
             } catch (err) {
                 console.error('Error detecting camera devices:', err);

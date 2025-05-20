@@ -279,7 +279,6 @@ function toSlide(dest) {
 
   if (dest === "traduzione") {
     disableCam();
-    document.getElementById("nav").style.display = "none";
     document.getElementById("loadingIntelligenza").style.display = "flex";
     document.getElementById("traduzione").style.display = "none";
     return;
@@ -299,11 +298,11 @@ function toSlide(dest) {
     ) {
       element.style.display = "flex";
     } else if (element.id === "nav") {
-      // Lasciamo che lo faccia la funzione responsive
+      // Non gestiamo qui #nav: lo fa toggleResponsiveUI()
     } else {
       element.style.display = "block";
     }
-  }); // <-- QUI chiudiamo correttamente il ciclo forEach
+  });
 
   const currentEasySlide = document.getElementById('giocoFacile');
   const currentMediumSlide = document.getElementById('giocoMedio');
@@ -324,25 +323,10 @@ function toSlide(dest) {
   }
 
   if (dest === "traduzione") {
-    const nav = document.getElementById("nav");
-    if (nav) nav.style.display = "none";
     document.getElementById("loadingIntelligenza").style.display = "flex";
     document.getElementById("traduzione").style.display = "none";
     enableCam();
     return;
-  } else if (dest === "giocoFacile" || dest === "giocoMedio" || dest === "giocoDifficile") {
-    const nav = document.getElementById("nav");
-    if (nav) nav.style.display = "none";
-  } else {
-    if (dest !== 'giocoFacile' && trainingRunning) {
-      stopTraining();
-    }
-    if (dest !== 'giocoMedio' && mediumTrainingRunning) {
-      stopMediumTraining();
-    }
-    if (dest !== 'giocoDifficile' && hardTrainingRunning) {
-      stopHardTraining();
-    }
   }
 
   toggleResponsiveUI(elementsToShow.map(e => e.id));
@@ -357,31 +341,21 @@ function toggleResponsiveUI(visibleIds = []) {
 
   if (shouldShowNav) {
     if (window.innerWidth > maxWidth) {
-      // Mostra topMenu, nascondi footer
       topMenu.style.display = 'flex';
       footer.style.display = 'none';
     } else {
-      // Mostra footer, nascondi topMenu
       footer.style.display = 'flex';
       topMenu.style.display = 'none';
     }
   } else {
-    // SE nav non deve essere mostrato, ma entrambi spariscono,
-    // allora forziamo la visualizzazione di uno dei due
-    if (window.innerWidth > maxWidth) {
-      topMenu.style.display = 'flex';
-    } else {
-      footer.style.display = 'flex';
-    }
+    topMenu.style.display = 'none';
+    footer.style.display = 'none';
   }
 }
 
-
 function updateActiveMenuItem(dest) {
-  // Rimuovi la classe "active" da tutte le voci di menu
   document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
 
-  // Aggiungi la classe "active" solo a quella corretta
   if (dest === 'homePage') {
     document.querySelectorAll('.menu-home').forEach(el => el.classList.add('active'));
   } else if (dest === 'vocabolario') {
@@ -392,7 +366,6 @@ function updateActiveMenuItem(dest) {
 }
 
 window.addEventListener('resize', () => {
-  // Recupera l’elemento visibile corrente per sapere se includere 'nav'
   const visibleElements = Array.from(document.querySelectorAll('.slide'))
     .filter(el => el.style.display !== 'none')
     .map(el => el.id);
@@ -400,68 +373,64 @@ window.addEventListener('resize', () => {
 });
 
 function getElementsForSlide(dest) {
-    const elements = [];
-    switch (dest) {
-        case "loadingIntelligenza":
-            elements.push(
-                document.getElementById("loadingIntelligenza")
-            );
-            break;
-        case "loadingIniziale":
-            elements.push(
-                document.getElementById("loadingIniziale")
-            );
-            break;
-        case "homePage":
-            elements.push(
-                document.getElementById("barraLogo"),
-                document.getElementById("selezioneLinguaBarra"),
-                document.getElementById("selModalita"),
-            );
-            break;
-        case "vocabolario":
-            elements.push(
-                document.getElementById("barraLogo"),
-                document.getElementById("selezioneLinguaBarra"),
-                document.getElementById("vocabolario"),
-                document.getElementById("nav")
-            );
-            break;
-        case "contatti":
-            elements.push(
-                document.getElementById("barraLogo"),
-                document.getElementById("selezioneLinguaBarra"),
-                document.getElementById("contatti"),
-                document.getElementById("nav")
-            );
-            break;
-        case "selDifficolta":
-            elements.push(
-                document.getElementById("barraLogo"),
-                document.getElementById("selDifficolta"),
-                document.getElementById("nav")
-            );
-            break;
-        case "traduzione":
-            elements.push(document.getElementById("traduzione"));
-            break;
-        case "allenamento":
-            elements.push(document.getElementById("allenamento"));
-            break;
-        case "giocoFacile":
-            elements.push(document.getElementById("giocoFacile"));
-            break;
-        case "giocoMedio":
-            elements.push(document.getElementById("giocoMedio"));
-            break;
-        case "giocoDifficile":
-            elements.push(document.getElementById("giocoDifficile"));
-            break;
-        default:
-            break;
-    }
-    return elements;
+  const elements = [];
+  switch (dest) {
+    case "loadingIntelligenza":
+      elements.push(document.getElementById("loadingIntelligenza"));
+      break;
+    case "loadingIniziale":
+      elements.push(document.getElementById("loadingIniziale"));
+      break;
+    case "homePage":
+      elements.push(
+        document.getElementById("barraLogo"),
+        document.getElementById("selezioneLinguaBarra"),
+        document.getElementById("selModalita"),
+        document.getElementById("nav")
+      );
+      break;
+    case "vocabolario":
+      elements.push(
+        document.getElementById("barraLogo"),
+        document.getElementById("selezioneLinguaBarra"),
+        document.getElementById("vocabolario"),
+        document.getElementById("nav")
+      );
+      break;
+    case "contatti":
+      elements.push(
+        document.getElementById("barraLogo"),
+        document.getElementById("selezioneLinguaBarra"),
+        document.getElementById("contatti"),
+        document.getElementById("nav")
+      );
+      break;
+    case "selDifficolta":
+      elements.push(
+        document.getElementById("barraLogo"),
+        document.getElementById("selDifficolta"),
+        document.getElementById("nav")
+      );
+      break;
+    case "traduzione":
+      elements.push(document.getElementById("traduzione"));
+      break;
+    case "allenamento":
+      elements.push(document.getElementById("allenamento"));
+      break;
+    case "giocoFacile":
+      elements.push(document.getElementById("giocoFacile"));
+      break;
+    case "giocoMedio":
+      elements.push(document.getElementById("giocoMedio"));
+      break;
+    case "giocoDifficile":
+      elements.push(document.getElementById("giocoDifficile"));
+      break;
+  }
+  return elements;
 }
+
 
 /* ------------------------ VOCABULARY ----------------------*/
 

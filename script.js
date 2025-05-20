@@ -600,14 +600,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function startDrag(event) {
-        isDragging = true;
-        startX = event.touches ? event.touches[0].clientX : event.clientX;
+    isTouchDevice = !!event.touches;
 
-        document.addEventListener('mousemove', onDrag);
-        document.addEventListener('touchmove', onDrag);
-        document.addEventListener('mouseup', stopDrag);
-        document.addEventListener('touchend', stopDrag);
-    }
+    if (!isTouchDevice) return; // disattiva drag per mouse
+
+    isDragging = true;
+    startX = event.touches[0].clientX;
+
+    document.addEventListener("touchmove", onDrag);
+    document.addEventListener("touchend", stopDrag);
+}
 
     function onDrag(event) {
         if (!isDragging) return;
@@ -617,28 +619,31 @@ document.addEventListener('DOMContentLoaded', () => {
         container.style.transform = `translateX(${initialOffset + deltaX}px)`;
     }
 
-    function stopDrag(event) {
-        isDragging = false;
+    function stopDrag() {
+    isDragging = false;
 
-        document.removeEventListener('mousemove', onDrag);
-        document.removeEventListener('touchmove', onDrag);
-        document.removeEventListener('mouseup', stopDrag);
-        document.removeEventListener('touchend', stopDrag);
+    document.removeEventListener("touchmove", onDrag);
+    document.removeEventListener("touchend", stopDrag);
 
-        let closestInactiveButton = findClosestInactiveButton(event.target);
+    const centerX = window.innerWidth / 2;
+    let closestCard = null;
+    let closestDistance = Infinity;
 
-        if (closestInactiveButton) {
-            buttons.forEach(btn => btn.classList.remove('active'));
-            closestInactiveButton.classList.add('active');
-            activeButton = closestInactiveButton;
+    cards.forEach((card) => {
+        const cardRect = card.getBoundingClientRect();
+        const cardCenter = cardRect.left + cardRect.width / 2;
+        const distance = Math.abs(cardCenter - centerX);
 
-            const buttonRect = closestInactiveButton.getBoundingClientRect();
-            const newOffset = buttonRect.left - container.getBoundingClientRect().left;
-            const translateX = EUROPE_OFFSET - newOffset + initialOffset;
-            container.style.transform = `translateX(${translateX}px)`;
-            activeButtonContent = closestInactiveButton.textContent;
+        if (distance < closestDistance) {
+            closestDistance = distance;
+            closestCard = card;
         }
+    });
+
+    if (closestCard && closestCard !== activeCard) {
+        updateActiveCard(closestCard);
     }
+}
 
     function findClosestInactiveButton(activeButton) {
         let activeRect = activeButton.getBoundingClientRect();
@@ -683,14 +688,16 @@ document.addEventListener("DOMContentLoaded", () => {
     container.addEventListener("touchstart", startDrag);
 
     function startDrag(event) {
-        isDragging = true;
-        startX = event.touches ? event.touches[0].clientX : event.clientX;
+    isTouchDevice = !!event.touches;
 
-        document.addEventListener("mousemove", onDrag);
-        document.addEventListener("touchmove", onDrag);
-        document.addEventListener("mouseup", stopDrag);
-        document.addEventListener("touchend", stopDrag);
-    }
+    if (!isTouchDevice) return; // blocca il drag se è mouse
+
+    isDragging = true;
+    startX = event.touches[0].clientX;
+
+    document.addEventListener('touchmove', onDrag);
+    document.addEventListener('touchend', stopDrag);
+}
 
     function onDrag(event) {
         if (!isDragging) return;
@@ -699,33 +706,26 @@ document.addEventListener("DOMContentLoaded", () => {
         container.style.transform = `translateX(${deltaX}px)`;
     }
 
-    function stopDrag() {
-        isDragging = false;
+    function stopDrag(event) {
+    isDragging = false;
 
-        document.removeEventListener("mousemove", onDrag);
-        document.removeEventListener("touchmove", onDrag);
-        document.removeEventListener("mouseup", stopDrag);
-        document.removeEventListener("touchend", stopDrag);
+    document.removeEventListener('touchmove', onDrag);
+    document.removeEventListener('touchend', stopDrag);
 
-        const centerX = window.innerWidth / 2;
-        let closestCard = null;
-        let closestDistance = Infinity;
+    let closestInactiveButton = findClosestInactiveButton(event.target);
 
-        cards.forEach((card) => {
-            const cardRect = card.getBoundingClientRect();
-            const cardCenter = cardRect.left + cardRect.width / 2;
-            const distance = Math.abs(cardCenter - centerX);
+    if (closestInactiveButton) {
+        buttons.forEach(btn => btn.classList.remove('active'));
+        closestInactiveButton.classList.add('active');
+        activeButton = closestInactiveButton;
 
-            if (distance < closestDistance) {
-                closestDistance = distance;
-                closestCard = card;
-            }
-        });
-
-        if (closestCard && closestCard !== activeCard) {
-            updateActiveCard(closestCard);
-        }
+        const buttonRect = closestInactiveButton.getBoundingClientRect();
+        const newOffset = buttonRect.left - container.getBoundingClientRect().left;
+        const translateX = EUROPE_OFFSET - newOffset + initialOffset;
+        container.style.transform = `translateX(${translateX}px)`;
+        activeButtonContent = closestInactiveButton.textContent;
     }
+}
 
     function updateActiveCard(card) {
         if (activeCard) {

@@ -581,6 +581,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let startX = 0;
     let currentX = 0;
 
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+    // Click su tutti i dispositivi
     buttons.forEach(button => {
         button.addEventListener('click', () => {
             if (!isDragging && button !== activeButton) {
@@ -595,24 +598,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 activeButtonContent = button.textContent;
             }
         });
-
-        button.addEventListener('mousedown', startDrag);
-        button.addEventListener('touchstart', startDrag);
     });
+
+    if (isTouchDevice) {
+        buttons.forEach(button => {
+            button.addEventListener('touchstart', startDrag);
+        });
+    }
 
     function startDrag(event) {
         isDragging = true;
-        startX = event.touches ? event.touches[0].clientX : event.clientX;
+        startX = event.touches[0].clientX;
 
-        document.addEventListener('mousemove', onDrag);
         document.addEventListener('touchmove', onDrag);
-        document.addEventListener('mouseup', stopDrag);
         document.addEventListener('touchend', stopDrag);
     }
 
     function onDrag(event) {
         if (!isDragging) return;
-        currentX = event.touches ? event.touches[0].clientX : event.clientX;
+        currentX = event.touches[0].clientX;
 
         const deltaX = currentX - startX;
         container.style.transform = `translateX(${initialOffset + deltaX}px)`;
@@ -621,9 +625,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function stopDrag(event) {
         isDragging = false;
 
-        document.removeEventListener('mousemove', onDrag);
         document.removeEventListener('touchmove', onDrag);
-        document.removeEventListener('mouseup', stopDrag);
         document.removeEventListener('touchend', stopDrag);
 
         let closestInactiveButton = findClosestInactiveButton(event.target);
@@ -662,6 +664,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// Fallback generale: attivazione con click
 document.querySelectorAll('.lang-btn').forEach(button => {
     button.onclick = function () {
         document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));

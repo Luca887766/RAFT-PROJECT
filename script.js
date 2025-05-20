@@ -576,13 +576,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const buttons = document.querySelectorAll('.lang-btn:not(#noClick)');
     let activeButton = document.querySelector('.lang-btn.active');
-    let isDragging = false;
-    let startX = 0;
-    let currentX = 0;
 
     buttons.forEach(button => {
         button.addEventListener('click', () => {
-            if (!isDragging && button !== activeButton) {
+            if (button !== activeButton) {
                 buttons.forEach(btn => btn.classList.remove('active'));
                 button.classList.add('active');
                 activeButton = button;
@@ -591,141 +588,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 const newOffset = buttonRect.left - container.getBoundingClientRect().left;
                 const translateX = EUROPE_OFFSET - newOffset + initialOffset;
                 container.style.transform = `translateX(${translateX}px)`;
-                activeButtonContent = button.textContent;
             }
         });
-
-        button.addEventListener('mousedown', startDrag);
-        button.addEventListener('touchstart', startDrag);
     });
-
-    function startDrag(event) {
-    isTouchDevice = !!event.touches;
-
-    if (!isTouchDevice) return; // disattiva drag per mouse
-
-    isDragging = true;
-    startX = event.touches[0].clientX;
-
-    document.addEventListener("touchmove", onDrag);
-    document.addEventListener("touchend", stopDrag);
-}
-
-    function onDrag(event) {
-        if (!isDragging) return;
-        currentX = event.touches ? event.touches[0].clientX : event.clientX;
-
-        const deltaX = currentX - startX;
-        container.style.transform = `translateX(${initialOffset + deltaX}px)`;
-    }
-
-    function stopDrag() {
-    isDragging = false;
-
-    document.removeEventListener("touchmove", onDrag);
-    document.removeEventListener("touchend", stopDrag);
-
-    const centerX = window.innerWidth / 2;
-    let closestCard = null;
-    let closestDistance = Infinity;
-
-    cards.forEach((card) => {
-        const cardRect = card.getBoundingClientRect();
-        const cardCenter = cardRect.left + cardRect.width / 2;
-        const distance = Math.abs(cardCenter - centerX);
-
-        if (distance < closestDistance) {
-            closestDistance = distance;
-            closestCard = card;
-        }
-    });
-
-    if (closestCard && closestCard !== activeCard) {
-        updateActiveCard(closestCard);
-    }
-}
-
-    function findClosestInactiveButton(activeButton) {
-        let activeRect = activeButton.getBoundingClientRect();
-        let closestButton = null;
-        let minDistance = Infinity;
-
-        buttons.forEach(button => {
-            if (!button.classList.contains('active')) {
-                let buttonRect = button.getBoundingClientRect();
-                let distance = Math.abs(buttonRect.left - activeRect.left);
-
-                if (distance < minDistance) {
-                    minDistance = distance;
-                    closestButton = button;
-                }
-            }
-        });
-
-        return closestButton;
-    }
 });
 
-document.querySelectorAll('.lang-btn').forEach(button => {
-    button.onclick = function () {
-        document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-        this.classList.add('active');
-        activeButtonContent = this.textContent;
-    };
-});
 
 //----------------------------MODE SELECTION---------------------------
 document.addEventListener("DOMContentLoaded", () => {
     const container = document.getElementById("selModalita");
     const cards = document.querySelectorAll(".card");
-
     let activeCard = document.querySelector(".card.active");
-    let startX = 0;
-    let currentX = 0;
-    let isDragging = false;
-
-    container.addEventListener("mousedown", startDrag);
-    container.addEventListener("touchstart", startDrag);
-
-    function startDrag(event) {
-    isTouchDevice = !!event.touches;
-
-    if (!isTouchDevice) return; // blocca il drag se è mouse
-
-    isDragging = true;
-    startX = event.touches[0].clientX;
-
-    document.addEventListener('touchmove', onDrag);
-    document.addEventListener('touchend', stopDrag);
-}
-
-    function onDrag(event) {
-        if (!isDragging) return;
-        currentX = event.touches ? event.touches[0].clientX : event.clientX;
-        const deltaX = currentX - startX;
-        container.style.transform = `translateX(${deltaX}px)`;
-    }
-
-    function stopDrag(event) {
-    isDragging = false;
-
-    document.removeEventListener('touchmove', onDrag);
-    document.removeEventListener('touchend', stopDrag);
-
-    let closestInactiveButton = findClosestInactiveButton(event.target);
-
-    if (closestInactiveButton) {
-        buttons.forEach(btn => btn.classList.remove('active'));
-        closestInactiveButton.classList.add('active');
-        activeButton = closestInactiveButton;
-
-        const buttonRect = closestInactiveButton.getBoundingClientRect();
-        const newOffset = buttonRect.left - container.getBoundingClientRect().left;
-        const translateX = EUROPE_OFFSET - newOffset + initialOffset;
-        container.style.transform = `translateX(${translateX}px)`;
-        activeButtonContent = closestInactiveButton.textContent;
-    }
-}
 
     function updateActiveCard(card) {
         if (activeCard) {
@@ -736,10 +609,8 @@ document.addEventListener("DOMContentLoaded", () => {
         card.classList.remove("disactive");
         activeCard = card;
 
-        //Usiamo un piccolo delay per garantire che lo stato sia aggiornato
         setTimeout(adjustContainerPosition, 50);
 
-        //Abilita il click solo sulla card attiva**
         cards.forEach((c) => {
             c.onclick = null;
         });
@@ -766,15 +637,15 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-     cards.forEach(card => {
+    cards.forEach(card => {
         card.addEventListener('click', () => {
-            if (isDragging) return;
             updateActiveCard(card);
         });
     });
 
     setTimeout(adjustContainerPosition, 50);
 });
+
 
 /*------------------------------ ROTATE CONTACTS ARROW--------------*/
 function toggleFrecciaRotation() {

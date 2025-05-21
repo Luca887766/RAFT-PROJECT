@@ -1,5 +1,5 @@
 //----------------PWA SETTINGS--------------------------
-/*const cacheName = 'RAFTpwa';
+const cacheName = 'RAFTpwa';
 
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js').then(() => {
@@ -28,7 +28,7 @@ xhr.onerror = function () {
     console.error("Update check failed");
 };
 xhr.open("GET", "pwaversion.txt?t=" + Date.now());
-xhr.send();*/
+xhr.send();
 
 /*-------------------INTELLIGENCE------------------*/
 let webcamRunning = false;

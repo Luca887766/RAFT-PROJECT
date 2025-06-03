@@ -14,5 +14,5 @@ RAFT (Real Time Automated Fingerspelling Translator) è un’applicazione web pr
 
 ## Repository GitHub
 L’intero codice sorgente è disponibile su GitHub nella repository ufficiale:  
-[RAFT-PROJECT](https://github.com/username/RAFT-PROJECT)  
+[RAFT-PROJECT] https://github.com/Luca887766/RAFT-PROJECT
 Chiunque può esplorare, proporre miglioramenti e contribuire allo sviluppo.
